@@ -1,0 +1,21 @@
+[debug] [2020-04-20T15:40:11.526Z] ----------------------------------------------------------------------
+[debug] [2020-04-20T15:40:11.528Z] Command:       /Users/dmorton/.nvm/versions/node/v10.16.3/bin/node /Users/dmorton/.nvm/versions/node/v10.16.3/bin/firebase init
+[debug] [2020-04-20T15:40:11.528Z] CLI Version:   7.12.1
+[debug] [2020-04-20T15:40:11.528Z] Platform:      darwin
+[debug] [2020-04-20T15:40:11.528Z] Node Version:  v10.16.3
+[debug] [2020-04-20T15:40:11.529Z] Time:          Mon Apr 20 2020 16:40:11 GMT+0100 (Irish Standard Time)
+[debug] [2020-04-20T15:40:11.529Z] ----------------------------------------------------------------------
+[debug] [2020-04-20T15:40:11.529Z] 
+[debug] [2020-04-20T15:40:11.539Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-04-20T15:40:11.539Z] > authorizing via signed-in user
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/dmorton/projects/acvisitorqueue
+
