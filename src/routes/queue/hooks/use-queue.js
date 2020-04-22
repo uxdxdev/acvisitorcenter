@@ -90,7 +90,6 @@ const useQueue = (queueId) => {
       return transaction.get(queuesRef).then((snapshot) => {
         let waitingArray = snapshot.get("waiting");
         waitingArray = waitingArray.filter((user) => user.uid !== deleteUid);
-        console.log(waitingArray);
         transaction.update(queuesRef, "waiting", waitingArray);
       });
     })

@@ -1,6 +1,7 @@
 import React, { useRef, useContext } from "react";
 import { firebase } from "../../utils/firebase";
 import { store } from "../../store";
+import { useLatestQueues } from "../latest-queues/hooks";
 
 const CreateQueue = () => {
   const context = useContext(store);
@@ -8,6 +9,7 @@ const CreateQueue = () => {
     state: { uid, isCreatingQueue },
     dispatch,
   } = context;
+  const { fetchLatestQueues } = useLatestQueues();
 
   let nameRef = useRef();
   let summaryRef = useRef();
@@ -37,6 +39,7 @@ const CreateQueue = () => {
         })
         .then((result) => {
           dispatch({ type: "CREATE_QUEUE_SUCCESS", queueId: result.id });
+          fetchLatestQueues();
         })
         .catch((error) => {
           dispatch({ type: "CREATE_QUEUE_FAIL", error });
