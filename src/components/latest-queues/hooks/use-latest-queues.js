@@ -37,7 +37,7 @@ const useLatestQueues = () => {
     fetchLatestQueues();
   }, [dispatch, fetchLatestQueues]);
 
-  return { latestQueues, isFetchingLatestQueues };
+  return { latestQueues, isFetchingLatestQueues, fetchLatestQueues };
 };
 
 export default useLatestQueues;
