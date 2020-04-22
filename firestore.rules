@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+  	function validateResourceFields(data){
+    	return data.keys().hasOnly(['name','owner','summary','waiting','createdAt']) &&      	
+              data.name is string && 
+              data.name.size() <= 50 &&                      
+              data.owner is string && 
+              data.owner.size() <= 50 &&                      
+              data.summary is string && 
+              data.summary.size() <= 1000 &&
+              data.waiting is list &&              
+              data.createdAt is timestamp;
+    }
+    
+    match /queues/{queueId} {
+    									
+      allow create: if request.auth != null && 
+      								validateResourceFields(request.resource.data) &&
+                      request.resource.data.owner == request.auth.uid &&       								      								      								
+                      request.resource.data.waiting.size() == 0 &&                                        
+                      request.resource.data.createdAt == request.time &&
+                      resource == null;
+                      
+      allow read: if request.auth != null;
+      
+      allow update: if request.auth != null &&
+      								validateResourceFields(request.resource.data) &&
+      								request.resource.data.waiting.size() == resource.data.waiting.size() + 1 &&
+      								request.resource.data.waiting[0].keys().hasOnly(['name', 'uid']) &&
+      								request.resource.data.waiting[0].uid == request.auth.uid &&
+      								request.resource.data.waiting[0].name is string && 
+      								request.resource.data.waiting[0].name.size() <= 50;
+    }
+  }
+}
