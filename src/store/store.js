@@ -40,7 +40,6 @@ const StateProvider = ({ children }) => {
         return {
           ...state,
           isFetchingQueue: true,
-          queueData: null,
           isFetchingQueueError: null,
         };
       case "FETCH_QUEUE_DATA_SUCCESS":
@@ -61,7 +60,6 @@ const StateProvider = ({ children }) => {
         return {
           ...state,
           isFetchingLatestQueues: true,
-          latestQueues: null,
           isFetchingLatestQueuesError: null,
         };
       case "FETCH_LATEST_QUEUES_SUCCESS":

@@ -34,7 +34,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // user signed in
         dispatch({ type: "AUTH", uid: user.uid });
@@ -43,6 +43,9 @@ const App = () => {
         dispatch({ type: "UNAUTH" });
       }
     });
+    return () => {
+      unsubscribe();
+    };
   }, [dispatch]);
 
   useEffect(() => {
