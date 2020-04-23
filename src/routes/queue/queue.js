@@ -11,17 +11,17 @@ const Queue = () => {
   let nameRef = useRef();
   const isOwner = queueData?.owner && queueData?.owner === uid;
 
+  const userExists =
+    queueData?.waiting.filter((user) => user.uid === uid)?.length > 0;
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     let name = event.target.name.value;
     nameRef.current.value = "";
-    const userExists =
-      queueData?.waiting.filter((user) => user.uid === uid)?.length > 0;
+
     if (name && uid && !userExists) {
       joinQueue(queueId, { name, uid });
-    } else {
-      // console.error("invalid data or user already exists in queue");
     }
   };
 
@@ -44,13 +44,12 @@ const Queue = () => {
             maxLength="20"
           />
         </div>
-        {isJoiningQueue ? (
-          <div>Loading...</div>
-        ) : (
-          <div>
-            <button type="submit">Join queue</button>
-          </div>
-        )}
+        <div>
+          <button type="submit" disabled={userExists}>
+            Join queue
+          </button>
+          {isJoiningQueue && <div>Loading...</div>}
+        </div>
       </form>
       <h2>Waiting</h2>
       {!queueData?.waiting ? (
