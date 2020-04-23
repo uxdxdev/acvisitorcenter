@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useQueue } from "./hooks";
+import moment from "moment";
 
 const Queue = () => {
   const { id: queueId } = useParams();
@@ -15,11 +16,12 @@ const Queue = () => {
 
     let name = event.target.name.value;
     nameRef.current.value = "";
-
-    if (name && uid) {
+    const userExists =
+      queueData?.waiting.filter((user) => user.uid === uid)?.length > 0;
+    if (name && uid && !userExists) {
       joinQueue(queueId, { name, uid });
     } else {
-      console.log("invalid data");
+      // console.error("invalid data or user already exists in queue");
     }
   };
 
@@ -57,16 +59,19 @@ const Queue = () => {
         <>
           {queueData?.waiting?.length > 0 ? (
             <ol>
-              {queueData?.waiting.map(({ name, uid }, index) => (
-                <li key={index}>
-                  {name}{" "}
-                  {isOwner && (
-                    <button onClick={() => deleteUser(queueId, uid)}>
-                      Delete
-                    </button>
-                  )}
-                </li>
-              ))}
+              {queueData?.waiting.map(({ name, joinedAt, uid }, index) => {
+                const date = moment(joinedAt.toDate()).calendar();
+                return (
+                  <li key={index}>
+                    {name} {date}{" "}
+                    {isOwner && (
+                      <button onClick={() => deleteUser(queueId, uid)}>
+                        Delete
+                      </button>
+                    )}
+                  </li>
+                );
+              })}
             </ol>
           ) : (
             <div>Waiting queue is empty</div>
