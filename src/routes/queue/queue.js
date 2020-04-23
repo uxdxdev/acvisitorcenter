@@ -45,10 +45,9 @@ const Queue = () => {
           />
         </div>
         <div>
-          <button type="submit" disabled={userExists}>
+          <button type="submit" disabled={isJoiningQueue || userExists}>
             Join queue
           </button>
-          {isJoiningQueue && <div>Loading...</div>}
         </div>
       </form>
       <h2>Waiting</h2>

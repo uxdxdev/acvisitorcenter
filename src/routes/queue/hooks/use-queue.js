@@ -20,15 +20,11 @@ const useQueue = (queueId) => {
         .firestore()
         .collection("queues")
         .doc(id)
-        .get()
-        .then((result) => {
+        .onSnapshot((result) => {
           dispatch({
             type: "FETCH_QUEUE_DATA_SUCCESS",
             queueData: result.data(),
           });
-        })
-        .catch((error) => {
-          dispatch({ type: "FETCH_QUEUE_DATA_FAIL" });
         });
     },
     [dispatch]
@@ -38,7 +34,10 @@ const useQueue = (queueId) => {
    * Fetch queue data when user authenticated.
    */
   useEffect(() => {
-    fetchQueueData(queueId);
+    const unsubscribe = uid && fetchQueueData(queueId);
+    return () => {
+      uid && unsubscribe();
+    };
   }, [uid, fetchQueueData, queueId]);
 
   /**
@@ -65,8 +64,6 @@ const useQueue = (queueId) => {
     })
       .then(() => {
         dispatch({ type: "JOIN_QUEUE_SUCCESS" });
-        // fetch latest queue data when joined
-        fetchQueueData(id);
       })
       .catch((error) => {
         dispatch({ type: "JOIN_QUEUE_FAIL", error });
@@ -96,8 +93,6 @@ const useQueue = (queueId) => {
     })
       .then(() => {
         dispatch({ type: "JOIN_QUEUE_SUCCESS" });
-        // fetch latest queue data when joined
-        fetchQueueData(id);
       })
       .catch((error) => {
         dispatch({ type: "JOIN_QUEUE_FAIL", error });
@@ -108,7 +103,6 @@ const useQueue = (queueId) => {
     uid,
     isJoiningQueue,
     queueData,
-    fetchQueueData,
     joinQueue,
     deleteUser,
   };

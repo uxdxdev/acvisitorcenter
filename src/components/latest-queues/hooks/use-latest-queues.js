@@ -6,19 +6,18 @@ const useLatestQueues = () => {
   const context = useContext(store);
   const {
     dispatch,
-    state: { latestQueues, isFetchingLatestQueues },
+    state: { uid, latestQueues, isFetchingLatestQueues },
   } = context;
 
   const fetchLatestQueues = useCallback(() => {
     dispatch({ type: "FETCH_LATEST_QUEUES" });
 
-    firebase
+    return firebase
       .firestore()
       .collection("queues")
       .orderBy("createdAt", "desc")
       .limit(100)
-      .get()
-      .then((latestQueues) => {
+      .onSnapshot((latestQueues) => {
         const data = latestQueues.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
@@ -27,15 +26,15 @@ const useLatestQueues = () => {
           type: "FETCH_LATEST_QUEUES_SUCCESS",
           latestQueues: data,
         });
-      })
-      .catch((error) => {
-        dispatch({ type: "FETCH_LATEST_QUEUES_FAIL", error });
       });
   }, [dispatch]);
 
   useEffect(() => {
-    fetchLatestQueues();
-  }, [dispatch, fetchLatestQueues]);
+    const unsubscribe = uid && fetchLatestQueues();
+    return () => {
+      uid && unsubscribe();
+    };
+  }, [uid, dispatch, fetchLatestQueues]);
 
   return { latestQueues, isFetchingLatestQueues, fetchLatestQueues };
 };
