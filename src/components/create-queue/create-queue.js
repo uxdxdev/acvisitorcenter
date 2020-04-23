@@ -51,6 +51,7 @@ const CreateQueue = () => {
 
   return (
     <div>
+      <h2>Create queue</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Name</label>

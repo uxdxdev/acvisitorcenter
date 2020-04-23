@@ -58,7 +58,8 @@ const useQueue = (queueId) => {
     db.runTransaction((transaction) => {
       return transaction.get(queuesRef).then((snapshot) => {
         const waitingArray = snapshot.get("waiting");
-        waitingArray.push({ name, uid });
+        const joinedAt = firebase.firestore.Timestamp.fromDate(new Date());
+        waitingArray.push({ name, uid, joinedAt });
         transaction.update(queuesRef, "waiting", waitingArray);
       });
     })
