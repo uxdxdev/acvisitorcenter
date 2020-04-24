@@ -3,7 +3,6 @@ import { handleCopyToClipboardByRef } from "../../utils/functions";
 
 const ManageQueue = () => {
   let urlRef = useRef(null);
-
   const url = window.location.href;
 
   return (
