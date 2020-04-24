@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useCallback } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
 
@@ -13,26 +13,29 @@ const useQueue = (queueId) => {
   const isOwner = ownerUid === uid;
   const isFirstInQueue = queueData?.waiting[0]?.uid === uid;
 
-  const setNextVisitor = (nextVisitorUid) => {
-    const db = firebase.firestore();
+  const setNextVisitor = useCallback(
+    (nextVisitorUid) => {
+      const db = firebase.firestore();
 
-    uid &&
-      db
-        .collection("users")
-        .doc(uid)
-        .set(
-          {
-            next: nextVisitorUid,
-          },
-          { merge: true }
-        )
-        .then(() => {
-          // success
-        })
-        .catch((error) => {
-          console.log("updating next visitor failed", error);
-        });
-  };
+      uid &&
+        db
+          .collection("users")
+          .doc(uid)
+          .set(
+            {
+              next: nextVisitorUid,
+            },
+            { merge: true }
+          )
+          .then(() => {
+            // success
+          })
+          .catch((error) => {
+            console.log("updating next visitor failed", error);
+          });
+    },
+    [uid]
+  );
 
   /**
    * Fetch queue data when user authenticated.
@@ -67,7 +70,7 @@ const useQueue = (queueId) => {
     return () => {
       unsubscribe && unsubscribe();
     };
-  }, [uid, queueId]);
+  }, [uid, queueId, setNextVisitor, dispatch]);
 
   /**
    * Join visitor queue.
