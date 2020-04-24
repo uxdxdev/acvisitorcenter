@@ -34,33 +34,55 @@ const Queue = () => {
 
   return (
     <>
+      {isOwner && (
+        <span>
+          Please keep this page open to manage the queue. Closing this page will
+          disable the queue.
+        </span>
+      )}
       <h2>Name</h2>
       <div>{queueData?.name || "Loading..."}</div>
       <h2>Summary</h2>
       <div>{queueData?.summary || "Loading..."}</div>
       <h2>Code</h2>
-      <div style={{ textTransform: "uppercase" }}>{islandCode}</div>
-      <button onClick={() => fetchIslandCode()}>Get code</button>
-      <h2>Join queue</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            required
-            ref={nameRef}
-            maxLength="20"
-          />
-        </div>
-        <div>
-          <button type="submit" disabled={isJoiningQueue || userExistsInQueue}>
-            Join queue
-          </button>
-        </div>
-      </form>
+      <span>You can get the code when you are next in the queue</span>
+      <div style={{ textTransform: "uppercase" }}>
+        {islandCode || "*******"}
+      </div>
+      <button onClick={() => fetchIslandCode()} disabled={islandCode}>
+        Get code
+      </button>
+      {!isOwner && (
+        <>
+          <h2>Join queue</h2>
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                ref={nameRef}
+                maxLength="20"
+              />
+            </div>
+            <div>
+              <button
+                type="submit"
+                disabled={isJoiningQueue || userExistsInQueue}
+              >
+                Join queue
+              </button>
+            </div>
+          </form>
+        </>
+      )}
       <h2>Waiting</h2>
+      <span>
+        When a visitor has departed click the "Done" button to allow the next
+        visitor to travel.
+      </span>
       {!queueData?.waiting ? (
         <div>Loading...</div>
       ) : (
@@ -84,7 +106,7 @@ const Queue = () => {
               })}
             </ol>
           ) : (
-            <div>Waiting queue is empty</div>
+            <div>Queue is empty</div>
           )}
         </>
       )}
