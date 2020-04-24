@@ -9,8 +9,8 @@ const useCreateQueue = () => {
     dispatch,
   } = context;
 
-  const createQueue = (name, summary) => {
-    if (name && summary) {
+  const createQueue = (name, summary, code) => {
+    if (name && summary && code) {
       const db = firebase.firestore();
       const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
@@ -32,7 +32,7 @@ const useCreateQueue = () => {
           db.collection("users")
             .doc(uid)
             .set({
-              islandCode: "UIFSU9",
+              islandCode: code,
               next: "",
             })
             .then(() => {

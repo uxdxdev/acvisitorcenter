@@ -39,7 +39,7 @@ const Queue = () => {
       <h2>Summary</h2>
       <div>{queueData?.summary || "Loading..."}</div>
       <h2>Code</h2>
-      <div>{islandCode || "You must be first in the queue"}</div>
+      <div style={{ textTransform: "uppercase" }}>{islandCode}</div>
       <button onClick={() => fetchIslandCode()}>Get code</button>
       <h2>Join queue</h2>
       <form onSubmit={handleSubmit}>
