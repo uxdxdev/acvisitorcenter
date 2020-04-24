@@ -1,10 +1,6 @@
-rules_version = '2';
+ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
-		function isOwner(){
-    	return resource.data.owner == request.auth.uid;
-    }
     
   	function validateResourceFields(data){
     	return data.keys().hasOnly(['name','owner','summary','waiting','createdAt']) &&      	
@@ -16,6 +12,24 @@ service cloud.firestore {
               data.summary.size() <= 1000 &&
               data.waiting is list &&              
               data.createdAt is timestamp;
+    }
+    
+    match /users/{userId} {
+    	allow create: if request.auth != null && 
+      									request.auth.uid == userId &&
+                        request.resource.data.keys().hasOnly(['islandCode', 'next']) &&
+      									request.resource.data.islandCode is string && 
+                        request.resource.data.islandCode.size() < 10 && 
+                        request.resource.data.next is string && 
+                        request.resource.data.next.size() == 0;
+                        
+      allow read: if request.auth != null &&
+      								(request.auth.uid == userId || 
+                      // allow read if user is next
+                      resource.data.next == request.auth.uid);
+
+      allow update: if request.auth != null && request.auth.uid == userId;
+                      
     }
        
     match /queues/{queueId} {
@@ -29,14 +43,19 @@ service cloud.firestore {
                       
       allow read: if request.auth != null;
       
-      allow update: if isOwner() ||
-      								request.auth != null &&							  
-      								validateResourceFields(request.resource.data) &&
+      allow update: if request.auth != null && 
+      								(resource.data.owner == request.auth.uid && 
+                      // todo validate all other data is unmodified
+      								request.resource.data.waiting.size() == resource.data.waiting.size() - 1) ||
+                      (validateResourceFields(request.resource.data) &&
       								request.resource.data.waiting.size() == resource.data.waiting.size() + 1 &&
-      								request.resource.data.waiting[request.resource.data.waiting.size() - 1].keys().hasOnly(['name', 'uid']) &&
+                      resource.data.waiting.size() <= 50 &&
+      								request.resource.data.waiting[request.resource.data.waiting.size() - 1].keys().hasOnly(['name', 'uid', 'joinedAt']) &&
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].uid == request.auth.uid &&
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].name is string &&
-      								request.resource.data.waiting[request.resource.data.waiting.size() - 1].name.size() <= 50;            
+      								request.resource.data.waiting[request.resource.data.waiting.size() - 1].name.size() <= 50 &&
+                      request.resource.data.waiting[request.resource.data.waiting.size() - 1].joinedAt is timestamp);
+                      
     }
   }
 }
