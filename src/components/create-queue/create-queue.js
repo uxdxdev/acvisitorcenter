@@ -6,17 +6,20 @@ const CreateQueue = () => {
 
   let nameRef = useRef();
   let summaryRef = useRef();
+  let codeRef = useRef();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     let name = event.target.name.value;
     let summary = event.target.summary.value;
+    let code = event.target.code.value;
 
     nameRef.current.value = "";
     summaryRef.current.value = "";
+    codeRef.current.value = "";
 
-    createQueue(name, summary);
+    createQueue(name, summary, code);
   };
 
   return (
@@ -33,6 +36,20 @@ const CreateQueue = () => {
             required
             ref={nameRef}
             maxLength="50"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="code">Code</label>
+          <br />
+          <input
+            type="text"
+            id="code"
+            name="code"
+            required
+            ref={codeRef}
+            maxLength="10"
+            style={{ textTransform: "uppercase" }}
           />
         </div>
 
