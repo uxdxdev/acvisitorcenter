@@ -36,16 +36,12 @@ const useQueue = (queueId) => {
     [uid]
   );
 
-  /**
-   * Fetch queue data when user authenticated.
-   */
-  useEffect(() => {
-    let unsubscribe;
+  const fetchQueueData = useCallback(() => {
     if (uid && queueId) {
       dispatch({ type: "FETCH_QUEUE_DATA" });
       const db = firebase.firestore();
 
-      unsubscribe = db
+      return db
         .collection("queues")
         .doc(queueId)
         .onSnapshot(
@@ -66,10 +62,17 @@ const useQueue = (queueId) => {
           }
         );
     }
+  }, [uid, queueId, dispatch, setNextVisitor]);
+
+  /**
+   * Fetch queue data when user authenticated.
+   */
+  useEffect(() => {
+    const unsubscribe = fetchQueueData();
     return () => {
       unsubscribe && unsubscribe();
     };
-  }, [uid, queueId, setNextVisitor, dispatch]);
+  }, [fetchQueueData]);
 
   /**
    * Join visitor queue.
