@@ -11,7 +11,6 @@ const useQueue = (queueId) => {
 
   const ownerUid = queueData?.owner;
   const isOwner = ownerUid === uid;
-  const isFirstInQueue = queueData?.waiting[0]?.uid === uid;
 
   const setNextVisitor = useCallback(
     (nextVisitorUid) => {
@@ -136,6 +135,7 @@ const useQueue = (queueId) => {
    * Fetch queue data from firestore.
    */
   const fetchIslandCode = () => {
+    const isFirstInQueue = queueData?.waiting[0]?.uid === uid;
     if ((isOwner || isFirstInQueue) && ownerUid) {
       dispatch({ type: "FETCH_ISLAND_CODE" });
 
