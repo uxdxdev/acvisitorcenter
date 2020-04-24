@@ -6,6 +6,7 @@ const { Provider } = store;
 
 const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
+    console.log(action.type);
     switch (action.type) {
       case "AUTH":
         return { ...state, uid: action.uid };
@@ -53,22 +54,22 @@ const StateProvider = ({ children }) => {
       case "FETCH_QUEUE_DATA":
         return {
           ...state,
-          isFetchingQueue: true,
-          isFetchingQueueError: null,
+          isFetchingQueueData: true,
+          isFetchingQueueDataError: null,
         };
       case "FETCH_QUEUE_DATA_SUCCESS":
         return {
           ...state,
-          isFetchingQueue: false,
+          isFetchingQueueData: false,
           queueData: action.queueData,
-          isFetchingQueueError: null,
+          isFetchingQueueDataError: null,
         };
       case "FETCH_QUEUE_DATA_FAIL":
         return {
           ...state,
-          isFetchingQueue: false,
+          isFetchingQueueData: false,
           queueData: null,
-          isFetchingQueueError: action.error,
+          isFetchingQueueDataError: action.error,
         };
       case "FETCH_LATEST_QUEUES":
         return {

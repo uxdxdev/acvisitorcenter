@@ -19,10 +19,18 @@ const Auth = () => {
     setHasUserConsentedToUseCookies(value);
   };
 
-  // sign in
+  useEffect(() => {
+    firebase
+      .auth()
+      .signInAnonymously()
+      .catch((error) => {
+        // error signing in
+      });
+  }, []);
+
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
+      if (user?.uid) {
         // user signed in
         dispatch({ type: "AUTH", uid: user.uid });
       } else {
@@ -30,14 +38,9 @@ const Auth = () => {
         dispatch({ type: "UNAUTH" });
       }
     });
-    firebase
-      .auth()
-      .signInAnonymously()
-      .catch((error) => {
-        // error signing in
-      });
+
     return () => {
-      unsubscribe();
+      unsubscribe && unsubscribe();
     };
   }, [dispatch]);
 

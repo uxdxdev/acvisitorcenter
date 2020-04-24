@@ -13,6 +13,7 @@ const Queue = () => {
     deleteUser,
     islandCode,
     isOwner,
+    fetchIslandCode,
   } = useQueue(queueId);
   const { uid } = useUser();
 
@@ -39,6 +40,7 @@ const Queue = () => {
       <div>{queueData?.summary || "Loading..."}</div>
       <h2>Code</h2>
       <div>{islandCode || "You must be first in the queue"}</div>
+      <button onClick={() => fetchIslandCode()}>Get code</button>
       <h2>Join queue</h2>
       <form onSubmit={handleSubmit}>
         <div>
