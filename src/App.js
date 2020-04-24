@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Auth } from "./components/auth";
+import { StateProvider } from "./store";
 
 const App = () => {
   const isDevEnv = process.env.NODE_ENV === "development";
@@ -21,7 +22,9 @@ const App = () => {
     <div className="App">
       <h1>Animal Crossing Visitor Queue</h1>
       {isVerified ? (
-        <Auth />
+        <StateProvider>
+          <Auth />
+        </StateProvider>
       ) : (
         <ReCAPTCHA
           sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}

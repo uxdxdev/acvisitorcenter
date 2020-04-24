@@ -10,10 +10,11 @@ const useLatestQueues = () => {
   } = context;
 
   const fetchLatestQueues = useCallback(() => {
+    const db = firebase.firestore();
+
     dispatch({ type: "FETCH_LATEST_QUEUES" });
 
-    return firebase
-      .firestore()
+    return db
       .collection("queues")
       .orderBy("createdAt", "desc")
       .limit(100)

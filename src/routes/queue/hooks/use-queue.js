@@ -1,4 +1,4 @@
-import { useContext, useEffect, useCallback } from "react";
+import { useContext, useEffect } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
 
@@ -13,64 +13,61 @@ const useQueue = (queueId) => {
   const isOwner = ownerUid === uid;
   const isFirstInQueue = queueData?.waiting[0]?.uid === uid;
 
-  const setNextVisitor = useCallback(
-    (nextVisitorUid) => {
-      const db = firebase.firestore();
+  const setNextVisitor = (nextVisitorUid) => {
+    const db = firebase.firestore();
 
-      // only queue owners can update the next visitor uid
-      isOwner &&
-        db
-          .collection("users")
-          .doc(uid)
-          .set(
-            {
-              next: nextVisitorUid,
-            },
-            { merge: true }
-          )
-          .then(() => {
-            // success
-          })
-          .catch((error) => {
-            console.log("updating next visitor failed", error);
-          });
-    },
-    [isOwner, uid]
-  );
-
-  const fetchQueueData = useCallback(
-    (id) => {
-      const db = firebase.firestore();
-      dispatch({ type: "FETCH_QUEUE_DATA" });
-
-      return db
-        .collection("queues")
-        .doc(id)
-        .onSnapshot((result) => {
-          dispatch({
-            type: "FETCH_QUEUE_DATA_SUCCESS",
-            queueData: result.data(),
-          });
-
-          // update the next visitor id
-          if (isOwner) {
-            const nextVisitorUid = result.data()?.waiting[0]?.uid || "";
-            setNextVisitor(nextVisitorUid);
-          }
+    uid &&
+      db
+        .collection("users")
+        .doc(uid)
+        .set(
+          {
+            next: nextVisitorUid,
+          },
+          { merge: true }
+        )
+        .then(() => {
+          // success
+        })
+        .catch((error) => {
+          console.log("updating next visitor failed", error);
         });
-    },
-    [isOwner, setNextVisitor, dispatch]
-  );
+  };
 
   /**
    * Fetch queue data when user authenticated.
    */
   useEffect(() => {
-    const unsubscribe = fetchQueueData(queueId);
+    let unsubscribe;
+    if (uid && queueId) {
+      dispatch({ type: "FETCH_QUEUE_DATA" });
+      const db = firebase.firestore();
+
+      unsubscribe = db
+        .collection("queues")
+        .doc(queueId)
+        .onSnapshot(
+          (result) => {
+            dispatch({
+              type: "FETCH_QUEUE_DATA_SUCCESS",
+              queueData: result.data(),
+            });
+
+            // update the next visitor uid
+            if (result.data()?.owner === uid) {
+              const nextVisitorUid = result.data()?.waiting[0]?.uid || "";
+              setNextVisitor(nextVisitorUid);
+            }
+          },
+          (error) => {
+            dispatch({ type: "FETCH_QUEUE_DATA_FAIL", error });
+          }
+        );
+    }
     return () => {
       unsubscribe && unsubscribe();
     };
-  }, [fetchQueueData, queueId]);
+  }, [uid, queueId]);
 
   /**
    * Join visitor queue.
@@ -135,47 +132,35 @@ const useQueue = (queueId) => {
   /**
    * Fetch queue data from firestore.
    */
-  const fetchIslandCode = useCallback(
-    (id) => {
+  const fetchIslandCode = () => {
+    if ((isOwner || isFirstInQueue) && ownerUid) {
       dispatch({ type: "FETCH_ISLAND_CODE" });
 
       return firebase
         .firestore()
         .collection("users")
-        .doc(id)
-        .onSnapshot(
-          (result) => {
-            const { islandCode } = result.data();
-
-            dispatch({ type: "FETCH_ISLAND_CODE_SUCCESS", islandCode });
-          },
-          (error) => {
-            console.log("failed to get island code");
-            dispatch({ type: "FETCH_ISLAND_CODE_FAIL", error });
-          }
-        );
-    },
-    [dispatch]
-  );
-
-  useEffect(() => {
-    console.log(isOwner, isFirstInQueue, ownerUid);
-    const unsubscribe =
-      (isOwner || isFirstInQueue) && ownerUid && fetchIslandCode(ownerUid);
-    return () => {
-      unsubscribe && unsubscribe();
-    };
-  }, [fetchIslandCode, ownerUid, isOwner, isFirstInQueue]);
+        .doc(ownerUid)
+        .get()
+        .then((result) => {
+          const { islandCode } = result.data();
+          dispatch({ type: "FETCH_ISLAND_CODE_SUCCESS", islandCode });
+        })
+        .catch((error) => {
+          dispatch({ type: "FETCH_ISLAND_CODE_FAIL", error });
+        });
+    } else {
+      dispatch({ type: "FETCH_ISLAND_CODE_FAIL" });
+    }
+  };
 
   return {
-    uid,
     isOwner,
     isJoiningQueue,
     queueData,
     joinQueue,
     deleteUser,
     islandCode,
-    setNextVisitor,
+    fetchIslandCode,
   };
 };
 
