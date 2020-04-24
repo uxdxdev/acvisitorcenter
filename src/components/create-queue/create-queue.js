@@ -27,6 +27,7 @@ const CreateQueue = () => {
 
       dispatch({ type: "CREATE_QUEUE" });
 
+      // add document to collection
       db.collection("queues")
         .add({
           name,
@@ -37,6 +38,20 @@ const CreateQueue = () => {
         })
         .then((result) => {
           dispatch({ type: "CREATE_QUEUE_SUCCESS", queueId: result.id });
+
+          // update island code for queue
+          db.collection("users")
+            .doc(uid)
+            .set({
+              islandCode: "UIFSU9",
+              next: "",
+            })
+            .then(() => {
+              // success
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         })
         .catch((error) => {
           dispatch({ type: "CREATE_QUEUE_FAIL", error });

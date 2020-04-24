@@ -2,16 +2,22 @@ import React, { useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useQueue } from "./hooks";
 import moment from "moment";
+import { useUser } from "../../hooks";
 
 const Queue = () => {
   const { id: queueId } = useParams();
-  const { uid, queueData, isJoiningQueue, joinQueue, deleteUser } = useQueue(
-    queueId
-  );
-  let nameRef = useRef();
-  const isOwner = queueData?.owner && queueData?.owner === uid;
+  const {
+    queueData,
+    isJoiningQueue,
+    joinQueue,
+    deleteUser,
+    islandCode,
+    isOwner,
+  } = useQueue(queueId);
+  const { uid } = useUser();
 
-  const userExists =
+  let nameRef = useRef();
+  const userExistsInQueue =
     queueData?.waiting.filter((user) => user.uid === uid)?.length > 0;
 
   const handleSubmit = async (event) => {
@@ -20,7 +26,7 @@ const Queue = () => {
     let name = event.target.name.value;
     nameRef.current.value = "";
 
-    if (name && uid && !userExists) {
+    if (name && uid && !userExistsInQueue) {
       joinQueue(queueId, { name, uid });
     }
   };
@@ -31,6 +37,8 @@ const Queue = () => {
       <div>{queueData?.name || "Loading..."}</div>
       <h2>Summary</h2>
       <div>{queueData?.summary || "Loading..."}</div>
+      <h2>Code</h2>
+      <div>{islandCode || "You must be first in the queue"}</div>
       <h2>Join queue</h2>
       <form onSubmit={handleSubmit}>
         <div>
@@ -45,7 +53,7 @@ const Queue = () => {
           />
         </div>
         <div>
-          <button type="submit" disabled={isJoiningQueue || userExists}>
+          <button type="submit" disabled={isJoiningQueue || userExistsInQueue}>
             Join queue
           </button>
         </div>
@@ -62,10 +70,12 @@ const Queue = () => {
                 return (
                   <li key={index}>
                     {name} {date}{" "}
-                    {isOwner && (
-                      <button onClick={() => deleteUser(queueId, uid)}>
-                        Delete
-                      </button>
+                    {isOwner && index === 0 && (
+                      <>
+                        <button onClick={() => deleteUser(queueId, uid)}>
+                          Done
+                        </button>
+                      </>
                     )}
                   </li>
                 );

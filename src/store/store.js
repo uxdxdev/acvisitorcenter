@@ -36,6 +36,20 @@ const StateProvider = ({ children }) => {
           isJoiningQueue: false,
           isJoiningQueueError: action.error,
         };
+      case "DELETE_USER":
+        return { ...state, isDeletingUser: true, isDeletingUserError: null };
+      case "DELETE_USER_SUCCESS":
+        return {
+          ...state,
+          isDeletingUser: false,
+          isDeletingUserError: null,
+        };
+      case "DELETE_USER_FAIL":
+        return {
+          ...state,
+          isDeletingUser: false,
+          isDeletingUserError: action.error,
+        };
       case "FETCH_QUEUE_DATA":
         return {
           ...state,
@@ -75,6 +89,26 @@ const StateProvider = ({ children }) => {
           isFetchingLatestQueues: false,
           latestQueues: null,
           isFetchingLatestQueuesError: action.error,
+        };
+      case "FETCH_ISLAND_CODE":
+        return {
+          ...state,
+          isFetchingIslandCode: true,
+          isFetchingIslandCodeError: null,
+        };
+      case "FETCH_ISLAND_CODE_SUCCESS":
+        return {
+          ...state,
+          isFetchingIslandCode: false,
+          islandCode: action.islandCode,
+          isFetchingIslandCodeError: null,
+        };
+      case "FETCH_ISLAND_CODE_FAIL":
+        return {
+          ...state,
+          isFetchingIslandCode: false,
+          islandCode: null,
+          isFetchingIslandCodeError: action.error,
         };
       default:
         throw new Error();
