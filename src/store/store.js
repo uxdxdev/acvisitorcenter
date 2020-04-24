@@ -6,6 +6,7 @@ const { Provider } = store;
 
 const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
+    if (process.env.NODE_ENV === "development") console.log(action.type);
     switch (action.type) {
       case "AUTH":
         return { ...state, uid: action.uid };
