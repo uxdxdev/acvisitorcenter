@@ -1,48 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 import Routes from "../../routes";
-import { firebase } from "../../utils/firebase";
-import { store } from "../../store";
+import { useAuth } from "./hooks";
 
 const Auth = () => {
-  const context = useContext(store);
-  const { dispatch } = context;
-
-  // cookie consent
-  let cookieConsent = localStorage.getItem("acvisitorqueue_cookie_consent");
-  const [
-    hasUserConsentedToUseCookies,
-    setHasUserConsentedToUseCookies,
-  ] = useState(cookieConsent);
-
-  const updateCookieConsent = (value) => {
-    localStorage.setItem("acvisitorqueue_cookie_consent", value);
-    setHasUserConsentedToUseCookies(value);
-  };
-
-  useEffect(() => {
-    firebase
-      .auth()
-      .signInAnonymously()
-      .catch((error) => {
-        // error signing in
-      });
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user?.uid) {
-        // user signed in
-        dispatch({ type: "AUTH", uid: user.uid });
-      } else {
-        // user signed out
-        dispatch({ type: "UNAUTH" });
-      }
-    });
-
-    return () => {
-      unsubscribe && unsubscribe();
-    };
-  }, [dispatch]);
+  const { hasUserConsentedToUseCookies, updateCookieConsent } = useAuth();
 
   return (
     <>
