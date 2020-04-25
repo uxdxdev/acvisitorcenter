@@ -19,7 +19,7 @@ const App = () => {
 
   return (
     <div>
-      <h1>Animal Crossing Visitor Queue</h1>
+      <h1>AC Visitor Center</h1>
       {isVerified ? (
         <StateProvider>
           <Auth />

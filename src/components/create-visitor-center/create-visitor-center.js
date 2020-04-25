@@ -24,7 +24,7 @@ const CreateVisitorCenter = () => {
 
   return (
     <div>
-      <h2>Create queue</h2>
+      <h2>Create visitor center</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Name</label>
@@ -40,7 +40,7 @@ const CreateVisitorCenter = () => {
         </div>
 
         <div>
-          <label htmlFor="code">Code</label>
+          <label htmlFor="code">Island code</label>
           <br />
           <input
             type="text"
@@ -66,7 +66,7 @@ const CreateVisitorCenter = () => {
         </div>
         <div>
           <button type="submit" disabled={isCreatingQueue}>
-            Create a queue
+            Create visitor center
           </button>
         </div>
       </form>

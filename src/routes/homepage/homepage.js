@@ -1,12 +1,12 @@
 import React from "react";
 import { CreateVisitorCenter } from "../../components/create-visitor-center";
-import { LatestQueues } from "../../components/latest-queues";
+import { LatestVisitorCenterList } from "../../components/latest-visitor-center-list";
 
 const Homepage = () => {
   return (
     <>
       <CreateVisitorCenter />
-      <LatestQueues />
+      <LatestVisitorCenterList />
     </>
   );
 };
