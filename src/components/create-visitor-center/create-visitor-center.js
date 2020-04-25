@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
-import { useCreateQueue } from "./hooks";
+import { useCreateVisitorCenter } from "./hooks";
 
-const CreateQueue = () => {
-  const { isCreatingQueue, createQueue } = useCreateQueue();
+const CreateVisitorCenter = () => {
+  const { isCreatingQueue, createQueue } = useCreateVisitorCenter();
 
   let nameRef = useRef();
   let summaryRef = useRef();
@@ -74,4 +74,4 @@ const CreateQueue = () => {
   );
 };
 
-export default CreateQueue;
+export default CreateVisitorCenter;
