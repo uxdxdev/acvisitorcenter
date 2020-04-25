@@ -26,7 +26,7 @@ const App = () => {
         </StateProvider>
       ) : (
         <ReCAPTCHA
-          sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
+          sitekey={"6LdRQe4UAAAAACXdpngpIJRqwXsBweATo0zFa-WJ"}
           onChange={onChange}
           onExpired={onChange}
           onErrored={onChange}
