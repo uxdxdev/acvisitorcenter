@@ -40,7 +40,7 @@ const CreateVisitorCenter = () => {
         </div>
 
         <div>
-          <label htmlFor="code">Island code</label>
+          <label htmlFor="code">Dodo code</label>
           <br />
           <input
             type="text"
@@ -48,7 +48,8 @@ const CreateVisitorCenter = () => {
             name="code"
             required
             ref={codeRef}
-            maxLength="10"
+            maxLength="5"
+            minLength="5"
           />
         </div>
 

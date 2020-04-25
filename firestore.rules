@@ -20,14 +20,14 @@ service cloud.firestore {
     	allow create: if request.auth != null && 
       									request.auth.uid == userId &&
                         request.resource.data.keys().hasOnly(['islandCode', 'next']) &&
-      									request.resource.data.islandCode is string && 
-                        request.resource.data.islandCode.size() < 10 && 
+      									request.resource.data.dodoCode is string && 
+                        request.resource.data.dodoCode.size() == 5 && 
                         request.resource.data.next is string && 
                         request.resource.data.next.size() == 0;
                         
       allow read: if request.auth != null &&
       								(request.auth.uid == userId || 
-                      // user reading island code is next
+                      // user reading dodo code is next
                       resource.data.next == request.auth.uid);
 
       allow update: if request.auth != null && 

@@ -28,11 +28,10 @@ const useCreateVisitorCenter = () => {
         .then((result) => {
           dispatch({ type: "CREATE_QUEUE_SUCCESS", queueId: result.id });
 
-          // update island code for queue
           db.collection("users")
             .doc(uid)
             .set({
-              islandCode: code,
+              dodoCode: code,
               next: "",
             })
             .then(() => {

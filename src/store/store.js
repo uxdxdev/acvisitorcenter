@@ -94,22 +94,22 @@ const StateProvider = ({ children }) => {
       case "FETCH_ISLAND_CODE":
         return {
           ...state,
-          isFetchingIslandCode: true,
-          isFetchingIslandCodeError: null,
+          isFetchingDodoCode: true,
+          isFetchingDodoCodeError: null,
         };
       case "FETCH_ISLAND_CODE_SUCCESS":
         return {
           ...state,
-          isFetchingIslandCode: false,
-          islandCode: action.islandCode,
-          isFetchingIslandCodeError: null,
+          isFetchingDodoCode: false,
+          dodoCode: action.dodoCode,
+          isFetchingDodoCodeError: null,
         };
       case "FETCH_ISLAND_CODE_FAIL":
         return {
           ...state,
-          isFetchingIslandCode: false,
-          islandCode: null,
-          isFetchingIslandCodeError: action.error,
+          isFetchingDodoCode: false,
+          dodoCode: null,
+          isFetchingDodoCodeError: action.error,
         };
       default:
         throw new Error();

@@ -6,7 +6,7 @@ const useQueue = (queueId) => {
   const context = useContext(store);
   const {
     dispatch,
-    state: { uid, isJoiningQueue, queueData, islandCode },
+    state: { uid, isJoiningQueue, queueData, dodoCode },
   } = context;
 
   const ownerUid = queueData?.owner;
@@ -78,7 +78,7 @@ const useQueue = (queueId) => {
    * Join visitor queue.
    *
    * @param {*} id queue id
-   * @param {*} data.name island name
+   * @param {*} data.name visitor center name
    * @param {*} data.uid user id
    */
   const joinQueue = (id, { name, uid }) => {
@@ -108,7 +108,7 @@ const useQueue = (queueId) => {
    * Join visitor queue.
    *
    * @param {*} id queue id
-   * @param {*} data.name island name
+   * @param {*} data.name visitor center name
    * @param {*} data.uid user id
    */
   const deleteUser = (id, deleteUid) => {
@@ -137,7 +137,7 @@ const useQueue = (queueId) => {
   /**
    * Fetch queue data from firestore.
    */
-  const fetchIslandCode = () => {
+  const fetchDodoCode = () => {
     const isFirstInQueue = queueData?.waiting[0]?.uid === uid;
     if ((isOwner || isFirstInQueue) && ownerUid) {
       dispatch({ type: "FETCH_ISLAND_CODE" });
@@ -148,8 +148,8 @@ const useQueue = (queueId) => {
         .doc(ownerUid)
         .get()
         .then((result) => {
-          const { islandCode } = result.data();
-          dispatch({ type: "FETCH_ISLAND_CODE_SUCCESS", islandCode });
+          const { dodoCode } = result.data();
+          dispatch({ type: "FETCH_ISLAND_CODE_SUCCESS", dodoCode });
         })
         .catch((error) => {
           dispatch({ type: "FETCH_ISLAND_CODE_FAIL", error });
@@ -165,8 +165,8 @@ const useQueue = (queueId) => {
     queueData,
     joinQueue,
     deleteUser,
-    islandCode,
-    fetchIslandCode,
+    dodoCode,
+    fetchDodoCode,
   };
 };
 
