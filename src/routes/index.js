@@ -1,6 +1,6 @@
 import React from "react";
 import { Homepage } from "./homepage";
-import { Queue } from "./queue";
+import { VisitorCenter } from "./visitor-center";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const Routes = () => {
@@ -10,8 +10,8 @@ const Routes = () => {
         <Route exact path="/">
           <Homepage />
         </Route>
-        <Route path="/queue/:id">
-          <Queue />
+        <Route path="/center/:id">
+          <VisitorCenter />
         </Route>
       </Switch>
     </Router>

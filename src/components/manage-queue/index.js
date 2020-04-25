@@ -1,2 +1,2 @@
-import ManageQueue from "./manage-queue";
-export { ManageQueue };
+import ManageCenter from "./manage-center";
+export { ManageCenter };

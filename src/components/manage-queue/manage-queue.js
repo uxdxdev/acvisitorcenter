@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { handleCopyToClipboardByRef } from "../../utils/functions";
 
-const ManageQueue = () => {
+const ManageCenter = () => {
   let urlRef = useRef(null);
   const url = window.location.href;
 
@@ -24,4 +24,4 @@ const ManageQueue = () => {
   );
 };
 
-export default ManageQueue;
+export default ManageCenter;

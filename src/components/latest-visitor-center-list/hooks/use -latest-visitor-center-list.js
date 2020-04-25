@@ -6,38 +6,38 @@ const useLatestVisitorCenterList = () => {
   const context = useContext(store);
   const {
     dispatch,
-    state: { uid, latestQueues, isFetchingLatestQueues },
+    state: { uid, latestCenters, isFetchingLatestCenters },
   } = context;
 
-  const fetchLatestQueues = useCallback(() => {
+  const fetchLatestCenters = useCallback(() => {
     const db = firebase.firestore();
 
     dispatch({ type: "FETCH_LATEST_QUEUES" });
 
     return db
-      .collection("queues")
+      .collection("centers")
       .orderBy("createdAt", "desc")
       .limit(100)
-      .onSnapshot((latestQueues) => {
-        const data = latestQueues.docs.map((doc) => ({
+      .onSnapshot((latestCenters) => {
+        const data = latestCenters.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
         }));
         dispatch({
           type: "FETCH_LATEST_QUEUES_SUCCESS",
-          latestQueues: data,
+          latestCenters: data,
         });
       });
   }, [dispatch]);
 
   useEffect(() => {
-    const unsubscribe = uid && fetchLatestQueues();
+    const unsubscribe = uid && fetchLatestCenters();
     return () => {
       uid && unsubscribe();
     };
-  }, [uid, dispatch, fetchLatestQueues]);
+  }, [uid, dispatch, fetchLatestCenters]);
 
-  return { latestQueues, isFetchingLatestQueues };
+  return { latestCenters, isFetchingLatestCenters };
 };
 
 export default useLatestVisitorCenterList;

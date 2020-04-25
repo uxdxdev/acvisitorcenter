@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useCreateVisitorCenter } from "./hooks";
 
 const CreateVisitorCenter = () => {
-  const { isCreatingQueue, createQueue } = useCreateVisitorCenter();
+  const { isCreatingCenter, createCenter } = useCreateVisitorCenter();
 
   let nameRef = useRef();
   let summaryRef = useRef();
@@ -19,7 +19,7 @@ const CreateVisitorCenter = () => {
     summaryRef.current.value = "";
     codeRef.current.value = "";
 
-    createQueue(name, summary, code);
+    createCenter(name, summary, code);
   };
 
   return (
@@ -66,7 +66,7 @@ const CreateVisitorCenter = () => {
           />
         </div>
         <div>
-          <button type="submit" disabled={isCreatingQueue}>
+          <button type="submit" disabled={isCreatingCenter}>
             Create visitor center
           </button>
         </div>
