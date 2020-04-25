@@ -46,9 +46,7 @@ const Queue = () => {
       <div>{queueData?.summary || "Loading..."}</div>
       <h2>Code</h2>
       <span>You can get the code when you are next in the queue</span>
-      <div style={{ textTransform: "uppercase" }}>
-        {islandCode || "*******"}
-      </div>
+      <div>{islandCode || "*******"}</div>
       <button onClick={() => fetchIslandCode()} disabled={islandCode}>
         Get code
       </button>

@@ -49,7 +49,6 @@ const CreateQueue = () => {
             required
             ref={codeRef}
             maxLength="10"
-            style={{ textTransform: "uppercase" }}
           />
         </div>
 

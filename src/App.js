@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./App.css";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Auth } from "./components/auth";
 import { StateProvider } from "./store";
@@ -19,7 +18,7 @@ const App = () => {
   };
 
   return (
-    <div className="App">
+    <div>
       <h1>Animal Crossing Visitor Queue</h1>
       {isVerified ? (
         <StateProvider>
