@@ -2,7 +2,7 @@ import { useEffect, useContext, useCallback } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
 
-const useLatestQueues = () => {
+const useLatestVisitorCenterList = () => {
   const context = useContext(store);
   const {
     dispatch,
@@ -40,4 +40,4 @@ const useLatestQueues = () => {
   return { latestQueues, isFetchingLatestQueues };
 };
 
-export default useLatestQueues;
+export default useLatestVisitorCenterList;
