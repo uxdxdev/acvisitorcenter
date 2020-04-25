@@ -11,9 +11,9 @@ const Queue = () => {
     isJoiningQueue,
     joinQueue,
     deleteUser,
-    islandCode,
+    dodoCode,
     isOwner,
-    fetchIslandCode,
+    fetchDodoCode,
   } = useQueue(queueId);
   const { uid } = useUser();
 
@@ -46,8 +46,8 @@ const Queue = () => {
       <div>{queueData?.summary || "Loading..."}</div>
       <h2>Code</h2>
       <span>You can get the code when you are next in the queue</span>
-      <div>{islandCode || "*******"}</div>
-      <button onClick={() => fetchIslandCode()} disabled={islandCode}>
+      <div>{dodoCode || "*******"}</div>
+      <button onClick={() => fetchDodoCode()} disabled={dodoCode}>
         Get code
       </button>
       {!isOwner && (
