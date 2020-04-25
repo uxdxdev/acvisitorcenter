@@ -2,14 +2,14 @@ import { useContext, useEffect, useCallback } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
 
-const useQueue = (queueId) => {
+const useVisitorCenter = (centerId) => {
   const context = useContext(store);
   const {
     dispatch,
-    state: { uid, isJoiningQueue, queueData, dodoCode },
+    state: { uid, isJoiningCenter, centerData, dodoCode },
   } = context;
 
-  const ownerUid = queueData?.owner;
+  const ownerUid = centerData?.owner;
   const isOwner = ownerUid === uid;
 
   const setNextVisitor = useCallback(
@@ -36,19 +36,19 @@ const useQueue = (queueId) => {
     [uid]
   );
 
-  const fetchQueueData = useCallback(() => {
-    if (uid && queueId) {
+  const fetchCenterData = useCallback(() => {
+    if (uid && centerId) {
       dispatch({ type: "FETCH_QUEUE_DATA" });
       const db = firebase.firestore();
 
       return db
-        .collection("queues")
-        .doc(queueId)
+        .collection("centers")
+        .doc(centerId)
         .onSnapshot(
           (result) => {
             dispatch({
               type: "FETCH_QUEUE_DATA_SUCCESS",
-              queueData: result.data(),
+              centerData: result.data(),
             });
 
             // update the next visitor uid
@@ -62,38 +62,38 @@ const useQueue = (queueId) => {
           }
         );
     }
-  }, [uid, queueId, dispatch, setNextVisitor]);
+  }, [uid, centerId, dispatch, setNextVisitor]);
 
   /**
-   * Fetch queue data when user authenticated.
+   * Fetch center data when user authenticated.
    */
   useEffect(() => {
-    const unsubscribe = fetchQueueData();
+    const unsubscribe = fetchCenterData();
     return () => {
       unsubscribe && unsubscribe();
     };
-  }, [fetchQueueData]);
+  }, [fetchCenterData]);
 
   /**
-   * Join visitor queue.
+   * Join visitor center.
    *
-   * @param {*} id queue id
+   * @param {*} id center id
    * @param {*} data.name visitor center name
    * @param {*} data.uid user id
    */
-  const joinQueue = (id, { name, uid }) => {
+  const joinCenter = (id, { name, uid }) => {
     const db = firebase.firestore();
-    const queuesRef = db.collection("queues").doc(id);
+    const centersRef = db.collection("centers").doc(id);
 
     dispatch({ type: "JOIN_QUEUE" });
 
-    // run transaction to join queue
+    // run transaction to join center
     db.runTransaction((transaction) => {
-      return transaction.get(queuesRef).then((snapshot) => {
+      return transaction.get(centersRef).then((snapshot) => {
         const waitingArray = snapshot.get("waiting");
         const joinedAt = firebase.firestore.Timestamp.fromDate(new Date());
         waitingArray.push({ name, uid, joinedAt });
-        transaction.update(queuesRef, "waiting", waitingArray);
+        transaction.update(centersRef, "waiting", waitingArray);
       });
     })
       .then(() => {
@@ -105,25 +105,25 @@ const useQueue = (queueId) => {
   };
 
   /**
-   * Join visitor queue.
+   * Join visitor center.
    *
-   * @param {*} id queue id
+   * @param {*} id center id
    * @param {*} data.name visitor center name
    * @param {*} data.uid user id
    */
   const deleteUser = (id, deleteUid) => {
     const db = firebase.firestore();
-    const queuesRef = db.collection("queues").doc(id);
+    const centersRef = db.collection("centers").doc(id);
 
     dispatch({ type: "DELETE_USER" });
 
-    // run transaction to join queue
+    // run transaction to join center
     return db
       .runTransaction((transaction) => {
-        return transaction.get(queuesRef).then((snapshot) => {
+        return transaction.get(centersRef).then((snapshot) => {
           let waitingArray = snapshot.get("waiting");
           waitingArray = waitingArray.filter((user) => user.uid !== deleteUid);
-          transaction.update(queuesRef, "waiting", waitingArray);
+          transaction.update(centersRef, "waiting", waitingArray);
         });
       })
       .then(() => {
@@ -135,11 +135,11 @@ const useQueue = (queueId) => {
   };
 
   /**
-   * Fetch queue data from firestore.
+   * Fetch center data from firestore.
    */
   const fetchDodoCode = () => {
-    const isFirstInQueue = queueData?.waiting[0]?.uid === uid;
-    if ((isOwner || isFirstInQueue) && ownerUid) {
+    const isFirstInCenter = centerData?.waiting[0]?.uid === uid;
+    if ((isOwner || isFirstInCenter) && ownerUid) {
       dispatch({ type: "FETCH_ISLAND_CODE" });
 
       return firebase
@@ -161,13 +161,13 @@ const useQueue = (queueId) => {
 
   return {
     isOwner,
-    isJoiningQueue,
-    queueData,
-    joinQueue,
+    isJoiningCenter,
+    centerData,
+    joinCenter,
     deleteUser,
     dodoCode,
     fetchDodoCode,
   };
 };
 
-export default useQueue;
+export default useVisitorCenter;

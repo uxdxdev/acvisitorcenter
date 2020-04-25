@@ -1,25 +1,25 @@
 import React, { useRef } from "react";
 import { useParams } from "react-router-dom";
-import { useQueue } from "./hooks";
+import { useVisitorCenter } from "./hooks";
 import moment from "moment";
 import { useUser } from "../../hooks";
 
-const Queue = () => {
-  const { id: queueId } = useParams();
+const Center = () => {
+  const { id: centerId } = useParams();
   const {
-    queueData,
-    isJoiningQueue,
-    joinQueue,
+    centerData,
+    isJoiningCenter,
+    joinCenter,
     deleteUser,
     dodoCode,
     isOwner,
     fetchDodoCode,
-  } = useQueue(queueId);
+  } = useVisitorCenter(centerId);
   const { uid } = useUser();
 
   let nameRef = useRef();
-  const userExistsInQueue =
-    queueData?.waiting.filter((user) => user.uid === uid)?.length > 0;
+  const userExistsInCenter =
+    centerData?.waiting.filter((user) => user.uid === uid)?.length > 0;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -27,8 +27,8 @@ const Queue = () => {
     let name = event.target.name.value;
     nameRef.current.value = "";
 
-    if (name && uid && !userExistsInQueue) {
-      joinQueue(queueId, { name, uid });
+    if (name && uid && !userExistsInCenter) {
+      joinCenter(centerId, { name, uid });
     }
   };
 
@@ -36,23 +36,23 @@ const Queue = () => {
     <>
       {isOwner && (
         <span>
-          Please keep this page open to manage the queue. Closing this page will
-          disable the queue.
+          Please keep this page open to manage the center. Closing this page
+          will disable the center.
         </span>
       )}
       <h2>Name</h2>
-      <div>{queueData?.name || "Loading..."}</div>
+      <div>{centerData?.name || "Loading..."}</div>
       <h2>Summary</h2>
-      <div>{queueData?.summary || "Loading..."}</div>
+      <div>{centerData?.summary || "Loading..."}</div>
       <h2>Code</h2>
-      <span>You can get the code when you are next in the queue</span>
+      <span>You can get the code when you are next in the center</span>
       <div>{dodoCode || "*******"}</div>
       <button onClick={() => fetchDodoCode()} disabled={dodoCode}>
         Get code
       </button>
       {!isOwner && (
         <>
-          <h2>Join queue</h2>
+          <h2>Join center</h2>
           <form onSubmit={handleSubmit}>
             <div>
               <label htmlFor="name">Name</label>
@@ -68,9 +68,9 @@ const Queue = () => {
             <div>
               <button
                 type="submit"
-                disabled={isJoiningQueue || userExistsInQueue}
+                disabled={isJoiningCenter || userExistsInCenter}
               >
-                Join queue
+                Join center
               </button>
             </div>
           </form>
@@ -81,20 +81,20 @@ const Queue = () => {
         When a visitor has departed click the "Done" button to allow the next
         visitor to travel.
       </span>
-      {!queueData?.waiting ? (
+      {!centerData?.waiting ? (
         <div>Loading...</div>
       ) : (
         <>
-          {queueData?.waiting?.length > 0 ? (
+          {centerData?.waiting?.length > 0 ? (
             <ol>
-              {queueData?.waiting.map(({ name, joinedAt, uid }, index) => {
+              {centerData?.waiting.map(({ name, joinedAt, uid }, index) => {
                 const date = moment(joinedAt.toDate()).calendar();
                 return (
                   <li key={index}>
                     {name} {date}{" "}
                     {isOwner && index === 0 && (
                       <>
-                        <button onClick={() => deleteUser(queueId, uid)}>
+                        <button onClick={() => deleteUser(centerId, uid)}>
                           Done
                         </button>
                       </>
@@ -104,7 +104,7 @@ const Queue = () => {
               })}
             </ol>
           ) : (
-            <div>Queue is empty</div>
+            <div>Center is empty</div>
           )}
         </>
       )}
@@ -112,4 +112,4 @@ const Queue = () => {
   );
 };
 
-export default Queue;
+export default Center;

@@ -2,21 +2,24 @@ import React from "react";
 import { useLatestVisitorCenterList } from "./hooks";
 
 const LatestVisitorCenterList = () => {
-  const { latestQueues, isFetchingLatestQueues } = useLatestVisitorCenterList();
+  const {
+    latestCenters,
+    isFetchingLatestCenters,
+  } = useLatestVisitorCenterList();
   return (
     <>
       <h2>Latest visitor centers</h2>
-      {isFetchingLatestQueues ? (
+      {isFetchingLatestCenters ? (
         <div>Loading...</div>
       ) : (
         <>
-          {latestQueues?.length > 0 ? (
+          {latestCenters?.length > 0 ? (
             <ul>
-              {latestQueues?.map((queue) => {
-                const url = `${window.location.origin}/queue/${queue.id}`;
-                const name = queue?.name;
+              {latestCenters?.map((center) => {
+                const url = `${window.location.origin}/center/${center.id}`;
+                const name = center?.name;
                 return (
-                  <li key={queue.id}>
+                  <li key={center.id}>
                     {name}{" "}
                     <a href={url} target="_blank" rel="noopener noreferrer">
                       Open

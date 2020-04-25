@@ -18,15 +18,16 @@ const db = firebaseApp.firestore();
 // this will connect the browser to the local emulator for firestore, avoiding using the quota during development.
 // IMPORTANT: when viewing the dev version of the app from a remote device using this dev machines IP, the app will
 // connect to the live database.
-// if (
-//   // eslint-disable-next-line no-restricted-globals
-//   location.hostname === "localhost"
-// ) {
-//   // Note that the Firebase Web SDK must connect to the WebChannel port
-//   db.settings({
-//     host: "localhost:8080",
-//     ssl: false,
-//   });
-// }
+if (
+  // eslint-disable-next-line no-restricted-globals
+  // location.hostname === "localhost"
+  false
+) {
+  // Note that the Firebase Web SDK must connect to the WebChannel port
+  db.settings({
+    host: "localhost:8080",
+    ssl: false,
+  });
+}
 
 export default firebase;

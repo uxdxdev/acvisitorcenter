@@ -2,19 +2,19 @@ import { useEffect, useContext, useState } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
 
-const useLatestQueues = () => {
+const useLatestCenters = () => {
   const context = useContext(store);
   const { dispatch } = context;
 
   // cookie consent
-  let cookieConsent = localStorage.getItem("acvisitorqueue_cookie_consent");
+  let cookieConsent = localStorage.getItem("acvisitorcenter_cookie_consent");
   const [
     hasUserConsentedToUseCookies,
     setHasUserConsentedToUseCookies,
   ] = useState(cookieConsent);
 
   const updateCookieConsent = (value) => {
-    localStorage.setItem("acvisitorqueue_cookie_consent", value);
+    localStorage.setItem("acvisitorcenter_cookie_consent", value);
     setHasUserConsentedToUseCookies(value);
   };
 
@@ -46,4 +46,4 @@ const useLatestQueues = () => {
   return { hasUserConsentedToUseCookies, updateCookieConsent };
 };
 
-export default useLatestQueues;
+export default useLatestCenters;

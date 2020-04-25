@@ -13,29 +13,29 @@ const StateProvider = ({ children }) => {
       case "UNAUTH":
         return { ...state, uid: null };
       case "CREATE_QUEUE":
-        return { ...state, isCreatingQueue: true };
+        return { ...state, isCreatingCenter: true };
       case "CREATE_QUEUE_SUCCESS":
-        return { ...state, isCreatingQueue: false, queueId: action.queueId };
+        return { ...state, isCreatingCenter: false, centerId: action.centerId };
       case "CREATE_QUEUE_FAIL":
         return {
           ...state,
-          isCreatingQueue: false,
-          queueId: null,
-          createQueueError: action.error,
+          isCreatingCenter: false,
+          centerId: null,
+          createCenterError: action.error,
         };
       case "JOIN_QUEUE":
-        return { ...state, isJoiningQueue: true, isJoiningQueueError: null };
+        return { ...state, isJoiningCenter: true, isJoiningCenterError: null };
       case "JOIN_QUEUE_SUCCESS":
         return {
           ...state,
-          isJoiningQueue: false,
-          isJoiningQueueError: null,
+          isJoiningCenter: false,
+          isJoiningCenterError: null,
         };
       case "JOIN_QUEUE_FAIL":
         return {
           ...state,
-          isJoiningQueue: false,
-          isJoiningQueueError: action.error,
+          isJoiningCenter: false,
+          isJoiningCenterError: action.error,
         };
       case "DELETE_USER":
         return { ...state, isDeletingUser: true, isDeletingUserError: null };
@@ -54,42 +54,42 @@ const StateProvider = ({ children }) => {
       case "FETCH_QUEUE_DATA":
         return {
           ...state,
-          isFetchingQueueData: true,
-          isFetchingQueueDataError: null,
+          isFetchingCenterData: true,
+          isFetchingCenterDataError: null,
         };
       case "FETCH_QUEUE_DATA_SUCCESS":
         return {
           ...state,
-          isFetchingQueueData: false,
-          queueData: action.queueData,
-          isFetchingQueueDataError: null,
+          isFetchingCenterData: false,
+          centerData: action.centerData,
+          isFetchingCenterDataError: null,
         };
       case "FETCH_QUEUE_DATA_FAIL":
         return {
           ...state,
-          isFetchingQueueData: false,
-          queueData: null,
-          isFetchingQueueDataError: action.error,
+          isFetchingCenterData: false,
+          centerData: null,
+          isFetchingCenterDataError: action.error,
         };
       case "FETCH_LATEST_QUEUES":
         return {
           ...state,
-          isFetchingLatestQueues: true,
-          isFetchingLatestQueuesError: null,
+          isFetchingLatestCenters: true,
+          isFetchingLatestCentersError: null,
         };
       case "FETCH_LATEST_QUEUES_SUCCESS":
         return {
           ...state,
-          isFetchingLatestQueues: false,
-          latestQueues: action.latestQueues,
-          isFetchingLatestQueuesError: null,
+          isFetchingLatestCenters: false,
+          latestCenters: action.latestCenters,
+          isFetchingLatestCentersError: null,
         };
       case "FETCH_LATEST_QUEUES_FAIL":
         return {
           ...state,
-          isFetchingLatestQueues: false,
-          latestQueues: null,
-          isFetchingLatestQueuesError: action.error,
+          isFetchingLatestCenters: false,
+          latestCenters: null,
+          isFetchingLatestCentersError: action.error,
         };
       case "FETCH_ISLAND_CODE":
         return {

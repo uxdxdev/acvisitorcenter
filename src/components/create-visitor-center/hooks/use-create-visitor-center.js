@@ -5,11 +5,11 @@ import { store } from "../../../store";
 const useCreateVisitorCenter = () => {
   const context = useContext(store);
   const {
-    state: { uid, isCreatingQueue },
+    state: { uid, isCreatingCenter },
     dispatch,
   } = context;
 
-  const createQueue = (name, summary, code) => {
+  const createCenter = (name, summary, code) => {
     if (name && summary && code) {
       const db = firebase.firestore();
       const timestamp = firebase.firestore.FieldValue.serverTimestamp;
@@ -17,7 +17,7 @@ const useCreateVisitorCenter = () => {
       dispatch({ type: "CREATE_QUEUE" });
 
       // add document to collection
-      db.collection("queues")
+      db.collection("centers")
         .add({
           name,
           owner: uid,
@@ -26,7 +26,7 @@ const useCreateVisitorCenter = () => {
           summary,
         })
         .then((result) => {
-          dispatch({ type: "CREATE_QUEUE_SUCCESS", queueId: result.id });
+          dispatch({ type: "CREATE_QUEUE_SUCCESS", centerId: result.id });
 
           db.collection("users")
             .doc(uid)
@@ -49,7 +49,7 @@ const useCreateVisitorCenter = () => {
     }
   };
 
-  return { createQueue, isCreatingQueue };
+  return { createCenter, isCreatingCenter };
 };
 
 export default useCreateVisitorCenter;
