@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { firebase } from "../../../utils/firebase";
 import { store } from "../../../store";
 
-const useCreateQueue = () => {
+const useCreateVisitorCenter = () => {
   const context = useContext(store);
   const {
     state: { uid, isCreatingQueue },
@@ -53,4 +53,4 @@ const useCreateQueue = () => {
   return { createQueue, isCreatingQueue };
 };
 
-export default useCreateQueue;
+export default useCreateVisitorCenter;

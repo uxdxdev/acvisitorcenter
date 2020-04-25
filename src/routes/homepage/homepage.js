@@ -1,11 +1,11 @@
 import React from "react";
-import { CreateQueue } from "../../components/create-queue";
+import { CreateVisitorCenter } from "../../components/create-visitor-center";
 import { LatestQueues } from "../../components/latest-queues";
 
 const Homepage = () => {
   return (
     <>
-      <CreateQueue />
+      <CreateVisitorCenter />
       <LatestQueues />
     </>
   );
