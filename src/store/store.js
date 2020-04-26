@@ -135,6 +135,25 @@ const StateProvider = ({ children }) => {
           visitorCenterData: null,
           isFetchingVisitorCenterError: action.error,
         };
+
+      case "SET_NEXT_VISITOR":
+        return {
+          ...state,
+          isSettingNextVisitor: true,
+          isSettingNextVisitorError: null,
+        };
+      case "SET_NEXT_VISITOR_SUCCESS":
+        return {
+          ...state,
+          isSettingNextVisitor: false,
+          isSettingNextVisitorError: null,
+        };
+      case "SET_NEXT_VISITOR_FAIL":
+        return {
+          ...state,
+          isSettingNextVisitor: false,
+          isSettingNextVisitorError: action.error,
+        };
       default:
         throw new Error();
     }

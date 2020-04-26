@@ -19,12 +19,18 @@ const VisitorCenter = () => {
     updateCenterInformation,
     centerInformation,
     latestDodoCode,
+    isFetchingCenterDataError,
   } = useVisitorCenter(centerId);
   const { uid } = useUser();
 
   const nameInputRef = useRef();
-  const userExistsInCenter =
-    waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
+  const userPositionInQueue =
+    waitingList && waitingList.filter((user) => user.uid === uid);
+
+  const userAlreadyInQueue =
+    userPositionInQueue === undefined || userPositionInQueue?.length > 0;
+
+  const isUserFirstInQueue = waitingList && waitingList[0]?.uid === uid;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -32,10 +38,14 @@ const VisitorCenter = () => {
     let name = event.target.name.value;
     nameInputRef.current.value = "";
 
-    if (name && uid && !userExistsInCenter) {
+    if (name && uid && userPositionInQueue) {
       joinVisitorQueue(centerId, { name, uid });
     }
   };
+
+  if (isFetchingCenterDataError) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -82,28 +92,33 @@ const VisitorCenter = () => {
       ) : (
         <div>{centerInformation.summary}</div>
       )}
-
-      <h2>Code</h2>
-      {isEditable ? (
-        <input
-          type="text"
-          value={latestDodoCode.dodoCode}
-          onChange={(event) => handleDodoCodeChange(event.target)}
-          id="dodoCode"
-          disabled={!isEditable}
-          minLength="5"
-          maxLength="5"
-        />
-      ) : (
+      {(isOwner || isUserFirstInQueue) && (
         <>
-          <div>{latestDodoCode.dodoCode}</div>
+          <h2>Code</h2>
+          <div>You can get the code when you are next in the queue</div>
+
+          {isEditable ? (
+            <input
+              type="text"
+              value={latestDodoCode.dodoCode}
+              onChange={(event) => handleDodoCodeChange(event.target)}
+              id="dodoCode"
+              disabled={!isEditable}
+              minLength="5"
+              maxLength="5"
+            />
+          ) : (
+            <>
+              <div>{latestDodoCode.dodoCode} </div>
+            </>
+          )}
+          <button onClick={() => fetchDodoCode(uid)} disabled={isEditable}>
+            Get code
+          </button>
         </>
       )}
-      <button onClick={() => fetchDodoCode()} disabled={isEditable}>
-        Get code
-      </button>
 
-      {!isOwner && (
+      {!isOwner && !userAlreadyInQueue && (
         <>
           <h2>Join visitor queue</h2>
           <form onSubmit={handleSubmit}>
@@ -119,10 +134,7 @@ const VisitorCenter = () => {
               />
             </div>
             <div>
-              <button
-                type="submit"
-                disabled={isJoiningQueue || userExistsInCenter}
-              >
+              <button type="submit" disabled={isJoiningQueue}>
                 Join queue
               </button>
             </div>
