@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { useCreateVisitorCenter } from "./hooks";
+import { Link } from "react-router-dom";
 
 const CreateVisitorCenter = () => {
   const {
@@ -27,9 +28,7 @@ const CreateVisitorCenter = () => {
     handleCreateVisitorCenter(name, summary, code);
   };
 
-  const url =
-    visitorCenterData &&
-    `${window.location.origin}/center/${visitorCenterData?.owner}`;
+  const url = visitorCenterData && `/center/${visitorCenterData?.owner}`;
 
   return (
     <>
@@ -39,9 +38,7 @@ const CreateVisitorCenter = () => {
         <>
           {visitorCenterData ? (
             <div>
-              <a href={url} target="_blank" rel="noopener noreferrer">
-                Go to your visitor center
-              </a>
+              <Link to={url}>Go to your visitor center</Link>
             </div>
           ) : (
             <>

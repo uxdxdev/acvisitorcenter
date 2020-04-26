@@ -1,5 +1,6 @@
 import React from "react";
 import { useLatestVisitorCenterList } from "./hooks";
+import { Link } from "react-router-dom";
 
 const LatestVisitorCenterList = () => {
   const {
@@ -16,14 +17,11 @@ const LatestVisitorCenterList = () => {
           {latestCenters?.length > 0 ? (
             <ul>
               {latestCenters?.map((center) => {
-                const url = `${window.location.origin}/center/${center.id}`;
+                const url = `/center/${center.id}`;
                 const name = center?.name;
                 return (
                   <li key={center.id}>
-                    {name}{" "}
-                    <a href={url} target="_blank" rel="noopener noreferrer">
-                      Visit
-                    </a>
+                    {name} <Link to={url}>Visit</Link>
                   </li>
                 );
               })}

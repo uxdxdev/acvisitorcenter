@@ -19,7 +19,6 @@ const App = () => {
 
   return (
     <div>
-      <h1>AC Visitor Center</h1>
       {isVerified ? (
         <StateProvider>
           <Auth />
