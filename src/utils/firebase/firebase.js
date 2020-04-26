@@ -20,8 +20,7 @@ const db = firebaseApp.firestore();
 // connect to the live database.
 if (
   // eslint-disable-next-line no-restricted-globals
-  // location.hostname === "localhost"
-  false
+  location.hostname === "localhost"
 ) {
   // Note that the Firebase Web SDK must connect to the WebChannel port
   db.settings({

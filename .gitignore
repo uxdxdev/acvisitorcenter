@@ -24,3 +24,5 @@ yarn-error.log*
 
 .env
 .firebase
+acvisitorcenter-a83394971a40.json
+*.log
