@@ -27,6 +27,10 @@ const CreateVisitorCenter = () => {
     handleCreateVisitorCenter(name, summary, code);
   };
 
+  const url =
+    visitorCenterData &&
+    `${window.location.origin}/center/${visitorCenterData?.owner}`;
+
   return (
     <>
       {isFetchingVisitorCenter || visitorCenterData === undefined ? (
@@ -34,7 +38,11 @@ const CreateVisitorCenter = () => {
       ) : (
         <>
           {visitorCenterData ? (
-            <div>Visitor center exists</div>
+            <div>
+              <a href={url} target="_blank" rel="noopener noreferrer">
+                Go to your visitor center
+              </a>
+            </div>
           ) : (
             <>
               <h2>Create visitor center</h2>
