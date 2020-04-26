@@ -26,7 +26,6 @@ const useCreateVisitorCenter = () => {
         .set({
           dodoCode,
           next: "",
-          open: true,
         })
         .then(() => {
           dispatch({ type: "SET_DODO_CODE_SUCCESS" });

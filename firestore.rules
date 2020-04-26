@@ -20,13 +20,11 @@ service cloud.firestore {
     	allow create: if request.auth != null && 
                         // user creating visitor center
       									request.auth.uid == userId &&
-                        request.resource.data.keys().hasOnly(['open', 'dodoCode', 'next']) &&
+                        request.resource.data.keys().hasOnly(['dodoCode', 'next']) &&
       									request.resource.data.dodoCode is string && 
                         request.resource.data.dodoCode.size() == 5 && 
                         request.resource.data.next is string && 
-                        request.resource.data.next.size() == 0 && 
-                        request.resource.data.open is bool && 
-                        request.resource.data.open == true;
+                        request.resource.data.next.size() == 0;
                         
                         
       // allow single doc reads
@@ -39,18 +37,16 @@ service cloud.firestore {
       allow update: if request.auth != null && 
                         // owner updating next visitor
       									(request.auth.uid == userId &&
-                        request.resource.data.keys().hasOnly(['open', 'dodoCode', 'next']) &&
+                        request.resource.data.keys().hasOnly(['dodoCode', 'next']) &&
                         request.resource.data.next is string && 
                         request.resource.data.next.size() <= 128 &&                      
-                        request.resource.data.dodoCode == resource.data.dodoCode &&
-                        request.resource.data.open == resource.data.open) || 
+                        request.resource.data.dodoCode == resource.data.dodoCode) || 
                         // owner updating dodo code
                         (request.auth.uid == userId &&
-                        request.resource.data.keys().hasOnly(['open', 'dodoCode', 'next']) && 
+                        request.resource.data.keys().hasOnly(['dodoCode', 'next']) && 
                         request.resource.data.dodoCode is string &&
                         request.resource.data.dodoCode.size() < 6 &&
-                        request.resource.data.next == resource.data.next && 
-                        request.resource.data.open == resource.data.open);
+                        request.resource.data.next == resource.data.next);
     }
        
     match /centers/{centerId} {
