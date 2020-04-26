@@ -14,7 +14,7 @@ const useCreateVisitorCenter = () => {
       const db = firebase.firestore();
       const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
-      dispatch({ type: "CREATE_QUEUE" });
+      dispatch({ type: "CREATE_CENTER" });
 
       // add document to collection
       db.collection("centers")
@@ -26,7 +26,7 @@ const useCreateVisitorCenter = () => {
           summary,
         })
         .then((result) => {
-          dispatch({ type: "CREATE_QUEUE_SUCCESS", centerId: result.id });
+          dispatch({ type: "CREATE_CENTER_SUCCESS", centerId: result.id });
 
           db.collection("users")
             .doc(uid)
@@ -42,7 +42,7 @@ const useCreateVisitorCenter = () => {
             });
         })
         .catch((error) => {
-          dispatch({ type: "CREATE_QUEUE_FAIL", error });
+          dispatch({ type: "CREATE_CENTER_FAIL", error });
         });
     } else {
       console.log("invalid data");

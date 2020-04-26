@@ -6,7 +6,14 @@ const useVisitorCenter = (centerId) => {
   const context = useContext(store);
   const {
     dispatch,
-    state: { uid, isJoiningCenter, centerData, dodoCode },
+    state: {
+      uid,
+      isJoiningCenter,
+      centerData,
+      dodoCode,
+      isFetchingDodoCode,
+      isDeletingUser,
+    },
   } = context;
 
   const ownerUid = centerData?.owner;
@@ -38,7 +45,7 @@ const useVisitorCenter = (centerId) => {
 
   const fetchCenterData = useCallback(() => {
     if (uid && centerId) {
-      dispatch({ type: "FETCH_QUEUE_DATA" });
+      dispatch({ type: "FETCH_CENTER_DATA" });
       const db = firebase.firestore();
 
       return db
@@ -47,7 +54,7 @@ const useVisitorCenter = (centerId) => {
         .onSnapshot(
           (result) => {
             dispatch({
-              type: "FETCH_QUEUE_DATA_SUCCESS",
+              type: "FETCH_CENTER_DATA_SUCCESS",
               centerData: result.data(),
             });
 
@@ -58,7 +65,7 @@ const useVisitorCenter = (centerId) => {
             }
           },
           (error) => {
-            dispatch({ type: "FETCH_QUEUE_DATA_FAIL", error });
+            dispatch({ type: "FETCH_CENTER_DATA_FAIL", error });
           }
         );
     }
@@ -85,7 +92,7 @@ const useVisitorCenter = (centerId) => {
     const db = firebase.firestore();
     const centersRef = db.collection("centers").doc(id);
 
-    dispatch({ type: "JOIN_QUEUE" });
+    dispatch({ type: "JOIN_CENTER" });
 
     // run transaction to join center
     db.runTransaction((transaction) => {
@@ -97,10 +104,10 @@ const useVisitorCenter = (centerId) => {
       });
     })
       .then(() => {
-        dispatch({ type: "JOIN_QUEUE_SUCCESS" });
+        dispatch({ type: "JOIN_CENTER_SUCCESS" });
       })
       .catch((error) => {
-        dispatch({ type: "JOIN_QUEUE_FAIL", error });
+        dispatch({ type: "JOIN_CENTER_FAIL", error });
       });
   };
 
@@ -140,7 +147,7 @@ const useVisitorCenter = (centerId) => {
   const fetchDodoCode = () => {
     const isFirstInQueue = centerData?.waiting[0]?.uid === uid;
     if ((isOwner || isFirstInQueue) && ownerUid) {
-      dispatch({ type: "FETCH_ISLAND_CODE" });
+      dispatch({ type: "FETCH_DODO_CODE" });
 
       return firebase
         .firestore()
@@ -149,24 +156,29 @@ const useVisitorCenter = (centerId) => {
         .get()
         .then((result) => {
           const { dodoCode } = result.data();
-          dispatch({ type: "FETCH_ISLAND_CODE_SUCCESS", dodoCode });
+          dispatch({ type: "FETCH_DODO_CODE_SUCCESS", dodoCode });
         })
         .catch((error) => {
-          dispatch({ type: "FETCH_ISLAND_CODE_FAIL", error });
+          dispatch({ type: "FETCH_DODO_CODE_FAIL", error });
         });
     } else {
-      dispatch({ type: "FETCH_ISLAND_CODE_FAIL" });
+      dispatch({
+        type: "FETCH_DODO_CODE_FAIL",
+        error: "User is not owner or first in the queue",
+      });
     }
   };
 
   return {
     isOwner,
+    joinCenter,
     isJoiningCenter,
     centerData,
-    joinCenter,
     deleteUser,
+    isDeletingUser,
     dodoCode,
     fetchDodoCode,
+    isFetchingDodoCode,
   };
 };
 

@@ -12,26 +12,26 @@ const StateProvider = ({ children }) => {
         return { ...state, uid: action.uid };
       case "UNAUTH":
         return { ...state, uid: null };
-      case "CREATE_QUEUE":
+      case "CREATE_CENTER":
         return { ...state, isCreatingCenter: true };
-      case "CREATE_QUEUE_SUCCESS":
+      case "CREATE_CENTER_SUCCESS":
         return { ...state, isCreatingCenter: false, centerId: action.centerId };
-      case "CREATE_QUEUE_FAIL":
+      case "CREATE_CENTER_FAIL":
         return {
           ...state,
           isCreatingCenter: false,
           centerId: null,
           createCenterError: action.error,
         };
-      case "JOIN_QUEUE":
+      case "JOIN_CENTER":
         return { ...state, isJoiningCenter: true, isJoiningCenterError: null };
-      case "JOIN_QUEUE_SUCCESS":
+      case "JOIN_CENTER_SUCCESS":
         return {
           ...state,
           isJoiningCenter: false,
           isJoiningCenterError: null,
         };
-      case "JOIN_QUEUE_FAIL":
+      case "JOIN_CENTER_FAIL":
         return {
           ...state,
           isJoiningCenter: false,
@@ -51,60 +51,60 @@ const StateProvider = ({ children }) => {
           isDeletingUser: false,
           isDeletingUserError: action.error,
         };
-      case "FETCH_QUEUE_DATA":
+      case "FETCH_CENTER_DATA":
         return {
           ...state,
           isFetchingCenterData: true,
           isFetchingCenterDataError: null,
         };
-      case "FETCH_QUEUE_DATA_SUCCESS":
+      case "FETCH_CENTER_DATA_SUCCESS":
         return {
           ...state,
           isFetchingCenterData: false,
           centerData: action.centerData,
           isFetchingCenterDataError: null,
         };
-      case "FETCH_QUEUE_DATA_FAIL":
+      case "FETCH_CENTER_DATA_FAIL":
         return {
           ...state,
           isFetchingCenterData: false,
           centerData: null,
           isFetchingCenterDataError: action.error,
         };
-      case "FETCH_LATEST_QUEUES":
+      case "FETCH_LATEST_CENTERS":
         return {
           ...state,
           isFetchingLatestCenters: true,
           isFetchingLatestCentersError: null,
         };
-      case "FETCH_LATEST_QUEUES_SUCCESS":
+      case "FETCH_LATEST_CENTERS_SUCCESS":
         return {
           ...state,
           isFetchingLatestCenters: false,
           latestCenters: action.latestCenters,
           isFetchingLatestCentersError: null,
         };
-      case "FETCH_LATEST_QUEUES_FAIL":
+      case "FETCH_LATEST_CENTERS_FAIL":
         return {
           ...state,
           isFetchingLatestCenters: false,
           latestCenters: null,
           isFetchingLatestCentersError: action.error,
         };
-      case "FETCH_ISLAND_CODE":
+      case "FETCH_DODO_CODE":
         return {
           ...state,
           isFetchingDodoCode: true,
           isFetchingDodoCodeError: null,
         };
-      case "FETCH_ISLAND_CODE_SUCCESS":
+      case "FETCH_DODO_CODE_SUCCESS":
         return {
           ...state,
           isFetchingDodoCode: false,
           dodoCode: action.dodoCode,
           isFetchingDodoCodeError: null,
         };
-      case "FETCH_ISLAND_CODE_FAIL":
+      case "FETCH_DODO_CODE_FAIL":
         return {
           ...state,
           isFetchingDodoCode: false,

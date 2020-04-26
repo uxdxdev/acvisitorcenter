@@ -11,7 +11,7 @@ const VisitorCenter = () => {
     isJoiningCenter,
     joinCenter,
     deleteUser,
-    dodoCode: currentDodoCode,
+    dodoCode,
     isOwner,
     fetchDodoCode,
   } = useVisitorCenter(centerId);
@@ -52,10 +52,10 @@ const VisitorCenter = () => {
     setIsEditable(!isEditable);
   };
 
-  const [dodoCode, setDodoCode] = useState({ dodoCode: "*****" });
+  const [latestDodoCode, setDodoCode] = useState({ dodoCode: "*****" });
   useEffect(() => {
-    currentDodoCode && setDodoCode({ dodoCode: currentDodoCode });
-  }, [currentDodoCode]);
+    dodoCode && setDodoCode({ dodoCode });
+  }, [dodoCode]);
 
   const handleDodoCodeChange = ({ id, value }) => {
     setDodoCode({ [id]: value });
@@ -109,7 +109,7 @@ const VisitorCenter = () => {
       {isEditable ? (
         <input
           type="text"
-          value={dodoCode.dodoCode}
+          value={latestDodoCode.dodoCode}
           onChange={(event) => handleDodoCodeChange(event.target)}
           id="dodoCode"
           name="dodoCode"
@@ -118,7 +118,7 @@ const VisitorCenter = () => {
           maxLength="5"
         />
       ) : (
-        <div>{dodoCode.dodoCode}</div>
+        <div>{latestDodoCode.dodoCode}</div>
       )}
 
       <button onClick={() => fetchDodoCode()}>Get code</button>
