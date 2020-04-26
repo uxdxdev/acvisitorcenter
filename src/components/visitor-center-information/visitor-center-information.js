@@ -15,15 +15,10 @@ const VisitorCenterInformation = () => {
     updateCenterInformation,
     centerInformation,
     latestDodoCode,
-    isFetchingCenterDataError,
   } = useVisitorCenterInformation(centerId);
   const { uid } = useUser();
 
   const isUserFirstInQueue = waitingList && waitingList[0]?.uid === uid;
-
-  if (isFetchingCenterDataError) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <>
