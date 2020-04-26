@@ -17,6 +17,8 @@ const useCreateVisitorCenter = () => {
   const updateUserData = async (uid, dodoCode) => {
     if (uid && dodoCode) {
       const db = firebase.firestore();
+
+      // TODO add dispatches
       await db
         .collection("users")
         .doc(uid)
