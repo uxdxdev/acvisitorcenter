@@ -9,7 +9,7 @@ const LatestVisitorCenterList = () => {
   return (
     <>
       <h2>Latest visitor centers</h2>
-      {isFetchingLatestCenters ? (
+      {isFetchingLatestCenters || !latestCenters ? (
         <div>Loading...</div>
       ) : (
         <>

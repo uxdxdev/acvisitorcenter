@@ -6,17 +6,12 @@ const useVisitorCenter = (centerId) => {
   const context = useContext(store);
   const {
     dispatch,
-    state: {
-      uid,
-      centerData: currentCenterData,
-      dodoCode: currentDodoCode,
-      isFetchingCenterDataError,
-    },
+    state: { uid, centerData: currentCenterData, dodoCode: currentDodoCode },
   } = context;
 
   const waitingList = currentCenterData?.waiting;
   const ownerUid = currentCenterData?.owner;
-  const isOwner = ownerUid === uid;
+  const isOwner = ownerUid && uid && ownerUid === uid;
 
   /**
    * Fetch center data from firestore.
@@ -36,12 +31,17 @@ const useVisitorCenter = (centerId) => {
           dispatch({ type: "FETCH_DODO_CODE_SUCCESS", dodoCode });
         })
         .catch((error) => {
-          dispatch({ type: "FETCH_DODO_CODE_FAIL", error });
+          dispatch({
+            type: "FETCH_DODO_CODE_FAIL",
+            error:
+              "User is not owner, first in the queue, or the visitor center is closed",
+          });
         });
     } else {
       dispatch({
         type: "FETCH_DODO_CODE_FAIL",
-        error: "User is not owner or first in the queue",
+        error:
+          "User is not owner, first in the queue, or the visitor center is closed",
       });
     }
   };
@@ -49,8 +49,8 @@ const useVisitorCenter = (centerId) => {
   const [isEditable, setIsEditable] = useState(false);
 
   const [centerInformation, setCenterInformation] = useState({
-    name: "Loading...",
-    summary: "Loading...",
+    name: "",
+    summary: "",
   });
 
   useEffect(() => {
@@ -162,7 +162,6 @@ const useVisitorCenter = (centerId) => {
     updateCenterInformation,
     centerInformation,
     latestDodoCode,
-    isFetchingCenterDataError,
   };
 };
 

@@ -66,7 +66,7 @@ const useCreateVisitorCenter = () => {
     }
   };
 
-  const fetchVisitorCenter = useCallback(
+  const fetchVisitorCenterData = useCallback(
     (uid) => {
       if (uid) {
         dispatch({ type: "FETCH_VISITOR_CENTER" });
@@ -99,12 +99,12 @@ const useCreateVisitorCenter = () => {
   const handleCreateVisitorCenter = async (name, summary, dodoCode) => {
     await createVisitorCenter(uid, name, summary);
     await updateUserData(uid, dodoCode);
-    await fetchVisitorCenter(uid);
+    await fetchVisitorCenterData(uid);
   };
 
   useEffect(() => {
-    uid && fetchVisitorCenter(uid);
-  }, [uid, fetchVisitorCenter]);
+    uid && fetchVisitorCenterData(uid);
+  }, [uid, fetchVisitorCenterData]);
 
   return {
     handleCreateVisitorCenter,

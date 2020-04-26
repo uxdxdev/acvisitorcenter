@@ -39,7 +39,7 @@ const useVisitorCenter = (centerId) => {
     [dispatch, centerId]
   );
 
-  const fetchCenterData = useCallback(
+  const handleListenVisitorCenterDataAndUpdateWaitingList = useCallback(
     async (id) => {
       if (id && centerId) {
         const db = firebase.firestore();
@@ -58,6 +58,7 @@ const useVisitorCenter = (centerId) => {
             }
           })
           .catch((error) => {
+            // fails to listen
             dispatch({ type: "LISTEN_CENTER_DATA_FAIL", error });
           });
 
@@ -99,13 +100,15 @@ const useVisitorCenter = (centerId) => {
   useEffect(() => {
     let unsubscribe = null;
     async function fetchData() {
-      unsubscribe = await fetchCenterData(uid);
+      unsubscribe = await handleListenVisitorCenterDataAndUpdateWaitingList(
+        uid
+      );
     }
     fetchData();
     return () => {
       unsubscribe && unsubscribe();
     };
-  }, [uid, fetchCenterData]);
+  }, [uid, handleListenVisitorCenterDataAndUpdateWaitingList]);
 
   /**
    * Join visitor center.
