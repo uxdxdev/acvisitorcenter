@@ -21,7 +21,7 @@ const StateProvider = ({ children }) => {
           ...state,
           isCreatingCenter: false,
           centerId: null,
-          createCenterError: action.error,
+          createVisitorCenterError: action.error,
         };
       case "JOIN_CENTER":
         return { ...state, isJoiningQueue: true, isJoiningQueueError: null };
@@ -51,20 +51,20 @@ const StateProvider = ({ children }) => {
           isDeletingUser: false,
           isDeletingUserError: action.error,
         };
-      case "FETCH_CENTER_DATA":
+      case "LISTEN_CENTER_DATA":
         return {
           ...state,
           isFetchingCenterData: true,
           isFetchingCenterDataError: null,
         };
-      case "FETCH_CENTER_DATA_SUCCESS":
+      case "LISTEN_CENTER_DATA_SUCCESS":
         return {
           ...state,
           isFetchingCenterData: false,
           centerData: action.centerData,
           isFetchingCenterDataError: null,
         };
-      case "FETCH_CENTER_DATA_FAIL":
+      case "LISTEN_CENTER_DATA_FAIL":
         return {
           ...state,
           isFetchingCenterData: false,
@@ -110,6 +110,27 @@ const StateProvider = ({ children }) => {
           isFetchingDodoCode: false,
           dodoCode: null,
           isFetchingDodoCodeError: action.error,
+        };
+
+      case "FETCH_VISITOR_CENTER":
+        return {
+          ...state,
+          isFetchingVisitorCenter: true,
+          isFetchingVisitorCenterError: null,
+        };
+      case "FETCH_VISITOR_CENTER_SUCCESS":
+        return {
+          ...state,
+          isFetchingVisitorCenter: false,
+          visitorCenterData: action.data,
+          isFetchingVisitorCenterError: null,
+        };
+      case "FETCH_VISITOR_CENTER_FAIL":
+        return {
+          ...state,
+          isFetchingVisitorCenter: false,
+          visitorCenterData: null,
+          isFetchingVisitorCenterError: action.error,
         };
       default:
         throw new Error();

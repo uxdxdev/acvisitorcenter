@@ -46,7 +46,7 @@ const useVisitorCenter = (centerId) => {
 
   const fetchCenterData = useCallback(() => {
     if (uid && centerId) {
-      dispatch({ type: "FETCH_CENTER_DATA" });
+      dispatch({ type: "LISTEN_CENTER_DATA" });
       const db = firebase.firestore();
 
       return db
@@ -55,7 +55,7 @@ const useVisitorCenter = (centerId) => {
         .onSnapshot(
           (result) => {
             dispatch({
-              type: "FETCH_CENTER_DATA_SUCCESS",
+              type: "LISTEN_CENTER_DATA_SUCCESS",
               centerData: result.data(),
             });
 
@@ -70,7 +70,7 @@ const useVisitorCenter = (centerId) => {
           },
           (error) => {
             console.log(error);
-            dispatch({ type: "FETCH_CENTER_DATA_FAIL", error });
+            dispatch({ type: "LISTEN_CENTER_DATA_FAIL", error });
           }
         );
     }
