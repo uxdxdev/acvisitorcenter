@@ -14,7 +14,7 @@ const useCreateVisitorCenter = () => {
     dispatch,
   } = context;
 
-  const updateUserData = async (uid, dodoCode) => {
+  const setDodoCode = async (uid, dodoCode) => {
     if (uid && dodoCode) {
       const db = firebase.firestore();
 
@@ -98,7 +98,7 @@ const useCreateVisitorCenter = () => {
 
   const handleCreateVisitorCenter = async (name, summary, dodoCode) => {
     await createVisitorCenter(uid, name, summary);
-    await updateUserData(uid, dodoCode);
+    await setDodoCode(uid, dodoCode);
     await fetchVisitorCenterData(uid);
   };
 
