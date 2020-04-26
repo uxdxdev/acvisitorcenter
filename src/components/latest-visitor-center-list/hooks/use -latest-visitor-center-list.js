@@ -12,7 +12,7 @@ const useLatestVisitorCenterList = () => {
   const fetchLatestCenters = useCallback(() => {
     const db = firebase.firestore();
 
-    dispatch({ type: "FETCH_LATEST_CENTERS" });
+    dispatch({ type: "LISTEN_LATEST_CENTERS" });
 
     return db
       .collection("centers")
@@ -24,7 +24,7 @@ const useLatestVisitorCenterList = () => {
           id: doc.id,
         }));
         dispatch({
-          type: "FETCH_LATEST_CENTERS_SUCCESS",
+          type: "LISTEN_LATEST_CENTERS_SUCCESS",
           latestCenters: data,
         });
       });

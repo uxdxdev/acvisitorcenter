@@ -6,7 +6,10 @@ const { Provider } = store;
 
 const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
-    if (process.env.NODE_ENV === "development") console.log(action.type);
+    if (process.env.NODE_ENV === "development") {
+      action?.type && console.log(action.type);
+      action?.error && console.log(action.error);
+    }
     switch (action.type) {
       case "AUTH":
         return { ...state, uid: action.uid };
@@ -71,20 +74,20 @@ const StateProvider = ({ children }) => {
           centerData: null,
           isFetchingCenterDataError: action.error,
         };
-      case "FETCH_LATEST_CENTERS":
+      case "LISTEN_LATEST_CENTERS":
         return {
           ...state,
           isFetchingLatestCenters: true,
           isFetchingLatestCentersError: null,
         };
-      case "FETCH_LATEST_CENTERS_SUCCESS":
+      case "LISTEN_LATEST_CENTERS_SUCCESS":
         return {
           ...state,
           isFetchingLatestCenters: false,
           latestCenters: action.latestCenters,
           isFetchingLatestCentersError: null,
         };
-      case "FETCH_LATEST_CENTERS_FAIL":
+      case "LISTEN_LATEST_CENTERS_FAIL":
         return {
           ...state,
           isFetchingLatestCenters: false,
