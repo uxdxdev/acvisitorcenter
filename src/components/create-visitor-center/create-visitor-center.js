@@ -2,7 +2,12 @@ import React, { useRef } from "react";
 import { useCreateVisitorCenter } from "./hooks";
 
 const CreateVisitorCenter = () => {
-  const { isCreatingCenter, createCenter } = useCreateVisitorCenter();
+  const {
+    isCreatingCenter,
+    createVisitorCenter,
+    visitorCenterData,
+    isFetchingVisitorCenter,
+  } = useCreateVisitorCenter();
 
   let nameRef = useRef();
   let summaryRef = useRef();
@@ -19,59 +24,72 @@ const CreateVisitorCenter = () => {
     summaryRef.current.value = "";
     codeRef.current.value = "";
 
-    createCenter(name, summary, code);
+    createVisitorCenter(name, summary, code);
   };
 
+  console.log(visitorCenterData);
   return (
-    <div>
-      <h2>Create visitor center</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name</label>
-          <br />
-          <input
-            type="text"
-            id="name"
-            name="name"
-            required
-            ref={nameRef}
-            maxLength="50"
-          />
-        </div>
+    <>
+      {isFetchingVisitorCenter || visitorCenterData === undefined ? (
+        <div>Loading...</div>
+      ) : (
+        <>
+          {visitorCenterData ? (
+            <div>Visitor center exists</div>
+          ) : (
+            <>
+              <h2>Create visitor center</h2>
+              <form onSubmit={handleSubmit}>
+                <div>
+                  <label htmlFor="name">Name</label>
+                  <br />
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    ref={nameRef}
+                    maxLength="50"
+                  />
+                </div>
 
-        <div>
-          <label htmlFor="code">Dodo code</label>
-          <br />
-          <input
-            type="text"
-            id="code"
-            name="code"
-            required
-            ref={codeRef}
-            maxLength="5"
-            minLength="5"
-          />
-        </div>
+                <div>
+                  <label htmlFor="code">Dodo code</label>
+                  <br />
+                  <input
+                    type="text"
+                    id="code"
+                    name="code"
+                    required
+                    ref={codeRef}
+                    maxLength="5"
+                    minLength="5"
+                  />
+                </div>
 
-        <div>
-          <label htmlFor="summary">Summary</label>
-          <br />
-          <textarea
-            id="summary"
-            name="summary"
-            required
-            ref={summaryRef}
-            rows="5"
-            maxLength="1000"
-          />
-        </div>
-        <div>
-          <button type="submit" disabled={isCreatingCenter}>
-            Create visitor center
-          </button>
-        </div>
-      </form>
-    </div>
+                <div>
+                  <label htmlFor="summary">Summary</label>
+                  <br />
+                  <textarea
+                    id="summary"
+                    name="summary"
+                    required
+                    ref={summaryRef}
+                    rows="5"
+                    maxLength="1000"
+                  />
+                </div>
+                <div>
+                  <button type="submit" disabled={isCreatingCenter}>
+                    Create visitor center
+                  </button>
+                </div>
+              </form>
+            </>
+          )}
+        </>
+      )}
+    </>
   );
 };
 
