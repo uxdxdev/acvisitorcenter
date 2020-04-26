@@ -1,4 +1,4 @@
-import { useContext, useEffect, useCallback } from "react";
+import { useContext, useEffect, useCallback, useState } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
 
@@ -9,14 +9,13 @@ const useVisitorCenter = (centerId) => {
     state: {
       uid,
       isJoiningQueue,
-      centerData,
-      dodoCode,
-      isFetchingDodoCode,
-      isDeletingUser,
+      centerData: currentCenterData,
+      dodoCode: currentDodoCode,
     },
   } = context;
 
-  const ownerUid = centerData?.owner;
+  const waitingList = currentCenterData?.waiting;
+  const ownerUid = currentCenterData?.owner;
   const isOwner = ownerUid === uid;
 
   const setNextVisitor = useCallback(
@@ -97,7 +96,7 @@ const useVisitorCenter = (centerId) => {
     const db = firebase.firestore();
     const centersRef = db.collection("centers").doc(id);
 
-    dispatch({ type: "JOIN_CENTER" });
+    dispatch({ type: "JOIN_QUEUE" });
 
     // run transaction to join center
     db.runTransaction((transaction) => {
@@ -109,10 +108,10 @@ const useVisitorCenter = (centerId) => {
       });
     })
       .then(() => {
-        dispatch({ type: "JOIN_CENTER_SUCCESS" });
+        dispatch({ type: "JOIN_QUEUE_SUCCESS" });
       })
       .catch((error) => {
-        dispatch({ type: "JOIN_CENTER_FAIL", error });
+        dispatch({ type: "JOIN_QUEUE_FAIL", error });
       });
   };
 
@@ -150,7 +149,7 @@ const useVisitorCenter = (centerId) => {
    * Fetch center data from firestore.
    */
   const fetchDodoCode = () => {
-    const isFirstInQueue = centerData?.waiting[0]?.uid === uid;
+    const isFirstInQueue = currentCenterData?.waiting[0]?.uid === uid;
     if ((isOwner || isFirstInQueue) && ownerUid) {
       dispatch({ type: "FETCH_DODO_CODE" });
 
@@ -174,13 +173,49 @@ const useVisitorCenter = (centerId) => {
     }
   };
 
+  const [isEditable, setIsEditable] = useState(false);
+
+  const [centerInformation, setCenterInformation] = useState({
+    name: "Loading...",
+    summary: "Loading...",
+  });
+
+  useEffect(() => {
+    currentCenterData && setCenterInformation(currentCenterData);
+  }, [currentCenterData]);
+
+  const handleCenterInformationChange = ({ id, value }) => {
+    setCenterInformation((currentState) => {
+      return { ...currentState, ...{ [id]: value } };
+    });
+  };
+
+  const [latestDodoCode, setDodoCode] = useState({ dodoCode: "*****" });
+
+  useEffect(() => {
+    currentDodoCode && setDodoCode({ dodoCode: currentDodoCode });
+  }, [currentDodoCode]);
+
+  const handleDodoCodeChange = ({ id, value }) => {
+    setDodoCode({ [id]: value });
+  };
+
+  const updateCenterInformation = () => {
+    setIsEditable(!isEditable);
+    if (isEditable) {
+      saveCenterData(centerId, centerInformation);
+      updateDodoCode(uid, latestDodoCode?.dodoCode);
+    }
+  };
+
   const saveCenterData = (centerId, centerData) => {
     const { name, summary } = centerData;
     if (
       name &&
       summary &&
       // data is not the same as before update
-      (centerData?.name !== name || centerData?.summary !== summary)
+      (currentCenterData?.name !== name ||
+        currentCenterData?.summary !== summary)
     ) {
       const db = firebase.firestore();
 
@@ -206,12 +241,7 @@ const useVisitorCenter = (centerId) => {
   };
 
   const updateDodoCode = (uid, updatedDodoCode) => {
-    if (
-      uid &&
-      updatedDodoCode &&
-      // data is not the same as before update
-      updatedDodoCode !== dodoCode
-    ) {
+    if (uid && updatedDodoCode && updatedDodoCode !== currentDodoCode) {
       const db = firebase.firestore();
 
       db.collection("users")
@@ -235,17 +265,18 @@ const useVisitorCenter = (centerId) => {
   };
 
   return {
-    isOwner,
-    joinVisitorQueue,
+    waitingList,
     isJoiningQueue,
-    centerData,
+    joinVisitorQueue,
     deleteUser,
-    isDeletingUser,
-    dodoCode,
+    isOwner,
     fetchDodoCode,
-    isFetchingDodoCode,
-    saveCenterData,
-    updateDodoCode,
+    isEditable,
+    handleCenterInformationChange,
+    handleDodoCodeChange,
+    updateCenterInformation,
+    centerInformation,
+    latestDodoCode,
   };
 };
 

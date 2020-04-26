@@ -53,10 +53,9 @@ const CreateVisitorCenter = () => {
                   <input
                     type="text"
                     id="name"
-                    name="name"
                     required
                     ref={nameRef}
-                    maxLength="50"
+                    maxLength="30"
                   />
                 </div>
 

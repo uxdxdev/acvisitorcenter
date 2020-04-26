@@ -26,15 +26,15 @@ const StateProvider = ({ children }) => {
           centerId: null,
           createVisitorCenterError: action.error,
         };
-      case "JOIN_CENTER":
+      case "JOIN_QUEUE":
         return { ...state, isJoiningQueue: true, isJoiningQueueError: null };
-      case "JOIN_CENTER_SUCCESS":
+      case "JOIN_QUEUE_SUCCESS":
         return {
           ...state,
           isJoiningQueue: false,
           isJoiningQueueError: null,
         };
-      case "JOIN_CENTER_FAIL":
+      case "JOIN_QUEUE_FAIL":
         return {
           ...state,
           isJoiningQueue: false,
