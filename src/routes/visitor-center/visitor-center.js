@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useVisitorCenter } from "./hooks";
 import moment from "moment";
@@ -7,22 +7,24 @@ import { useUser } from "../../hooks";
 const VisitorCenter = () => {
   const { id: centerId } = useParams();
   const {
-    centerData,
+    waitingList,
     isJoiningQueue,
     joinVisitorQueue,
     deleteUser,
-    dodoCode,
     isOwner,
     fetchDodoCode,
-    saveCenterData,
-    updateDodoCode,
+    isEditable,
+    handleCenterInformationChange,
+    handleDodoCodeChange,
+    updateCenterInformation,
+    centerInformation,
+    latestDodoCode,
   } = useVisitorCenter(centerId);
   const { uid } = useUser();
-  const [isEditable, setIsEditable] = useState(false);
 
   const nameInputRef = useRef();
   const userExistsInCenter =
-    centerData?.waiting.filter((user) => user.uid === uid)?.length > 0;
+    waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -32,39 +34,6 @@ const VisitorCenter = () => {
 
     if (name && uid && !userExistsInCenter) {
       joinVisitorQueue(centerId, { name, uid });
-    }
-  };
-
-  const [centerInformation, setCenterInformation] = useState({
-    name: "Loading...",
-    summary: "Loading...",
-  });
-
-  useEffect(() => {
-    centerData && setCenterInformation(centerData);
-  }, [centerData]);
-
-  const handleCenterInformationChange = ({ id, value }) => {
-    setCenterInformation((currentState) => {
-      return { ...currentState, ...{ [id]: value } };
-    });
-  };
-
-  const [latestDodoCode, setDodoCode] = useState({ dodoCode: "*****" });
-
-  useEffect(() => {
-    dodoCode && setDodoCode({ dodoCode });
-  }, [dodoCode]);
-
-  const handleDodoCodeChange = ({ id, value }) => {
-    setDodoCode({ [id]: value });
-  };
-
-  const updateCenterInformation = () => {
-    setIsEditable(!isEditable);
-    if (isEditable) {
-      saveCenterData(centerId, centerInformation);
-      updateDodoCode(uid, latestDodoCode?.dodoCode);
     }
   };
 
@@ -92,7 +61,7 @@ const VisitorCenter = () => {
           value={centerInformation.name}
           onChange={(event) => handleCenterInformationChange(event.target)}
           id="name"
-          name="name"
+          maxLength="30"
           disabled={!isEditable}
         />
       ) : (
@@ -108,6 +77,7 @@ const VisitorCenter = () => {
           id="summary"
           name="summary"
           disabled={!isEditable}
+          maxLength="1000"
         />
       ) : (
         <div>{centerInformation.summary}</div>
@@ -120,7 +90,6 @@ const VisitorCenter = () => {
           value={latestDodoCode.dodoCode}
           onChange={(event) => handleDodoCodeChange(event.target)}
           id="dodoCode"
-          name="dodoCode"
           disabled={!isEditable}
           minLength="5"
           maxLength="5"
@@ -146,7 +115,7 @@ const VisitorCenter = () => {
                 name="name"
                 required
                 ref={nameInputRef}
-                maxLength="20"
+                maxLength="30"
               />
             </div>
             <div>
@@ -165,13 +134,13 @@ const VisitorCenter = () => {
         When a visitor has departed click the "Done" button to allow the next
         visitor to travel.
       </span>
-      {!centerData?.waiting ? (
+      {!waitingList ? (
         <div>Loading...</div>
       ) : (
         <>
-          {centerData?.waiting?.length > 0 ? (
+          {waitingList?.length > 0 ? (
             <ol>
-              {centerData?.waiting.map(({ name, joinedAt, uid }, index) => {
+              {waitingList.map(({ name, joinedAt, uid }, index) => {
                 const date = moment(joinedAt.toDate()).calendar();
                 return (
                   <li key={index}>

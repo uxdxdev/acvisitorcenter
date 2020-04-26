@@ -5,9 +5,9 @@ service cloud.firestore {
   	function validateResourceFields(data){
     	return data.keys().hasOnly(['name','owner','summary','waiting','createdAt']) &&      	
               data.name is string && 
-              data.name.size() <= 50 &&                      
+              data.name.size() <= 30 &&                      
               data.owner is string && 
-              data.owner.size() <= 50 &&                      
+              data.owner.size() <= 128 &&                      
               data.summary is string && 
               data.summary.size() <= 1000 &&
               data.waiting is list &&              
@@ -38,7 +38,7 @@ service cloud.firestore {
       									(request.auth.uid == userId &&
                         request.resource.data.keys().hasOnly(['dodoCode', 'next']) &&
                         request.resource.data.next is string && 
-                        request.resource.data.next.size() < 30 &&                      
+                        request.resource.data.next.size() <= 128 &&                      
                         request.resource.data.dodoCode == resource.data.dodoCode) || 
                         // owner updating dodo code
                         (request.auth.uid == userId &&
@@ -91,7 +91,7 @@ service cloud.firestore {
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].keys().hasOnly(['name', 'uid', 'joinedAt']) &&
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].uid == request.auth.uid &&
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].name is string &&
-      								request.resource.data.waiting[request.resource.data.waiting.size() - 1].name.size() <= 50 &&
+      								request.resource.data.waiting[request.resource.data.waiting.size() - 1].name.size() <= 30 &&
                       request.resource.data.waiting[request.resource.data.waiting.size() - 1].joinedAt is timestamp &&
                       // other data is unmodified
                       request.resource.data.name == resource.data.name &&
