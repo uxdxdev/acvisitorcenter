@@ -1,1 +1,1 @@
-export { default as useLatestVisitorCenterList } from "./use -latest-visitor-center-list";
+export { default as useLatestVisitorCenterList } from "./use-latest-visitor-center-list";
