@@ -95,8 +95,6 @@ const VisitorCenter = () => {
       {(isOwner || isUserFirstInQueue) && (
         <>
           <h2>Code</h2>
-          <div>You can get the code when you are next in the queue</div>
-
           {isEditable ? (
             <input
               type="text"
@@ -142,34 +140,33 @@ const VisitorCenter = () => {
         </>
       )}
       <h2>Waiting</h2>
-      <span>
-        When a visitor has departed click the "Done" button to allow the next
-        visitor to travel.
-      </span>
       {!waitingList ? (
         <div>Loading...</div>
       ) : (
         <>
           {waitingList?.length > 0 ? (
-            <ol>
-              {waitingList.map(({ name, joinedAt, uid }, index) => {
-                const date = moment(joinedAt.toDate()).calendar();
-                return (
-                  <li key={index}>
-                    {name} {date}{" "}
-                    {isOwner && index === 0 && (
-                      <>
-                        <button onClick={() => deleteUser(centerId, uid)}>
-                          Done
-                        </button>
-                      </>
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
+            <>
+              <div>You can get the code when you are next in the queue</div>
+              <ol>
+                {waitingList.map(({ name, joinedAt, uid }, index) => {
+                  const date = moment(joinedAt.toDate()).calendar();
+                  return (
+                    <li key={index}>
+                      {name} {date}{" "}
+                      {isOwner && index === 0 && (
+                        <>
+                          <button onClick={() => deleteUser(centerId, uid)}>
+                            Done
+                          </button>
+                        </>
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
+            </>
           ) : (
-            <div>Center is empty</div>
+            <div>Visitor center is empty</div>
           )}
         </>
       )}
