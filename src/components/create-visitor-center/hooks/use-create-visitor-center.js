@@ -36,6 +36,7 @@ const useCreateVisitorCenter = () => {
             })
             .then(() => {
               // success
+              console.log("updated island code in users/");
             })
             .catch((error) => {
               console.log(error);
