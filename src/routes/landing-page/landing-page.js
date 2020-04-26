@@ -2,7 +2,7 @@ import React from "react";
 import { CreateVisitorCenter } from "../../components/create-visitor-center";
 import { LatestVisitorCenterList } from "../../components/latest-visitor-center-list";
 
-const Homepage = () => {
+const LandingPage = () => {
   return (
     <>
       <CreateVisitorCenter />
@@ -11,4 +11,4 @@ const Homepage = () => {
   );
 };
 
-export default Homepage;
+export default LandingPage;
