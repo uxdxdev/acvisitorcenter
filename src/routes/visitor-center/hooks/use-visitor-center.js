@@ -138,8 +138,8 @@ const useVisitorCenter = (centerId) => {
    * Fetch center data from firestore.
    */
   const fetchDodoCode = () => {
-    const isFirstInCenter = centerData?.waiting[0]?.uid === uid;
-    if ((isOwner || isFirstInCenter) && ownerUid) {
+    const isFirstInQueue = centerData?.waiting[0]?.uid === uid;
+    if ((isOwner || isFirstInQueue) && ownerUid) {
       dispatch({ type: "FETCH_ISLAND_CODE" });
 
       return firebase

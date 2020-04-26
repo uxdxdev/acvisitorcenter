@@ -11,6 +11,7 @@
     "firebase": "^7.14.1",
     "moment": "^2.24.0",
     "node-sass": "^4.14.0",
+    "npm-run-all": "^4.1.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-google-recaptcha": "^2.0.1",
@@ -18,11 +19,13 @@
     "react-scripts": "3.4.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm-run-all -p --race firebase:emulator dev:start",
+    "dev:start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "yarn build && firebase deploy"
+    "deploy": "yarn build && firebase deploy",
+    "firebase:emulator": "GOOGLE_APPLICATION_CREDENTIALS='../acvisitorcenter-a83394971a40.json' firebase emulators:start"
   },
   "eslintConfig": {
     "extends": "react-app"

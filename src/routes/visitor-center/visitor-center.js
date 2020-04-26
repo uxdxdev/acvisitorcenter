@@ -1,23 +1,24 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useVisitorCenter } from "./hooks";
 import moment from "moment";
 import { useUser } from "../../hooks";
 
-const Center = () => {
+const VisitorCenter = () => {
   const { id: centerId } = useParams();
   const {
     centerData,
     isJoiningCenter,
     joinCenter,
     deleteUser,
-    dodoCode,
+    dodoCode: currentDodoCode,
     isOwner,
     fetchDodoCode,
   } = useVisitorCenter(centerId);
   const { uid } = useUser();
+  const [isEditable, setIsEditable] = useState(false);
 
-  let nameRef = useRef();
+  const nameInputRef = useRef();
   const userExistsInCenter =
     centerData?.waiting.filter((user) => user.uid === uid)?.length > 0;
 
@@ -25,11 +26,39 @@ const Center = () => {
     event.preventDefault();
 
     let name = event.target.name.value;
-    nameRef.current.value = "";
+    nameInputRef.current.value = "";
 
     if (name && uid && !userExistsInCenter) {
       joinCenter(centerId, { name, uid });
     }
+  };
+
+  const [centerInformation, setCenterInformation] = useState({
+    name: "Loading...",
+    summary: "Loading...",
+  });
+
+  useEffect(() => {
+    centerData && setCenterInformation(centerData);
+  }, [centerData]);
+
+  const handleCenterInformationChange = ({ id, value }) => {
+    setCenterInformation((currentState) => {
+      return { ...currentState, ...{ [id]: value } };
+    });
+  };
+
+  const updateCenterInformation = () => {
+    setIsEditable(!isEditable);
+  };
+
+  const [dodoCode, setDodoCode] = useState({ dodoCode: "*****" });
+  useEffect(() => {
+    currentDodoCode && setDodoCode({ dodoCode: currentDodoCode });
+  }, [currentDodoCode]);
+
+  const handleDodoCodeChange = ({ id, value }) => {
+    setDodoCode({ [id]: value });
   };
 
   return (
@@ -40,16 +69,59 @@ const Center = () => {
           will disable the center.
         </span>
       )}
+      {isOwner && (
+        <div>
+          <button onClick={() => updateCenterInformation()}>
+            {isEditable ? "Save" : "Edit"}
+          </button>
+        </div>
+      )}
       <h2>Name</h2>
-      <div>{centerData?.name || "Loading..."}</div>
+
+      {isEditable ? (
+        <input
+          type="text"
+          value={centerInformation.name}
+          onChange={(event) => handleCenterInformationChange(event.target)}
+          id="name"
+          name="name"
+          disabled={!isEditable}
+        />
+      ) : (
+        <div>{centerInformation.name}</div>
+      )}
+
       <h2>Summary</h2>
-      <div>{centerData?.summary || "Loading..."}</div>
+      {isEditable ? (
+        <input
+          type="text"
+          value={centerInformation.summary}
+          onChange={(event) => handleCenterInformationChange(event.target)}
+          id="summary"
+          name="summary"
+          disabled={!isEditable}
+        />
+      ) : (
+        <div>{centerInformation.summary}</div>
+      )}
+
       <h2>Code</h2>
-      <span>You can get the code when you are next in the center</span>
-      <div>{dodoCode || "*******"}</div>
-      <button onClick={() => fetchDodoCode()} disabled={dodoCode}>
-        Get code
-      </button>
+      {isEditable ? (
+        <input
+          type="text"
+          value={dodoCode.dodoCode}
+          onChange={(event) => handleDodoCodeChange(event.target)}
+          id="dodoCode"
+          name="dodoCode"
+          disabled={!isEditable}
+          minLength="5"
+          maxLength="5"
+        />
+      ) : (
+        <div>{dodoCode.dodoCode}</div>
+      )}
+
+      <button onClick={() => fetchDodoCode()}>Get code</button>
       {!isOwner && (
         <>
           <h2>Join center</h2>
@@ -61,7 +133,7 @@ const Center = () => {
                 id="name"
                 name="name"
                 required
-                ref={nameRef}
+                ref={nameInputRef}
                 maxLength="20"
               />
             </div>
@@ -112,4 +184,4 @@ const Center = () => {
   );
 };
 
-export default Center;
+export default VisitorCenter;
