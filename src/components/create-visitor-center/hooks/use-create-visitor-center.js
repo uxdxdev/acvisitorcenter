@@ -14,15 +14,37 @@ const useCreateVisitorCenter = () => {
     dispatch,
   } = context;
 
-  const createVisitorCenter = (name, summary, code) => {
-    if (uid && name && summary && code) {
+  const updateUserData = async (uid, dodoCode) => {
+    if (uid && dodoCode) {
+      const db = firebase.firestore();
+      await db
+        .collection("users")
+        .doc(uid)
+        .set({
+          dodoCode,
+          next: "",
+        })
+        .then(() => {
+          // success
+          console.log("updated user data with dodo code");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      console.log("error updateUserData()", uid, dodoCode);
+    }
+  };
+
+  const createVisitorCenter = async (uid, name, summary) => {
+    if ((uid, name, summary)) {
       const db = firebase.firestore();
       const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
       dispatch({ type: "CREATE_CENTER" });
 
-      // add document to collection
-      db.collection("centers")
+      await db
+        .collection("centers")
         .doc(uid)
         .set({
           name,
@@ -33,67 +55,57 @@ const useCreateVisitorCenter = () => {
         })
         .then(() => {
           dispatch({ type: "CREATE_CENTER_SUCCESS", centerId: uid });
-
-          // update user data with dodo code
-          db.collection("users")
-            .doc(uid)
-            .set({
-              dodoCode: code,
-              next: "",
-            })
-            .then(() => {
-              // success
-              console.log("updated user data with dodo code");
-              fetchVisitorCenter(uid);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
         })
         .catch((error) => {
-          console.log(error);
           dispatch({ type: "CREATE_CENTER_FAIL", error });
         });
     } else {
-      console.log("invalid data", uid, name, summary, code);
+      dispatch({ type: "CREATE_CENTER_FAIL", error: "Invalid data" });
     }
   };
 
-  /**
-   * Fetch center data from firestore.
-   */
   const fetchVisitorCenter = useCallback(
     (uid) => {
-      dispatch({ type: "FETCH_VISITOR_CENTER" });
+      if (uid) {
+        dispatch({ type: "FETCH_VISITOR_CENTER" });
 
-      return firebase
-        .firestore()
-        .collection("centers")
-        .doc(uid)
-        .get()
-        .then((result) => {
-          if (result.exists) {
-            dispatch({
-              type: "FETCH_VISITOR_CENTER_SUCCESS",
-              data: result.data(),
-            });
-          } else {
-            throw new Error("visitor center does not exist");
-          }
-        })
-        .catch((error) => {
-          dispatch({ type: "FETCH_VISITOR_CENTER_FAIL", error });
-        });
+        return firebase
+          .firestore()
+          .collection("centers")
+          .doc(uid)
+          .get()
+          .then((result) => {
+            if (result.exists) {
+              dispatch({
+                type: "FETCH_VISITOR_CENTER_SUCCESS",
+                data: result.data(),
+              });
+            } else {
+              throw new Error("visitor center does not exist");
+            }
+          })
+          .catch((error) => {
+            dispatch({ type: "FETCH_VISITOR_CENTER_FAIL", error });
+          });
+      } else {
+        dispatch({ type: "FETCH_VISITOR_CENTER_FAIL", error: "Invalid data" });
+      }
     },
     [dispatch]
   );
+
+  const handleCreateVisitorCenter = async (name, summary, dodoCode) => {
+    await createVisitorCenter(uid, name, summary);
+    await updateUserData(uid, dodoCode);
+    await fetchVisitorCenter(uid);
+  };
 
   useEffect(() => {
     uid && fetchVisitorCenter(uid);
   }, [uid, fetchVisitorCenter]);
 
   return {
-    createVisitorCenter,
+    handleCreateVisitorCenter,
     isCreatingCenter,
     visitorCenterData,
     isFetchingVisitorCenter,

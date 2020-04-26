@@ -4,7 +4,7 @@ import { useCreateVisitorCenter } from "./hooks";
 const CreateVisitorCenter = () => {
   const {
     isCreatingCenter,
-    createVisitorCenter,
+    handleCreateVisitorCenter,
     visitorCenterData,
     isFetchingVisitorCenter,
   } = useCreateVisitorCenter();
@@ -24,10 +24,9 @@ const CreateVisitorCenter = () => {
     summaryRef.current.value = "";
     codeRef.current.value = "";
 
-    createVisitorCenter(name, summary, code);
+    handleCreateVisitorCenter(name, summary, code);
   };
 
-  console.log(visitorCenterData);
   return (
     <>
       {isFetchingVisitorCenter || visitorCenterData === undefined ? (
