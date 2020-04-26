@@ -131,6 +131,7 @@ const useVisitorCenter = (centerId) => {
   const updateDodoCode = (id, updatedDodoCode) => {
     if (id && updatedDodoCode) {
       const db = firebase.firestore();
+      dispatch({ type: "UPDATE_DODO_CODE" });
 
       db.collection("users")
         .doc(id)
@@ -141,14 +142,13 @@ const useVisitorCenter = (centerId) => {
           { merge: true }
         )
         .then(() => {
-          // success
-          console.log("dodo code updated");
+          dispatch({ type: "UPDATE_DODO_CODE_SUCCESS" });
         })
         .catch((error) => {
-          console.log("updating dodo code failed", error);
+          dispatch({ type: "UPDATE_DODO_CODE_FAIL", error });
         });
     } else {
-      console.log("invalid dodo code");
+      dispatch({ type: "UPDATE_DODO_CODE_FAIL", error: "Invalid dodo code" });
     }
   };
 

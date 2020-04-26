@@ -172,6 +172,24 @@ const StateProvider = ({ children }) => {
           isUpdatingDodoCode: false,
           isUpdatingDodoCodeError: action.error,
         };
+      case "SET_DODO_CODE":
+        return {
+          ...state,
+          isSettingDodoCode: true,
+          isSettingDodoCodeError: null,
+        };
+      case "SET_DODO_CODE_SUCCESS":
+        return {
+          ...state,
+          isSettingDodoCode: false,
+          isSettingDodoCodeError: null,
+        };
+      case "SET_DODO_CODE_FAIL":
+        return {
+          ...state,
+          isSettingDodoCode: false,
+          isSettingDodoCodeError: action.error,
+        };
       case "UPDATE_VISITOR_CENTER_DATA":
         return {
           ...state,

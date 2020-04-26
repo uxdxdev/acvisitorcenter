@@ -18,7 +18,7 @@ const useCreateVisitorCenter = () => {
     if (uid && dodoCode) {
       const db = firebase.firestore();
 
-      dispatch({ type: "UPDATE_DODO_CODE" });
+      dispatch({ type: "SET_DODO_CODE" });
 
       await db
         .collection("users")
@@ -28,13 +28,13 @@ const useCreateVisitorCenter = () => {
           next: "",
         })
         .then(() => {
-          dispatch({ type: "UPDATE_DODO_CODE_SUCCESS" });
+          dispatch({ type: "SET_DODO_CODE_SUCCESS" });
         })
         .catch((error) => {
-          dispatch({ type: "UPDATE_DODO_CODE_FAIL", error });
+          dispatch({ type: "SET_DODO_CODE_FAIL", error });
         });
     } else {
-      dispatch({ type: "UPDATE_DODO_CODE_FAIL", error: "Invalid dodo code" });
+      dispatch({ type: "SET_DODO_CODE_FAIL", error: "Invalid dodo code" });
     }
   };
 
