@@ -11,6 +11,7 @@ const useVisitorCenter = (centerId) => {
       isJoiningQueue,
       centerData: currentCenterData,
       dodoCode: currentDodoCode,
+      isFetchingCenterDataError,
     },
   } = context;
 
@@ -22,10 +23,12 @@ const useVisitorCenter = (centerId) => {
     (nextVisitorUid) => {
       const db = firebase.firestore();
 
-      uid &&
+      dispatch({ type: "SET_NEXT_VISITOR" });
+
+      centerId &&
         db
           .collection("users")
-          .doc(uid)
+          .doc(centerId)
           .set(
             {
               next: nextVisitorUid,
@@ -33,57 +36,82 @@ const useVisitorCenter = (centerId) => {
             { merge: true }
           )
           .then(() => {
-            // success
-            console.log("next visitor set");
+            dispatch({ type: "SET_NEXT_VISITOR_SUCCESS" });
           })
           .catch((error) => {
-            console.log("updating next visitor failed", error);
+            dispatch({ type: "SET_NEXT_VISITOR_FAIL", error });
           });
     },
-    [uid]
+    [dispatch, centerId]
   );
 
-  const fetchCenterData = useCallback(() => {
-    if (uid && centerId) {
-      dispatch({ type: "LISTEN_CENTER_DATA" });
-      const db = firebase.firestore();
+  const fetchCenterData = useCallback(
+    async (id) => {
+      if (id && centerId) {
+        const db = firebase.firestore();
 
-      return db
-        .collection("centers")
-        .doc(centerId)
-        .onSnapshot(
-          (result) => {
-            dispatch({
-              type: "LISTEN_CENTER_DATA_SUCCESS",
-              centerData: result.data(),
-            });
-
-            // update the next visitor uid
-            if (
-              result.data()?.owner === uid &&
-              result.data()?.waiting.length > 0
-            ) {
-              const nextVisitorUid = result.data()?.waiting[0]?.uid || "";
-              setNextVisitor(nextVisitorUid);
+        // check if the visitor center exists before making any further requests
+        const visitorCenterExists = await firebase
+          .firestore()
+          .collection("centers")
+          .doc(centerId)
+          .get()
+          .then((result) => {
+            if (result.exists) {
+              return result.exists;
+            } else {
+              throw new Error("visitor center does not exist");
             }
-          },
-          (error) => {
-            console.log(error);
+          })
+          .catch((error) => {
             dispatch({ type: "LISTEN_CENTER_DATA_FAIL", error });
-          }
-        );
-    }
-  }, [uid, centerId, dispatch, setNextVisitor]);
+          });
+
+        if (!visitorCenterExists) return null;
+
+        dispatch({ type: "LISTEN_CENTER_DATA" });
+
+        return db
+          .collection("centers")
+          .doc(centerId)
+          .onSnapshot(
+            (result) => {
+              dispatch({
+                type: "LISTEN_CENTER_DATA_SUCCESS",
+                centerData: result.data(),
+              });
+
+              // update the next visitor uid
+              if (
+                result.data()?.owner === id &&
+                result.data()?.waiting.length > 0
+              ) {
+                const nextVisitorUid = result.data()?.waiting[0]?.uid || "";
+                setNextVisitor(nextVisitorUid);
+              }
+            },
+            (error) => {
+              dispatch({ type: "LISTEN_CENTER_DATA_FAIL", error });
+            }
+          );
+      }
+    },
+    [centerId, dispatch, setNextVisitor]
+  );
 
   /**
    * Fetch center data when user authenticated.
    */
   useEffect(() => {
-    const unsubscribe = fetchCenterData();
+    let unsubscribe = null;
+    async function fetchData() {
+      unsubscribe = await fetchCenterData(uid);
+    }
+    fetchData();
     return () => {
       unsubscribe && unsubscribe();
     };
-  }, [fetchCenterData]);
+  }, [uid, fetchCenterData]);
 
   /**
    * Join visitor center.
@@ -148,8 +176,8 @@ const useVisitorCenter = (centerId) => {
   /**
    * Fetch center data from firestore.
    */
-  const fetchDodoCode = () => {
-    const isFirstInQueue = currentCenterData?.waiting[0]?.uid === uid;
+  const fetchDodoCode = (id) => {
+    const isFirstInQueue = currentCenterData?.waiting[0]?.uid === id;
     if ((isOwner || isFirstInQueue) && ownerUid) {
       dispatch({ type: "FETCH_DODO_CODE" });
 
@@ -240,12 +268,12 @@ const useVisitorCenter = (centerId) => {
     }
   };
 
-  const updateDodoCode = (uid, updatedDodoCode) => {
-    if (uid && updatedDodoCode && updatedDodoCode !== currentDodoCode) {
+  const updateDodoCode = (id, updatedDodoCode) => {
+    if (id && updatedDodoCode && updatedDodoCode !== currentDodoCode) {
       const db = firebase.firestore();
 
       db.collection("users")
-        .doc(uid)
+        .doc(id)
         .set(
           {
             dodoCode: updatedDodoCode,
@@ -277,6 +305,7 @@ const useVisitorCenter = (centerId) => {
     updateCenterInformation,
     centerInformation,
     latestDodoCode,
+    isFetchingCenterDataError,
   };
 };
 
