@@ -83,7 +83,7 @@ const useCreateVisitorCenter = () => {
                 data: result.data(),
               });
             } else {
-              throw new Error("visitor center does not exist");
+              throw new Error("The user has not yet created a visitor center");
             }
           })
           .catch((error) => {

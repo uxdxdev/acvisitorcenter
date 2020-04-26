@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
 
@@ -151,6 +151,39 @@ const useVisitorCenter = (centerId) => {
       console.log("invalid dodo code");
     }
   };
+
+  const setVisitorCenterOpenStatus = useCallback(
+    (id, status) => {
+      const db = firebase.firestore();
+
+      dispatch({ type: "UPDATE_VISITOR_CENTER_OPEN_STATUS" });
+
+      uid &&
+        db
+          .collection("users")
+          .doc(id)
+          .set(
+            {
+              open: status,
+            },
+            { merge: true }
+          )
+          .then(() => {
+            dispatch({ type: "UPDATE_VISITOR_CENTER_OPEN_STATUS_SUCCESS" });
+          })
+          .catch((error) => {
+            dispatch({ type: "UPDATE_VISITOR_CENTER_OPEN_STATUS_FAIL", error });
+          });
+    },
+    [uid, dispatch]
+  );
+
+  // useEffect(() => {
+  //   uid && setVisitorCenterOpenStatus(centerId, true);
+  //   return () => {
+  //     setVisitorCenterOpenStatus(centerId, false);
+  //   };
+  // }, [setVisitorCenterOpenStatus, centerId]);
 
   return {
     waitingList,
