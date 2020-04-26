@@ -6,7 +6,12 @@ const useVisitorCenter = (centerId) => {
   const context = useContext(store);
   const {
     dispatch,
-    state: { uid, centerData: currentCenterData, dodoCode: currentDodoCode },
+    state: {
+      uid,
+      centerData: currentCenterData,
+      dodoCode: currentDodoCode,
+      onlineStatus,
+    },
   } = context;
 
   const waitingList = currentCenterData?.waiting;
@@ -152,6 +157,16 @@ const useVisitorCenter = (centerId) => {
     }
   };
 
+  // listen for changes in online/offline status
+  useEffect(() => {
+    const visitorCenterOnlineStatusRef = firebase
+      .database()
+      .ref("users/" + centerId + "/state");
+    visitorCenterOnlineStatusRef.on("value", (snapshot) => {
+      dispatch({ type: "ONLINE_STATUS", onlineStatus: snapshot.val() });
+    });
+  }, [centerId, dispatch]);
+
   return {
     waitingList,
     isOwner,
@@ -162,6 +177,7 @@ const useVisitorCenter = (centerId) => {
     updateCenterInformation,
     centerInformation,
     latestDodoCode,
+    onlineStatus,
   };
 };
 

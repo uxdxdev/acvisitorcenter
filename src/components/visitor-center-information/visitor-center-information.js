@@ -15,10 +15,13 @@ const VisitorCenterInformation = () => {
     updateCenterInformation,
     centerInformation,
     latestDodoCode,
+    onlineStatus,
   } = useVisitorCenterInformation(centerId);
   const { uid } = useUser();
 
   const isUserFirstInQueue = waitingList && waitingList[0]?.uid === uid;
+
+  const isVisitorCenterOpen = onlineStatus === "online";
 
   return (
     <>
@@ -36,6 +39,8 @@ const VisitorCenterInformation = () => {
           </button>
         </div>
       )}
+
+      <h2>{isVisitorCenterOpen ? "Open" : "Closed"}</h2>
 
       <h2>Name</h2>
       {isEditable ? (
