@@ -154,6 +154,42 @@ const StateProvider = ({ children }) => {
           isSettingNextVisitor: false,
           isSettingNextVisitorError: action.error,
         };
+      case "UPDATE_DODO_CODE":
+        return {
+          ...state,
+          isUpdatingDodoCode: true,
+          isUpdatingDodoCodeError: null,
+        };
+      case "UPDATE_DODO_CODE_SUCCESS":
+        return {
+          ...state,
+          isUpdatingDodoCode: false,
+          isUpdatingDodoCodeError: null,
+        };
+      case "UPDATE_DODO_CODE_FAIL":
+        return {
+          ...state,
+          isUpdatingDodoCode: false,
+          isUpdatingDodoCodeError: action.error,
+        };
+      case "UPDATE_VISITOR_CENTER_DATA":
+        return {
+          ...state,
+          isUpdatingVisitorCenterData: true,
+          isUpdatingVisitorCenterDataError: null,
+        };
+      case "UPDATE_VISITOR_CENTER_DATA_SUCCESS":
+        return {
+          ...state,
+          isUpdatingVisitorCenterData: false,
+          isUpdatingVisitorCenterDataError: null,
+        };
+      case "UPDATE_VISITOR_CENTER_DATA_FAIL":
+        return {
+          ...state,
+          isUpdatingVisitorCenterData: false,
+          isUpdatingVisitorCenterDataError: action.error,
+        };
       default:
         throw new Error();
     }
