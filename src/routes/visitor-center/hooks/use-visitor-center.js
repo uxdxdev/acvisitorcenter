@@ -8,7 +8,7 @@ const useVisitorCenter = (centerId) => {
     dispatch,
     state: {
       uid,
-      isJoiningCenter,
+      isJoiningQueue,
       centerData,
       dodoCode,
       isFetchingDodoCode,
@@ -93,7 +93,7 @@ const useVisitorCenter = (centerId) => {
    * @param {*} data.name visitor center name
    * @param {*} data.uid user id
    */
-  const joinCenter = (id, { name, uid }) => {
+  const joinVisitorQueue = (id, { name, uid }) => {
     const db = firebase.firestore();
     const centersRef = db.collection("centers").doc(id);
 
@@ -174,33 +174,70 @@ const useVisitorCenter = (centerId) => {
     }
   };
 
-  const saveCenterData = (centerId, data) => {
-    console.log(data);
-    const { name, summary } = data;
-    const db = firebase.firestore();
+  const saveCenterData = (centerId, centerData) => {
+    const { name, summary } = centerData;
+    if (
+      name &&
+      summary &&
+      // data is not the same as before update
+      (centerData?.name !== name || centerData?.summary !== summary)
+    ) {
+      const db = firebase.firestore();
 
-    db.collection("centers")
-      .doc(centerId)
-      .set(
-        {
-          name,
-          summary,
-        },
-        { merge: true }
-      )
-      .then(() => {
-        // success
-        console.log("center data updated");
-      })
-      .catch((error) => {
-        console.log("updating center data failed", error);
-      });
+      db.collection("centers")
+        .doc(centerId)
+        .set(
+          {
+            name,
+            summary,
+          },
+          { merge: true }
+        )
+        .then(() => {
+          // success
+          console.log("center data updated");
+        })
+        .catch((error) => {
+          console.log("updating center data failed", error);
+        });
+    } else {
+      console.log("center data is the same");
+    }
+  };
+
+  const updateDodoCode = (uid, updatedDodoCode) => {
+    if (
+      uid &&
+      updatedDodoCode &&
+      // data is not the same as before update
+      updatedDodoCode !== dodoCode
+    ) {
+      const db = firebase.firestore();
+
+      db.collection("users")
+        .doc(uid)
+        .set(
+          {
+            dodoCode: updatedDodoCode,
+          },
+          { merge: true }
+        )
+        .then(() => {
+          // success
+          console.log("dodo code updated");
+        })
+        .catch((error) => {
+          console.log("updating dodo code failed", error);
+        });
+    } else {
+      console.log("center data is the same");
+    }
   };
 
   return {
     isOwner,
-    joinCenter,
-    isJoiningCenter,
+    joinVisitorQueue,
+    isJoiningQueue,
     centerData,
     deleteUser,
     isDeletingUser,
@@ -208,6 +245,7 @@ const useVisitorCenter = (centerId) => {
     fetchDodoCode,
     isFetchingDodoCode,
     saveCenterData,
+    updateDodoCode,
   };
 };
 

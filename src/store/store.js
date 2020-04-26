@@ -24,18 +24,18 @@ const StateProvider = ({ children }) => {
           createCenterError: action.error,
         };
       case "JOIN_CENTER":
-        return { ...state, isJoiningCenter: true, isJoiningCenterError: null };
+        return { ...state, isJoiningQueue: true, isJoiningQueueError: null };
       case "JOIN_CENTER_SUCCESS":
         return {
           ...state,
-          isJoiningCenter: false,
-          isJoiningCenterError: null,
+          isJoiningQueue: false,
+          isJoiningQueueError: null,
         };
       case "JOIN_CENTER_FAIL":
         return {
           ...state,
-          isJoiningCenter: false,
-          isJoiningCenterError: action.error,
+          isJoiningQueue: false,
+          isJoiningQueueError: action.error,
         };
       case "DELETE_USER":
         return { ...state, isDeletingUser: true, isDeletingUserError: null };

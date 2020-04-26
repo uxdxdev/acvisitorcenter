@@ -22,7 +22,7 @@ const LatestVisitorCenterList = () => {
                   <li key={center.id}>
                     {name}{" "}
                     <a href={url} target="_blank" rel="noopener noreferrer">
-                      Open
+                      Visit
                     </a>
                   </li>
                 );

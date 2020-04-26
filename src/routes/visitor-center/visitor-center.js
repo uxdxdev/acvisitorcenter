@@ -8,13 +8,14 @@ const VisitorCenter = () => {
   const { id: centerId } = useParams();
   const {
     centerData,
-    isJoiningCenter,
-    joinCenter,
+    isJoiningQueue,
+    joinVisitorQueue,
     deleteUser,
     dodoCode,
     isOwner,
     fetchDodoCode,
     saveCenterData,
+    updateDodoCode,
   } = useVisitorCenter(centerId);
   const { uid } = useUser();
   const [isEditable, setIsEditable] = useState(false);
@@ -30,7 +31,7 @@ const VisitorCenter = () => {
     nameInputRef.current.value = "";
 
     if (name && uid && !userExistsInCenter) {
-      joinCenter(centerId, { name, uid });
+      joinVisitorQueue(centerId, { name, uid });
     }
   };
 
@@ -49,18 +50,22 @@ const VisitorCenter = () => {
     });
   };
 
-  const updateCenterInformation = () => {
-    setIsEditable(!isEditable);
-    if (isEditable) saveCenterData(centerId, centerInformation);
-  };
-
   const [latestDodoCode, setDodoCode] = useState({ dodoCode: "*****" });
+
   useEffect(() => {
     dodoCode && setDodoCode({ dodoCode });
   }, [dodoCode]);
 
   const handleDodoCodeChange = ({ id, value }) => {
     setDodoCode({ [id]: value });
+  };
+
+  const updateCenterInformation = () => {
+    setIsEditable(!isEditable);
+    if (isEditable) {
+      saveCenterData(centerId, centerInformation);
+      updateDodoCode(uid, latestDodoCode?.dodoCode);
+    }
   };
 
   return (
@@ -71,15 +76,16 @@ const VisitorCenter = () => {
           will disable the center.
         </span>
       )}
+
       {isOwner && (
         <div>
           <button onClick={() => updateCenterInformation()}>
-            {isEditable ? "Save" : "Edit"}
+            {isEditable ? "Save" : "Edit information"}
           </button>
         </div>
       )}
-      <h2>Name</h2>
 
+      <h2>Name</h2>
       {isEditable ? (
         <input
           type="text"
@@ -120,13 +126,17 @@ const VisitorCenter = () => {
           maxLength="5"
         />
       ) : (
-        <div>{latestDodoCode.dodoCode}</div>
+        <>
+          <div>{latestDodoCode.dodoCode}</div>
+        </>
       )}
+      <button onClick={() => fetchDodoCode()} disabled={isEditable}>
+        Get code
+      </button>
 
-      <button onClick={() => fetchDodoCode()}>Get code</button>
       {!isOwner && (
         <>
-          <h2>Join center</h2>
+          <h2>Join visitor queue</h2>
           <form onSubmit={handleSubmit}>
             <div>
               <label htmlFor="name">Name</label>
@@ -142,9 +152,9 @@ const VisitorCenter = () => {
             <div>
               <button
                 type="submit"
-                disabled={isJoiningCenter || userExistsInCenter}
+                disabled={isJoiningQueue || userExistsInCenter}
               >
-                Join center
+                Join queue
               </button>
             </div>
           </form>

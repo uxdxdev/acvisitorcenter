@@ -38,9 +38,14 @@ service cloud.firestore {
       									(request.auth.uid == userId &&
                         request.resource.data.keys().hasOnly(['dodoCode', 'next']) &&
                         request.resource.data.next is string && 
-                        request.resource.data.next.size() < 30 &&
-                        // other data unmodified
-                        request.resource.data.dodoCode == resource.data.dodoCode);
+                        request.resource.data.next.size() < 30 &&                      
+                        request.resource.data.dodoCode == resource.data.dodoCode) || 
+                        // owner updating dodo code
+                        (request.auth.uid == userId &&
+                        request.resource.data.keys().hasOnly(['dodoCode', 'next']) && 
+                        request.resource.data.dodoCode is string &&
+                        request.resource.data.dodoCode.size() < 6 &&
+                        request.resource.data.next == resource.data.next);
     }
        
     match /centers/{centerId} {
