@@ -208,24 +208,6 @@ const StateProvider = ({ children }) => {
           isUpdatingVisitorCenterData: false,
           isUpdatingVisitorCenterDataError: action.error,
         };
-      case "UPDATE_VISITOR_CENTER_OPEN_STATUS":
-        return {
-          ...state,
-          isUpdatingVisitorCenterOpenStatus: true,
-          isUpdatingVisitorCenterOpenStatusError: null,
-        };
-      case "UPDATE_VISITOR_CENTER_OPEN_STATUS_SUCCESS":
-        return {
-          ...state,
-          isUpdatingVisitorCenterOpenStatus: false,
-          isUpdatingVisitorCenterOpenStatusError: null,
-        };
-      case "UPDATE_VISITOR_CENTER_OPEN_STATUS_FAIL":
-        return {
-          ...state,
-          isUpdatingVisitorCenterOpenStatus: false,
-          isUpdatingVisitorCenterOpenStatusError: action.error,
-        };
       default:
         throw new Error();
     }
