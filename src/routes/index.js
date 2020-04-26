@@ -1,5 +1,5 @@
 import React from "react";
-import { Homepage } from "./homepage";
+import { LandingPage } from "./landing-page";
 import { VisitorCenter } from "./visitor-center";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -8,7 +8,7 @@ const Routes = () => {
     <Router>
       <Switch>
         <Route exact path="/">
-          <Homepage />
+          <LandingPage />
         </Route>
         <Route path="/center/:id">
           <VisitorCenter />
