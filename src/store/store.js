@@ -15,6 +15,8 @@ const StateProvider = ({ children }) => {
         return { ...state, uid: action.uid };
       case "UNAUTH":
         return { ...state, uid: null };
+      case "ONLINE_STATUS":
+        return { ...state, onlineStatus: action.onlineStatus };
       case "CREATE_CENTER":
         return { ...state, isCreatingCenter: true };
       case "CREATE_CENTER_SUCCESS":
