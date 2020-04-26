@@ -35,6 +35,7 @@ const useVisitorCenter = (centerId) => {
           )
           .then(() => {
             // success
+            console.log("next visitor set");
           })
           .catch((error) => {
             console.log("updating next visitor failed", error);
@@ -59,12 +60,16 @@ const useVisitorCenter = (centerId) => {
             });
 
             // update the next visitor uid
-            if (result.data()?.owner === uid) {
+            if (
+              result.data()?.owner === uid &&
+              result.data()?.waiting.length > 0
+            ) {
               const nextVisitorUid = result.data()?.waiting[0]?.uid || "";
               setNextVisitor(nextVisitorUid);
             }
           },
           (error) => {
+            console.log(error);
             dispatch({ type: "FETCH_CENTER_DATA_FAIL", error });
           }
         );
@@ -169,6 +174,29 @@ const useVisitorCenter = (centerId) => {
     }
   };
 
+  const saveCenterData = (centerId, data) => {
+    console.log(data);
+    const { name, summary } = data;
+    const db = firebase.firestore();
+
+    db.collection("centers")
+      .doc(centerId)
+      .set(
+        {
+          name,
+          summary,
+        },
+        { merge: true }
+      )
+      .then(() => {
+        // success
+        console.log("center data updated");
+      })
+      .catch((error) => {
+        console.log("updating center data failed", error);
+      });
+  };
+
   return {
     isOwner,
     joinCenter,
@@ -179,6 +207,7 @@ const useVisitorCenter = (centerId) => {
     dodoCode,
     fetchDodoCode,
     isFetchingDodoCode,
+    saveCenterData,
   };
 };
 
