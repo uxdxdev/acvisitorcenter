@@ -14,6 +14,7 @@ const VisitorCenter = () => {
     dodoCode,
     isOwner,
     fetchDodoCode,
+    saveCenterData,
   } = useVisitorCenter(centerId);
   const { uid } = useUser();
   const [isEditable, setIsEditable] = useState(false);
@@ -50,6 +51,7 @@ const VisitorCenter = () => {
 
   const updateCenterInformation = () => {
     setIsEditable(!isEditable);
+    if (isEditable) saveCenterData(centerId, centerInformation);
   };
 
   const [latestDodoCode, setDodoCode] = useState({ dodoCode: "*****" });

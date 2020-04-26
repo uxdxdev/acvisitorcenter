@@ -18,6 +18,7 @@ service cloud.firestore {
     match /users/{userId} {
     	
     	allow create: if request.auth != null && 
+                        // user creating visitor center
       									request.auth.uid == userId &&
                         request.resource.data.keys().hasOnly(['dodoCode', 'next']) &&
       									request.resource.data.dodoCode is string && 
@@ -25,44 +26,73 @@ service cloud.firestore {
                         request.resource.data.next is string && 
                         request.resource.data.next.size() == 0;
                         
-      allow read: if request.auth != null &&
+      // allow single doc reads
+      allow get: if request.auth != null &&
+                      // owner
       								(request.auth.uid == userId || 
-                      // user reading dodo code is next
+                      // user reading dodo code
                       resource.data.next == request.auth.uid);
 
       allow update: if request.auth != null && 
-      									request.auth.uid == userId;
+                        // owner updating next visitor
+      									(request.auth.uid == userId &&
+                        request.resource.data.keys().hasOnly(['dodoCode', 'next']) &&
+                        request.resource.data.next is string && 
+                        request.resource.data.next.size() < 30 &&
+                        // other data unmodified
+                        request.resource.data.dodoCode == resource.data.dodoCode);
     }
        
     match /centers/{centerId} {
     									
       allow create: if request.auth != null && 
-      								validateResourceFields(request.resource.data) &&
-                      request.resource.data.owner == request.auth.uid &&       								      								      								
-                      request.resource.data.waiting.size() == 0 &&                                        
-                      request.resource.data.createdAt == request.time &&
-                      resource == null;
-                      
-      allow read: if request.auth != null;
+                      // owner creating center
+                      (request.resource.data.owner == request.auth.uid &&
+                      resource == null &&
+      								validateResourceFields(request.resource.data) &&                      
+                      request.resource.data.waiting.size() == 0 &&
+                      request.resource.data.createdAt == request.time);
       
-      allow update: if request.auth != null && 
+      // allow reading multiple docs with limit
+      allow list: if request.auth != null && request.query.limit <= 10;                     
+      
+      // allow single doc reads
+      allow get: if request.auth != null;
+      
+      allow update: if request.auth != null &&
+
       								// owner removing visitor from waiting list
-      								(request.auth.uid == resource.data.owner &&
+                      // .update() used so request.resource.data contains the resource after update, which includes all other fields
+      								(request.auth.uid == resource.data.owner &&                      
                       validateResourceFields(request.resource.data) &&
+                      request.resource.data.waiting.size() == resource.data.waiting.size() - 1 &&
+                      // other data is unmodified
                       request.resource.data.name == resource.data.name &&
                       request.resource.data.owner == resource.data.owner &&
                       request.resource.data.summary == resource.data.summary &&
+                      request.resource.data.createdAt == resource.data.createdAt) ||
+
+                      // owner updating center data
+                      (request.auth.uid == resource.data.owner &&
+                      validateResourceFields(request.resource.data) &&
+                      // other data is unmodified           
+                      request.resource.data.owner == resource.data.owner &&                      
                       request.resource.data.createdAt == resource.data.createdAt &&
-      								request.resource.data.waiting.size() == resource.data.waiting.size() - 1) ||
+      								request.resource.data.waiting.size() == resource.data.waiting.size()) ||
+
                       // user adding themselves to waiting list
-                      (validateResourceFields(request.resource.data) &&
+                      (validateResourceFields(request.resource.data) &&                      
       								request.resource.data.waiting.size() == resource.data.waiting.size() + 1 &&                      
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].keys().hasOnly(['name', 'uid', 'joinedAt']) &&
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].uid == request.auth.uid &&
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].name is string &&
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].name.size() <= 50 &&
-                      request.resource.data.waiting[request.resource.data.waiting.size() - 1].joinedAt is timestamp);
-                      
+                      request.resource.data.waiting[request.resource.data.waiting.size() - 1].joinedAt is timestamp &&
+                      // other data is unmodified
+                      request.resource.data.name == resource.data.name &&
+                      request.resource.data.owner == resource.data.owner &&
+                      request.resource.data.summary == resource.data.summary &&
+                      request.resource.data.createdAt == resource.data.createdAt);   
     }
   }
 }
