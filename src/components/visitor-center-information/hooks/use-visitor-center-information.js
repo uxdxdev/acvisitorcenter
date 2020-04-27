@@ -15,9 +15,11 @@ const useVisitorCenter = (centerId) => {
 
   const waitingList = visitorCenterData?.waiting;
   const ownerUid = visitorCenterData?.owner;
-  const isOwner = ownerUid && uid && ownerUid === uid;
+
+  const isOwner = uid === centerId;
   const isUserFirstInQueue = waitingList && waitingList[0]?.uid === uid;
   const isVisitorCenterOpen = onlineStatus === "online";
+  const isLoading = visitorCenterData === undefined;
 
   const handleFetchDodoCode = () => {
     if ((isOwner || isUserFirstInQueue) && ownerUid) {
@@ -49,8 +51,8 @@ const useVisitorCenter = (centerId) => {
   };
 
   const [centerInformation, setCenterInformation] = useState({
-    name: "",
-    summary: "",
+    name: "Loading...",
+    summary: "Loading...",
   });
 
   useEffect(() => {
@@ -213,6 +215,7 @@ const useVisitorCenter = (centerId) => {
     isUserFirstInQueue,
     isVisitorCenterOpen,
     waitingList,
+    isLoading,
   };
 };
 
