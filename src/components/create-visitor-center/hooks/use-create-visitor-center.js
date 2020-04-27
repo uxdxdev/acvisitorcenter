@@ -92,7 +92,10 @@ const useCreateVisitorCenter = () => {
               visitorCenterData: result.data(),
             });
           } else {
-            throw new Error("The user has not yet created a visitor center");
+            dispatch({
+              type: "FETCH_VISITOR_CENTER_FAIL",
+              error: "The user has not yet created a visitor center",
+            });
           }
         })
         .catch((error) => {
