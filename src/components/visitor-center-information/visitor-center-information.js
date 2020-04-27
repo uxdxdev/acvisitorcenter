@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useVisitorCenterInformation } from "./hooks";
 import { VisitorCenterStatus } from "../visitor-center-status";
 import { WaitingList } from "../../components/waiting-list";
+import { Link } from "react-router-dom";
 
 const VisitorCenterInformation = () => {
   const { id: centerId } = useParams();
@@ -18,10 +19,26 @@ const VisitorCenterInformation = () => {
     isUserFirstInQueue,
     isLoading,
     waitingList,
+    isVisitorCenterOpen,
   } = useVisitorCenterInformation(centerId);
 
   return (
     <>
+      <Link to={`/`}>
+        <h1>AC Visitor Center</h1>
+      </Link>
+      {isOwner && (
+        <>
+          {!isLoading ? (
+            <button onClick={() => handleUpdateCenterInformation()}>
+              {isEditable ? "Save" : "Edit information"}
+            </button>
+          ) : (
+            <div>Loading...</div>
+          )}
+        </>
+      )}
+
       <VisitorCenterStatus />
 
       <h2>Name</h2>
@@ -71,46 +88,33 @@ const VisitorCenterInformation = () => {
             <div>Loading...</div>
           ) : (
             <>
-              {isEditable ? (
-                <input
-                  type="text"
-                  value={latestDodoCode.dodoCode}
-                  onChange={(event) => handleDodoCodeChange(event.target)}
-                  id="dodoCode"
-                  disabled={!isEditable}
-                  minLength="5"
-                  maxLength="5"
-                />
-              ) : (
+              {isVisitorCenterOpen ? (
                 <>
-                  <div>{latestDodoCode.dodoCode} </div>
+                  {isEditable ? (
+                    <input
+                      type="text"
+                      value={latestDodoCode.dodoCode}
+                      onChange={(event) => handleDodoCodeChange(event.target)}
+                      id="dodoCode"
+                      disabled={!isEditable}
+                      minLength="5"
+                      maxLength="5"
+                    />
+                  ) : (
+                    <>
+                      <div>{latestDodoCode.dodoCode} </div>
+                    </>
+                  )}
+                  <button
+                    onClick={() => handleFetchDodoCode()}
+                    disabled={isEditable}
+                  >
+                    Get code
+                  </button>
                 </>
+              ) : (
+                <div>The visitor center is closed</div>
               )}
-            </>
-          )}
-          <button onClick={() => handleFetchDodoCode()} disabled={isEditable}>
-            Get code
-          </button>
-        </>
-      )}
-      <br />
-      {isOwner && (
-        <>
-          <h2>Edit visitor center</h2>
-          {isLoading ? (
-            <div>Loading...</div>
-          ) : (
-            <>
-              <span>
-                Please keep this page open to manage the center. Closing this
-                page will disable the center.
-              </span>
-
-              <div>
-                <button onClick={() => handleUpdateCenterInformation()}>
-                  {isEditable ? "Save" : "Edit information"}
-                </button>
-              </div>
             </>
           )}
         </>
