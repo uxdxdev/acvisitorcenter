@@ -1,5 +1,5 @@
 const initialState = {
-  isCreatingCenter: false,
+  isCreatingVisitorCenter: false,
   centerId: null,
   createVisitorCenterError: null,
 };
@@ -7,35 +7,39 @@ const initialState = {
 const visitorCenterReducer = (state, action) => {
   switch (action.type) {
     case "CREATE_VISITOR_CENTER":
-      return { ...state, isCreatingCenter: true };
+      return { ...state, isCreatingVisitorCenter: true };
     case "CREATE_VISITOR_CENTER_SUCCESS":
-      return { ...state, isCreatingCenter: false, centerId: action.centerId };
+      return {
+        ...state,
+        isCreatingVisitorCenter: false,
+        centerId: action.centerId,
+      };
     case "CREATE_VISITOR_CENTER_FAIL":
       return {
         ...state,
-        isCreatingCenter: false,
+        isCreatingVisitorCenter: false,
         createVisitorCenterError: action.error,
       };
 
     case "FETCH_VISITOR_CENTER":
       return {
         ...state,
-        isFetchingVisitorCenter: true,
-        isFetchingVisitorCenterError: null,
+        isFetchingVisitorCenterData: true,
+        isFetchingVisitorCenterDataError: null,
       };
     case "FETCH_VISITOR_CENTER_SUCCESS":
       return {
         ...state,
-        isFetchingVisitorCenter: false,
+        isFetchingVisitorCenterData: false,
         visitorCenterData: action.data,
-        isFetchingVisitorCenterError: null,
+        isFetchingVisitorCenterDataError: null,
       };
     case "FETCH_VISITOR_CENTER_FAIL":
       return {
         ...state,
-        isFetchingVisitorCenter: false,
+        isFetchingVisitorCenterData: false,
         visitorCenterData: null,
-        isFetchingVisitorCenterError: action.error,
+        isFetchingVisitorCenterDataError: action.error,
       };
 
     case "LISTEN_CENTER_DATA":
