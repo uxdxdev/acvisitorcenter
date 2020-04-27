@@ -7,22 +7,14 @@ const useCreateVisitorCenter = () => {
   const {
     state: {
       auth: { uid },
-      visitorCenter: {
-        isCreatingVisitorCenter,
-        visitorCenterData,
-        isFetchingVisitorCenterData,
-      },
-      dodoCode: { isUpdatingDodoCode },
+      visitorCenter: { visitorCenterData, isFetchingVisitorCenterData },
     },
     dispatch,
   } = context;
 
   const isAuthed = uid !== null && uid !== undefined;
   const isLoading =
-    !isAuthed ||
-    isCreatingVisitorCenter ||
-    isUpdatingDodoCode ||
-    isFetchingVisitorCenterData;
+    isFetchingVisitorCenterData || visitorCenterData === undefined;
 
   const updateUserData = async (dodoCode) => {
     if (uid && dodoCode) {

@@ -12,6 +12,8 @@ const useLatestVisitorCenterList = () => {
     },
   } = context;
 
+  const isLoading = isFetchingLatestCenters || latestCenters === undefined;
+
   const fetchLatestCenters = useCallback(() => {
     const db = firebase.firestore();
 
@@ -39,7 +41,7 @@ const useLatestVisitorCenterList = () => {
     };
   }, [uid, dispatch, fetchLatestCenters]);
 
-  return { latestCenters, isFetchingLatestCenters };
+  return { latestCenters, isLoading };
 };
 
 export default useLatestVisitorCenterList;

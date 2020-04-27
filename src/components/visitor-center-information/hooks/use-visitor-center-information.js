@@ -8,7 +8,11 @@ const useVisitorCenter = (centerId) => {
     dispatch,
     state: {
       auth: { uid },
-      visitorCenter: { visitorCenterData, onlineStatus },
+      visitorCenter: {
+        visitorCenterData,
+        onlineStatus,
+        isFetchingVisitorCenterData,
+      },
       dodoCode: { code: currentDodoCode },
     },
   } = context;
@@ -19,7 +23,8 @@ const useVisitorCenter = (centerId) => {
   const isOwner = uid === centerId;
   const isUserFirstInQueue = waitingList && waitingList[0]?.uid === uid;
   const isVisitorCenterOpen = onlineStatus === "online";
-  const isLoading = visitorCenterData === undefined;
+  const isLoading =
+    isFetchingVisitorCenterData || visitorCenterData === undefined;
 
   const handleFetchDodoCode = () => {
     if ((isOwner || isUserFirstInQueue) && ownerUid) {
