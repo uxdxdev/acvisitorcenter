@@ -162,30 +162,10 @@ const useVisitorCenter = (centerId) => {
     };
   }, [dispatch]);
 
-  const handleListenVisitorCenterDataAndUpdateWaitingList = useCallback(
+  const handleListenVisitorCenterData = useCallback(
     async (id) => {
       if (id && centerId) {
         const db = firebase.firestore();
-
-        // check if the visitor center exists before making any further requests
-        const visitorCenterExists = await firebase
-          .firestore()
-          .collection("centers")
-          .doc(centerId)
-          .get()
-          .then((result) => {
-            if (result.exists) {
-              return result.exists;
-            } else {
-              throw new Error("visitor center does not exist");
-            }
-          })
-          .catch((error) => {
-            // fails to listen
-            dispatch({ type: "FETCH_VISITOR_CENTER_FAIL", error });
-          });
-
-        if (!visitorCenterExists) return null;
 
         dispatch({ type: "FETCH_VISITOR_CENTER" });
 
@@ -214,15 +194,13 @@ const useVisitorCenter = (centerId) => {
   useEffect(() => {
     let unsubscribe = null;
     async function fetchData() {
-      unsubscribe = await handleListenVisitorCenterDataAndUpdateWaitingList(
-        uid
-      );
+      unsubscribe = await handleListenVisitorCenterData(uid);
     }
     fetchData();
     return () => {
       unsubscribe && unsubscribe();
     };
-  }, [uid, handleListenVisitorCenterDataAndUpdateWaitingList]);
+  }, [uid, handleListenVisitorCenterData]);
 
   return {
     isOwner,
