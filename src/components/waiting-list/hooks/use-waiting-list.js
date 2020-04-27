@@ -14,8 +14,8 @@ const useVisitorCenter = (centerId) => {
   } = context;
 
   // const waitingList = currentCenterData?.waiting;
-  const ownerUid = currentCenterData?.owner;
-  const isOwner = ownerUid && uid && ownerUid === uid;
+  const isOwner = centerId && centerId === uid;
+  const waitingList = currentCenterData?.waiting;
 
   const setNextVisitor = useCallback(
     (nextVisitorUid) => {
@@ -44,15 +44,13 @@ const useVisitorCenter = (centerId) => {
   );
 
   useEffect(() => {
-    // update the next visitor uid
-    if (
-      currentCenterData?.owner === uid &&
-      currentCenterData?.waiting.length > 0
-    ) {
-      const nextVisitorUid = currentCenterData?.waiting[0]?.uid || "";
+    // if there is a change in the waiting list
+    // then update the next visitor
+    if (isOwner && waitingList?.length > 0) {
+      const nextVisitorUid = waitingList[0]?.uid || "";
       setNextVisitor(nextVisitorUid);
     }
-  }, [currentCenterData, setNextVisitor, uid]);
+  }, [waitingList, setNextVisitor, isOwner]);
 
   const deleteUser = (id, deleteUid) => {
     const db = firebase.firestore();
