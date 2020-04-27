@@ -44,24 +44,6 @@ const dodoCodeReducer = (state, action) => {
         isUpdatingDodoCode: false,
         isUpdatingDodoCodeError: action.error,
       };
-    case "SET_DODO_CODE":
-      return {
-        ...state,
-        isSettingDodoCode: true,
-        isSettingDodoCodeError: null,
-      };
-    case "SET_DODO_CODE_SUCCESS":
-      return {
-        ...state,
-        isSettingDodoCode: false,
-        isSettingDodoCodeError: null,
-      };
-    case "SET_DODO_CODE_FAIL":
-      return {
-        ...state,
-        isSettingDodoCode: false,
-        isSettingDodoCodeError: action.error,
-      };
 
     case "RESET_FETCH_DODO_CODE":
       return {

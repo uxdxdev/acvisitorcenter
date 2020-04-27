@@ -12,7 +12,7 @@ const useCreateVisitorCenter = () => {
         visitorCenterData,
         isFetchingVisitorCenterData,
       },
-      dodoCode: { isSettingDodoCode },
+      dodoCode: { isUpdatingDodoCode },
     },
     dispatch,
   } = context;
@@ -21,14 +21,14 @@ const useCreateVisitorCenter = () => {
   const isLoading =
     !isAuthed ||
     isCreatingVisitorCenter ||
-    isSettingDodoCode ||
+    isUpdatingDodoCode ||
     isFetchingVisitorCenterData;
 
-  const setDodoCode = async (uid, dodoCode) => {
+  const updateUserData = async (dodoCode) => {
     if (uid && dodoCode) {
       const db = firebase.firestore();
 
-      dispatch({ type: "SET_DODO_CODE" });
+      dispatch({ type: "UPDATE_DODO_CODE" });
 
       await db
         .collection("users")
@@ -38,18 +38,18 @@ const useCreateVisitorCenter = () => {
           next: "",
         })
         .then(() => {
-          dispatch({ type: "SET_DODO_CODE_SUCCESS" });
+          dispatch({ type: "UPDATE_DODO_CODE_SUCCESS" });
         })
         .catch((error) => {
-          dispatch({ type: "SET_DODO_CODE_FAIL", error });
+          dispatch({ type: "UPDATE_DODO_CODE_FAIL", error });
         });
     } else {
-      dispatch({ type: "SET_DODO_CODE_FAIL", error: "Invalid dodo code" });
+      dispatch({ type: "UPDATE_DODO_CODE_FAIL", error: "Invalid dodo code" });
     }
   };
 
-  const createVisitorCenter = async (uid, name, summary) => {
-    if ((uid, name, summary)) {
+  const createVisitorCenter = async (name, summary) => {
+    if (uid && name && summary) {
       const db = firebase.firestore();
       const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
@@ -66,7 +66,7 @@ const useCreateVisitorCenter = () => {
           summary,
         })
         .then(() => {
-          dispatch({ type: "CREATE_VISITOR_CENTER_SUCCESS", centerId: uid });
+          dispatch({ type: "CREATE_VISITOR_CENTER_SUCCESS" });
         })
         .catch((error) => {
           dispatch({ type: "CREATE_VISITOR_CENTER_FAIL", error });
@@ -76,45 +76,42 @@ const useCreateVisitorCenter = () => {
     }
   };
 
-  const fetchVisitorCenterData = useCallback(
-    (uid) => {
-      if (uid) {
-        dispatch({ type: "FETCH_VISITOR_CENTER" });
+  const fetchVisitorCenterData = useCallback(() => {
+    if (uid) {
+      dispatch({ type: "FETCH_VISITOR_CENTER" });
 
-        return firebase
-          .firestore()
-          .collection("centers")
-          .doc(uid)
-          .get()
-          .then((result) => {
-            if (result.exists) {
-              dispatch({
-                type: "FETCH_VISITOR_CENTER_SUCCESS",
-                data: result.data(),
-              });
-            } else {
-              throw new Error("The user has not yet created a visitor center");
-            }
-          })
-          .catch((error) => {
-            dispatch({ type: "FETCH_VISITOR_CENTER_FAIL", error });
-          });
-      } else {
-        dispatch({ type: "FETCH_VISITOR_CENTER_FAIL", error: "Invalid data" });
-      }
-    },
-    [dispatch]
-  );
+      return firebase
+        .firestore()
+        .collection("centers")
+        .doc(uid)
+        .get()
+        .then((result) => {
+          if (result.exists) {
+            dispatch({
+              type: "FETCH_VISITOR_CENTER_SUCCESS",
+              data: result.data(),
+            });
+          } else {
+            throw new Error("The user has not yet created a visitor center");
+          }
+        })
+        .catch((error) => {
+          dispatch({ type: "FETCH_VISITOR_CENTER_FAIL", error });
+        });
+    } else {
+      dispatch({ type: "FETCH_VISITOR_CENTER_FAIL", error: "Invalid data" });
+    }
+  }, [uid, dispatch]);
 
   const handleCreateVisitorCenter = async (name, summary, dodoCode) => {
-    await createVisitorCenter(uid, name, summary);
-    await setDodoCode(uid, dodoCode);
-    await fetchVisitorCenterData(uid);
+    await createVisitorCenter(name, summary);
+    await updateUserData(dodoCode);
+    await fetchVisitorCenterData();
   };
 
   useEffect(() => {
-    isAuthed && fetchVisitorCenterData(uid);
-  }, [isAuthed, uid, fetchVisitorCenterData]);
+    isAuthed && fetchVisitorCenterData();
+  }, [isAuthed, fetchVisitorCenterData]);
 
   return {
     handleCreateVisitorCenter,

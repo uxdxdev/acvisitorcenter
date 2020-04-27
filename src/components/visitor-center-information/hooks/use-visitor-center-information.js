@@ -134,8 +134,8 @@ const useVisitorCenter = (centerId) => {
     }
   };
 
-  const updateDodoCode = (id, updatedDodoCode) => {
-    if (id && updatedDodoCode) {
+  const updateDodoCode = (id, dodoCode) => {
+    if (id && dodoCode) {
       const db = firebase.firestore();
       dispatch({ type: "UPDATE_DODO_CODE" });
 
@@ -143,7 +143,7 @@ const useVisitorCenter = (centerId) => {
         .doc(id)
         .set(
           {
-            dodoCode: updatedDodoCode,
+            dodoCode,
           },
           { merge: true }
         )
