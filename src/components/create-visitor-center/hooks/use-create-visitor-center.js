@@ -8,13 +8,21 @@ const useCreateVisitorCenter = () => {
     state: {
       auth: { uid },
       visitorCenter: {
-        isCreatingCenter,
+        isCreatingVisitorCenter,
         visitorCenterData,
-        isFetchingVisitorCenter,
+        isFetchingVisitorCenterData,
       },
+      dodoCode: { isSettingDodoCode },
     },
     dispatch,
   } = context;
+
+  const isAuthed = uid !== null && uid !== undefined;
+  const isLoading =
+    !isAuthed ||
+    isCreatingVisitorCenter ||
+    isSettingDodoCode ||
+    isFetchingVisitorCenterData;
 
   const setDodoCode = async (uid, dodoCode) => {
     if (uid && dodoCode) {
@@ -105,14 +113,13 @@ const useCreateVisitorCenter = () => {
   };
 
   useEffect(() => {
-    uid && fetchVisitorCenterData(uid);
-  }, [uid, fetchVisitorCenterData]);
+    isAuthed && fetchVisitorCenterData(uid);
+  }, [isAuthed, uid, fetchVisitorCenterData]);
 
   return {
     handleCreateVisitorCenter,
-    isCreatingCenter,
     visitorCenterData,
-    isFetchingVisitorCenter,
+    isLoading,
   };
 };
 

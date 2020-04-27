@@ -2,7 +2,7 @@ import { useEffect, useContext, useState } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
 
-const useLatestCenters = () => {
+const useRoot = () => {
   const context = useContext(store);
   const { dispatch } = context;
 
@@ -46,4 +46,4 @@ const useLatestCenters = () => {
   return { hasUserConsentedToUseCookies, updateCookieConsent };
 };
 
-export default useLatestCenters;
+export default useRoot;

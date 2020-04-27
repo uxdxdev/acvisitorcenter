@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import { Auth } from "./components/auth";
+import { Root } from "./components/root";
 import { StateProvider } from "./store";
 
 const App = () => {
@@ -21,7 +21,7 @@ const App = () => {
     <div>
       {isVerified ? (
         <StateProvider>
-          <Auth />
+          <Root />
         </StateProvider>
       ) : (
         <ReCAPTCHA

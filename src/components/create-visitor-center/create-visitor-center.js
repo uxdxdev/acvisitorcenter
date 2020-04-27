@@ -4,10 +4,9 @@ import { Link } from "react-router-dom";
 
 const CreateVisitorCenter = () => {
   const {
-    isCreatingCenter,
     handleCreateVisitorCenter,
     visitorCenterData,
-    isFetchingVisitorCenter,
+    isLoading,
   } = useCreateVisitorCenter();
 
   let nameRef = useRef();
@@ -32,7 +31,9 @@ const CreateVisitorCenter = () => {
 
   return (
     <>
-      {isFetchingVisitorCenter || visitorCenterData === undefined ? (
+      <h2>Create visitor center</h2>
+
+      {isLoading ? (
         <div>Loading...</div>
       ) : (
         <>
@@ -41,54 +42,51 @@ const CreateVisitorCenter = () => {
               <Link to={url}>Go to your visitor center</Link>
             </div>
           ) : (
-            <>
-              <h2>Create visitor center</h2>
-              <form onSubmit={handleSubmit}>
-                <div>
-                  <label htmlFor="name">Name</label>
-                  <br />
-                  <input
-                    type="text"
-                    id="name"
-                    required
-                    ref={nameRef}
-                    maxLength="30"
-                  />
-                </div>
+            <form onSubmit={handleSubmit}>
+              <div>
+                <label htmlFor="name">Name</label>
+                <br />
+                <input
+                  type="text"
+                  id="name"
+                  required
+                  ref={nameRef}
+                  maxLength="30"
+                />
+              </div>
 
-                <div>
-                  <label htmlFor="code">Dodo code</label>
-                  <br />
-                  <input
-                    type="text"
-                    id="code"
-                    name="code"
-                    required
-                    ref={codeRef}
-                    maxLength="5"
-                    minLength="5"
-                  />
-                </div>
+              <div>
+                <label htmlFor="code">Dodo code</label>
+                <br />
+                <input
+                  type="text"
+                  id="code"
+                  name="code"
+                  required
+                  ref={codeRef}
+                  maxLength="5"
+                  minLength="5"
+                />
+              </div>
 
-                <div>
-                  <label htmlFor="summary">Summary</label>
-                  <br />
-                  <textarea
-                    id="summary"
-                    name="summary"
-                    required
-                    ref={summaryRef}
-                    rows="5"
-                    maxLength="1000"
-                  />
-                </div>
-                <div>
-                  <button type="submit" disabled={isCreatingCenter}>
-                    Create visitor center
-                  </button>
-                </div>
-              </form>
-            </>
+              <div>
+                <label htmlFor="summary">Summary</label>
+                <br />
+                <textarea
+                  id="summary"
+                  name="summary"
+                  required
+                  ref={summaryRef}
+                  rows="5"
+                  maxLength="1000"
+                />
+              </div>
+              <div>
+                <button type="submit" disabled={isLoading}>
+                  Create visitor center
+                </button>
+              </div>
+            </form>
           )}
         </>
       )}

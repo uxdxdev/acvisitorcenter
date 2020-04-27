@@ -1,9 +1,9 @@
 import React from "react";
 import Routes from "../../routes";
-import { useAuth } from "./hooks";
+import { useRoot } from "./hooks";
 
-const Auth = () => {
-  const { hasUserConsentedToUseCookies, updateCookieConsent } = useAuth();
+const Root = () => {
+  const { hasUserConsentedToUseCookies, updateCookieConsent } = useRoot();
 
   return (
     <>
@@ -25,4 +25,4 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+export default Root;
