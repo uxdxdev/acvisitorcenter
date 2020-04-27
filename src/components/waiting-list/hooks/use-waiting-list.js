@@ -8,16 +8,14 @@ const useVisitorCenter = (centerId) => {
     dispatch,
     state: {
       auth: { uid },
-      visitorCenter: { centerData: currentCenterData },
+      visitorCenter: { visitorCenterData: currentCenterData },
       waitingList: { isJoiningQueue },
     },
   } = context;
 
-  const waitingList = currentCenterData?.waiting;
+  // const waitingList = currentCenterData?.waiting;
   const ownerUid = currentCenterData?.owner;
   const isOwner = ownerUid && uid && ownerUid === uid;
-  const userAlreadyInQueue =
-    waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
 
   const setNextVisitor = useCallback(
     (nextVisitorUid) => {
@@ -45,84 +43,17 @@ const useVisitorCenter = (centerId) => {
     [dispatch, centerId]
   );
 
-  const handleListenVisitorCenterDataAndUpdateWaitingList = useCallback(
-    async (id) => {
-      if (id && centerId) {
-        const db = firebase.firestore();
-
-        // check if the visitor center exists before making any further requests
-        const visitorCenterExists = await firebase
-          .firestore()
-          .collection("centers")
-          .doc(centerId)
-          .get()
-          .then((result) => {
-            if (result.exists) {
-              return result.exists;
-            } else {
-              throw new Error("visitor center does not exist");
-            }
-          })
-          .catch((error) => {
-            // fails to listen
-            dispatch({ type: "LISTEN_CENTER_DATA_FAIL", error });
-          });
-
-        if (!visitorCenterExists) return null;
-
-        dispatch({ type: "LISTEN_CENTER_DATA" });
-
-        return db
-          .collection("centers")
-          .doc(centerId)
-          .onSnapshot(
-            (result) => {
-              dispatch({
-                type: "LISTEN_CENTER_DATA_SUCCESS",
-                centerData: result.data(),
-              });
-
-              // update the next visitor uid
-              if (
-                result.data()?.owner === id &&
-                result.data()?.waiting.length > 0
-              ) {
-                const nextVisitorUid = result.data()?.waiting[0]?.uid || "";
-                setNextVisitor(nextVisitorUid);
-              }
-            },
-            (error) => {
-              dispatch({ type: "LISTEN_CENTER_DATA_FAIL", error });
-            }
-          );
-      }
-    },
-    [centerId, dispatch, setNextVisitor]
-  );
-
-  /**
-   * Fetch center data when user authenticated.
-   */
   useEffect(() => {
-    let unsubscribe = null;
-    async function fetchData() {
-      unsubscribe = await handleListenVisitorCenterDataAndUpdateWaitingList(
-        uid
-      );
+    // update the next visitor uid
+    if (
+      currentCenterData?.owner === uid &&
+      currentCenterData?.waiting.length > 0
+    ) {
+      const nextVisitorUid = currentCenterData?.waiting[0]?.uid || "";
+      setNextVisitor(nextVisitorUid);
     }
-    fetchData();
-    return () => {
-      unsubscribe && unsubscribe();
-    };
-  }, [uid, handleListenVisitorCenterDataAndUpdateWaitingList]);
+  }, [currentCenterData, setNextVisitor, uid]);
 
-  /**
-   * Join visitor center.
-   *
-   * @param {*} id center id
-   * @param {*} data.name visitor center name
-   * @param {*} data.uid user id
-   */
   const deleteUser = (id, deleteUid) => {
     const db = firebase.firestore();
     const centersRef = db.collection("centers").doc(id);
@@ -146,13 +77,6 @@ const useVisitorCenter = (centerId) => {
       });
   };
 
-  /**
-   * Join visitor center.
-   *
-   * @param {*} id center id
-   * @param {*} data.name visitor center name
-   * @param {*} data.uid user id
-   */
   const joinVisitorQueue = (centerId, name) => {
     const db = firebase.firestore();
     const centersRef = db.collection("centers").doc(centerId);
@@ -177,12 +101,11 @@ const useVisitorCenter = (centerId) => {
   };
 
   return {
-    waitingList,
+    uid,
     deleteUser,
     isOwner,
     joinVisitorQueue,
     isJoiningQueue,
-    userAlreadyInQueue,
   };
 };
 

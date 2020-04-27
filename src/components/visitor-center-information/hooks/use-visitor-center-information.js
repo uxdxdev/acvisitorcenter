@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
 
@@ -8,22 +8,20 @@ const useVisitorCenter = (centerId) => {
     dispatch,
     state: {
       auth: { uid },
-      visitorCenter: { centerData: currentCenterData },
+      visitorCenter: { visitorCenterData },
       dodoCode: { code: currentDodoCode },
     },
   } = context;
 
-  const waitingList = currentCenterData?.waiting;
-  const ownerUid = currentCenterData?.owner;
+  const waitingList = visitorCenterData?.waiting;
+  const ownerUid = visitorCenterData?.owner;
   const isOwner = ownerUid && uid && ownerUid === uid;
   const isUserFirstInQueue = waitingList && waitingList[0]?.uid === uid;
 
-  /**
-   * Fetch center data from firestore.
-   */
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleFetchDodoCode = () => {
-    const isFirstInQueue = currentCenterData?.waiting[0]?.uid === uid;
-    if ((isOwner || isFirstInQueue) && ownerUid) {
+    if ((isOwner || isUserFirstInQueue) && ownerUid) {
       dispatch({ type: "FETCH_DODO_CODE" });
 
       return firebase
@@ -51,16 +49,14 @@ const useVisitorCenter = (centerId) => {
     }
   };
 
-  const [isEditable, setIsEditable] = useState(false);
-
   const [centerInformation, setCenterInformation] = useState({
     name: "",
     summary: "",
   });
 
   useEffect(() => {
-    currentCenterData && setCenterInformation(currentCenterData);
-  }, [currentCenterData]);
+    visitorCenterData && setCenterInformation(visitorCenterData);
+  }, [visitorCenterData]);
 
   const handleCenterInformationChange = ({ id, value }) => {
     setCenterInformation((currentState) => {
@@ -78,16 +74,18 @@ const useVisitorCenter = (centerId) => {
     setDodoCode({ [id]: value });
   };
 
+  const [isEditable, setIsEditable] = useState(false);
+
   const handleUpdateCenterInformation = () => {
     setIsEditable(!isEditable);
     if (isEditable) {
       if (
-        currentCenterData?.name !== centerInformation?.name ||
-        currentCenterData?.summary !== centerInformation?.summary
+        visitorCenterData?.name !== centerInformation?.name ||
+        visitorCenterData?.summary !== centerInformation?.summary
       ) {
         saveCenterData(centerId, centerInformation);
       } else {
-        setCenterInformation(currentCenterData);
+        setCenterInformation(visitorCenterData);
       }
 
       // validate dodo code
@@ -96,15 +94,15 @@ const useVisitorCenter = (centerId) => {
         latestDodoCode?.dodoCode !== currentDodoCode &&
         latestDodoCode?.dodoCode !== "*****"
       ) {
-        updateDodoCode(uid, latestDodoCode?.dodoCode);
+        updateDodoCode(latestDodoCode?.dodoCode);
       } else {
         setDodoCode({ dodoCode: currentDodoCode || "*****" });
       }
     }
   };
 
-  const saveCenterData = (centerId, centerData) => {
-    const { name, summary } = centerData;
+  const saveCenterData = (centerId, data) => {
+    const { name, summary } = data;
     if (name && summary) {
       const db = firebase.firestore();
 
@@ -133,13 +131,13 @@ const useVisitorCenter = (centerId) => {
     }
   };
 
-  const updateDodoCode = (id, dodoCode) => {
-    if (id && dodoCode) {
+  const updateDodoCode = (dodoCode) => {
+    if (uid && dodoCode) {
       const db = firebase.firestore();
       dispatch({ type: "UPDATE_DODO_CODE" });
 
       db.collection("users")
-        .doc(id)
+        .doc(uid)
         .set(
           {
             dodoCode,
@@ -157,6 +155,75 @@ const useVisitorCenter = (centerId) => {
     }
   };
 
+  useEffect(() => {
+    return () => {
+      dispatch({ type: "RESET_VISITOR_CENTER" });
+      dispatch({ type: "RESET_DODO_CODE" });
+    };
+  }, [dispatch]);
+
+  const handleListenVisitorCenterDataAndUpdateWaitingList = useCallback(
+    async (id) => {
+      if (id && centerId) {
+        const db = firebase.firestore();
+
+        // check if the visitor center exists before making any further requests
+        const visitorCenterExists = await firebase
+          .firestore()
+          .collection("centers")
+          .doc(centerId)
+          .get()
+          .then((result) => {
+            if (result.exists) {
+              return result.exists;
+            } else {
+              throw new Error("visitor center does not exist");
+            }
+          })
+          .catch((error) => {
+            // fails to listen
+            dispatch({ type: "FETCH_VISITOR_CENTER_FAIL", error });
+          });
+
+        if (!visitorCenterExists) return null;
+
+        dispatch({ type: "FETCH_VISITOR_CENTER" });
+
+        return db
+          .collection("centers")
+          .doc(centerId)
+          .onSnapshot(
+            (result) => {
+              dispatch({
+                type: "FETCH_VISITOR_CENTER_SUCCESS",
+                visitorCenterData: result.data(),
+              });
+            },
+            (error) => {
+              dispatch({ type: "FETCH_VISITOR_CENTER_FAIL", error });
+            }
+          );
+      }
+    },
+    [centerId, dispatch]
+  );
+
+  /**
+   * Fetch center data when user authenticated.
+   */
+  useEffect(() => {
+    let unsubscribe = null;
+    async function fetchData() {
+      unsubscribe = await handleListenVisitorCenterDataAndUpdateWaitingList(
+        uid
+      );
+    }
+    fetchData();
+    return () => {
+      unsubscribe && unsubscribe();
+    };
+  }, [uid, handleListenVisitorCenterDataAndUpdateWaitingList]);
+
   return {
     isOwner,
     handleFetchDodoCode,
@@ -167,6 +234,8 @@ const useVisitorCenter = (centerId) => {
     centerInformation,
     latestDodoCode,
     isUserFirstInQueue,
+    isLoading,
+    waitingList,
   };
 };
 
