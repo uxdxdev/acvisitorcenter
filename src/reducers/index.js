@@ -12,15 +12,17 @@ const initialState = {
 
 const rootReducer = (state, action) => {
   const { auth, dodoCode, visitorCenter, waitingList } = state;
-  if (process.env.NODE_ENV === "development") {
-    console.log("ACTION:", action);
-  }
-  return {
+  const newState = {
     auth: authReducer(auth, action),
     dodoCode: dodoCodeReducer(dodoCode, action),
     visitorCenter: visitorCenterReducer(visitorCenter, action),
     waitingList: waitingListReducer(waitingList, action),
   };
+  if (process.env.NODE_ENV === "development") {
+    console.log("ACTION:", action);
+    console.log("STATE:", newState);
+  }
+  return newState;
 };
 
 export { rootReducer, initialState };
