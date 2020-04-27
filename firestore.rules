@@ -32,7 +32,7 @@ service cloud.firestore {
                       // owner
       								(request.auth.uid == userId || 
                       // user reading dodo code
-                      resource.data.next == request.auth.uid);
+                      request.auth.uid == resource.data.next);
 
       allow update: if request.auth != null && 
                         // owner updating next visitor

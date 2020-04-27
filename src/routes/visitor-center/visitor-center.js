@@ -5,10 +5,10 @@ import { useParams } from "react-router-dom";
 import { firebase } from "../../utils/firebase";
 
 const VisitorCenter = () => {
-  const [visitorCenterExists, setVisitorCenterExists] = useState(false);
   const context = useContext(store);
   const { dispatch } = context;
   const { id: centerId } = useParams();
+  const [visitorCenterExists, setVisitorCenterExists] = useState(false);
 
   useEffect(() => {
     async function checkIfExists() {
@@ -39,7 +39,15 @@ const VisitorCenter = () => {
     checkIfExists();
   }, [centerId, dispatch]);
 
-  return <>{visitorCenterExists && <VisitorCenterInformation />}</>;
+  return (
+    <>
+      {visitorCenterExists ? (
+        <VisitorCenterInformation />
+      ) : (
+        <div>Loading...</div>
+      )}
+    </>
+  );
 };
 
 export default VisitorCenter;

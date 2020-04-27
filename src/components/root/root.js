@@ -3,7 +3,7 @@ import Routes from "../../routes";
 import { useRoot } from "./hooks";
 
 const Root = () => {
-  const { hasUserConsentedToUseCookies, updateCookieConsent } = useRoot();
+  const { hasUserConsentedToUseCookies, updateCookieConsent, uid } = useRoot();
 
   return (
     <>
@@ -20,7 +20,7 @@ const Root = () => {
           </button>
         </div>
       )}
-      <Routes />
+      {uid && <Routes />}
     </>
   );
 };
