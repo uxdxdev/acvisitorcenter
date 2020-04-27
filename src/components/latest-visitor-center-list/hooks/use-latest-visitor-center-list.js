@@ -6,7 +6,10 @@ const useLatestVisitorCenterList = () => {
   const context = useContext(store);
   const {
     dispatch,
-    state: { uid, latestCenters, isFetchingLatestCenters },
+    state: {
+      auth: { uid },
+      visitorCenter: { latestCenters, isFetchingLatestCenters },
+    },
   } = context;
 
   const fetchLatestCenters = useCallback(() => {
@@ -21,7 +24,6 @@ const useLatestVisitorCenterList = () => {
       .onSnapshot((latestCenters) => {
         const data = latestCenters.docs.map((doc) => ({
           ...doc.data(),
-          id: doc.id,
         }));
         dispatch({
           type: "LISTEN_LATEST_CENTERS_SUCCESS",

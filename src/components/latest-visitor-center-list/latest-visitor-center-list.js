@@ -17,10 +17,11 @@ const LatestVisitorCenterList = () => {
           {latestCenters?.length > 0 ? (
             <ul>
               {latestCenters?.map((center) => {
-                const url = `/center/${center.id}`;
+                const id = center?.owner;
+                const url = `/center/${id}`;
                 const name = center?.name;
                 return (
-                  <li key={center.id}>
+                  <li key={id}>
                     {name} <Link to={url}>Visit</Link>
                   </li>
                 );

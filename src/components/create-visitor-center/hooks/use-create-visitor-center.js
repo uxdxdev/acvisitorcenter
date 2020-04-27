@@ -6,10 +6,12 @@ const useCreateVisitorCenter = () => {
   const context = useContext(store);
   const {
     state: {
-      uid,
-      isCreatingCenter,
-      visitorCenterData,
-      isFetchingVisitorCenter,
+      auth: { uid },
+      visitorCenter: {
+        isCreatingCenter,
+        visitorCenterData,
+        isFetchingVisitorCenter,
+      },
     },
     dispatch,
   } = context;
@@ -43,7 +45,7 @@ const useCreateVisitorCenter = () => {
       const db = firebase.firestore();
       const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
-      dispatch({ type: "CREATE_CENTER" });
+      dispatch({ type: "CREATE_VISITOR_CENTER" });
 
       await db
         .collection("centers")
@@ -56,13 +58,13 @@ const useCreateVisitorCenter = () => {
           summary,
         })
         .then(() => {
-          dispatch({ type: "CREATE_CENTER_SUCCESS", centerId: uid });
+          dispatch({ type: "CREATE_VISITOR_CENTER_SUCCESS", centerId: uid });
         })
         .catch((error) => {
-          dispatch({ type: "CREATE_CENTER_FAIL", error });
+          dispatch({ type: "CREATE_VISITOR_CENTER_FAIL", error });
         });
     } else {
-      dispatch({ type: "CREATE_CENTER_FAIL", error: "Invalid data" });
+      dispatch({ type: "CREATE_VISITOR_CENTER_FAIL", error: "Invalid data" });
     }
   };
 
