@@ -16,12 +16,14 @@ const useVisitorCenter = (centerId) => {
   const waitingList = currentCenterData?.waiting;
   const ownerUid = currentCenterData?.owner;
   const isOwner = ownerUid && uid && ownerUid === uid;
+  const isUserFirstInQueue = waitingList && waitingList[0]?.uid === uid;
+  const isVisitorCenterOpen = onlineStatus === "online";
 
   /**
    * Fetch center data from firestore.
    */
-  const fetchDodoCode = (id) => {
-    const isFirstInQueue = currentCenterData?.waiting[0]?.uid === id;
+  const handleFetchDodoCode = () => {
+    const isFirstInQueue = currentCenterData?.waiting[0]?.uid === uid;
     if ((isOwner || isFirstInQueue) && ownerUid) {
       dispatch({ type: "FETCH_DODO_CODE" });
 
@@ -77,7 +79,7 @@ const useVisitorCenter = (centerId) => {
     setDodoCode({ [id]: value });
   };
 
-  const updateCenterInformation = () => {
+  const handleUpdateCenterInformation = () => {
     setIsEditable(!isEditable);
     if (isEditable) {
       if (
@@ -170,16 +172,16 @@ const useVisitorCenter = (centerId) => {
   }, [centerId, dispatch]);
 
   return {
-    waitingList,
     isOwner,
-    fetchDodoCode,
+    handleFetchDodoCode,
     isEditable,
     handleCenterInformationChange,
     handleDodoCodeChange,
-    updateCenterInformation,
+    handleUpdateCenterInformation,
     centerInformation,
     latestDodoCode,
-    onlineStatus,
+    isUserFirstInQueue,
+    isVisitorCenterOpen,
   };
 };
 

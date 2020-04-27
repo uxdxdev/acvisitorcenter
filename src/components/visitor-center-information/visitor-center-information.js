@@ -1,26 +1,21 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useVisitorCenterInformation } from "./hooks";
-import { useUser } from "../../hooks";
 
 const VisitorCenterInformation = () => {
   const { id: centerId } = useParams();
   const {
-    waitingList,
     isOwner,
-    fetchDodoCode,
+    handleFetchDodoCode,
     isEditable,
     handleCenterInformationChange,
     handleDodoCodeChange,
-    updateCenterInformation,
+    handleUpdateCenterInformation,
     centerInformation,
     latestDodoCode,
-    onlineStatus,
+    isUserFirstInQueue,
+    isVisitorCenterOpen,
   } = useVisitorCenterInformation(centerId);
-  const { uid } = useUser();
-
-  const isUserFirstInQueue = waitingList && waitingList[0]?.uid === uid;
-  const isVisitorCenterOpen = onlineStatus === "online";
 
   return (
     <>
@@ -33,7 +28,7 @@ const VisitorCenterInformation = () => {
 
       {isOwner && (
         <div>
-          <button onClick={() => updateCenterInformation()}>
+          <button onClick={() => handleUpdateCenterInformation()}>
             {isEditable ? "Save" : "Edit information"}
           </button>
         </div>
@@ -87,7 +82,7 @@ const VisitorCenterInformation = () => {
               <div>{latestDodoCode.dodoCode} </div>
             </>
           )}
-          <button onClick={() => fetchDodoCode(uid)} disabled={isEditable}>
+          <button onClick={() => handleFetchDodoCode()} disabled={isEditable}>
             Get code
           </button>
         </>

@@ -2,25 +2,19 @@ import React, { useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useWaitingList } from "./hooks";
 import moment from "moment";
-import { useUser } from "../../hooks";
 
 const WaitiingList = () => {
   const { id: centerId } = useParams();
-  const { uid } = useUser();
   const {
     waitingList,
     deleteUser,
     isOwner,
     joinVisitorQueue,
     isJoiningQueue,
+    userAlreadyInQueue,
   } = useWaitingList(centerId);
 
   const nameInputRef = useRef();
-  const userPositionInQueue =
-    waitingList && waitingList.filter((user) => user.uid === uid);
-
-  const userAlreadyInQueue =
-    userPositionInQueue === undefined || userPositionInQueue?.length > 0;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,8 +22,8 @@ const WaitiingList = () => {
     let name = event.target.name.value;
     nameInputRef.current.value = "";
 
-    if (name && uid && userPositionInQueue) {
-      joinVisitorQueue(centerId, { name, uid });
+    if (name && centerId) {
+      joinVisitorQueue(centerId, name);
     }
   };
 
