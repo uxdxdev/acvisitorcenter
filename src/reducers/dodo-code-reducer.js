@@ -45,7 +45,7 @@ const dodoCodeReducer = (state, action) => {
         isUpdatingDodoCodeError: action.error,
       };
 
-    case "RESET_FETCH_DODO_CODE":
+    case "RESET_DODO_CODE":
       return {
         ...state,
         ...initialState,

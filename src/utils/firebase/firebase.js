@@ -8,7 +8,7 @@ const firebaseConfig = {
   authDomain: "acvisitorcenter.firebaseapp.com",
   databaseURL:
     // eslint-disable-next-line no-restricted-globals
-    location.hostname === "localhost"
+    location.hostname !== "localhost"
       ? "http://localhost:9000?ns=acvisitorcenter"
       : "https://acvisitorcenter.firebaseio.com",
   projectId: "acvisitorcenter",

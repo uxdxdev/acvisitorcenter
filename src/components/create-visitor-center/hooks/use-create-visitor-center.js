@@ -89,7 +89,7 @@ const useCreateVisitorCenter = () => {
           if (result.exists) {
             dispatch({
               type: "FETCH_VISITOR_CENTER_SUCCESS",
-              data: result.data(),
+              visitorCenterData: result.data(),
             });
           } else {
             throw new Error("The user has not yet created a visitor center");
@@ -111,7 +111,11 @@ const useCreateVisitorCenter = () => {
 
   useEffect(() => {
     isAuthed && fetchVisitorCenterData();
-  }, [isAuthed, fetchVisitorCenterData]);
+    return () => {
+      dispatch({ type: "RESET_VISITOR_CENTER" });
+      dispatch({ type: "RESET_DODO_CODE" });
+    };
+  }, [dispatch, isAuthed, fetchVisitorCenterData]);
 
   return {
     handleCreateVisitorCenter,

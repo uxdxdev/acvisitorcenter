@@ -3,16 +3,19 @@ import { useParams } from "react-router-dom";
 import { useWaitingList } from "./hooks";
 import moment from "moment";
 
-const WaitiingList = () => {
+const WaitiingList = (props) => {
   const { id: centerId } = useParams();
   const {
-    waitingList,
+    uid,
     deleteUser,
     isOwner,
     joinVisitorQueue,
     isJoiningQueue,
-    userAlreadyInQueue,
   } = useWaitingList(centerId);
+  const { waitingList } = props;
+
+  const userAlreadyInQueue =
+    waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
 
   const nameInputRef = useRef();
 
