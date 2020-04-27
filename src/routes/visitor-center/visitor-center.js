@@ -23,7 +23,10 @@ const VisitorCenter = () => {
           if (result.exists) {
             setVisitorCenterExists(true);
           } else {
-            throw new Error("visitor center does not exist");
+            dispatch({
+              type: "FETCH_VISITOR_CENTER_FAIL",
+              error: "visitor center does not exist",
+            });
           }
         })
         .catch((error) => {
