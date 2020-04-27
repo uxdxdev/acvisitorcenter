@@ -29,69 +29,65 @@ const CreateVisitorCenter = () => {
 
   const url = visitorCenterData && `/center/${visitorCenterData?.owner}`;
 
-  return (
+  return isLoading ? (
+    <div>Loading...</div>
+  ) : (
     <>
       <Link to={`/`}>
         <h1>AC Visitor Center</h1>
       </Link>
       <h2>Create visitor center</h2>
 
-      {isLoading ? (
-        <div>Loading...</div>
+      {visitorCenterData ? (
+        <div>
+          <Link to={url}>Go to your visitor center</Link>
+        </div>
       ) : (
-        <>
-          {visitorCenterData ? (
-            <div>
-              <Link to={url}>Go to your visitor center</Link>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit}>
-              <div>
-                <label htmlFor="name">Name</label>
-                <br />
-                <input
-                  type="text"
-                  id="name"
-                  required
-                  ref={nameRef}
-                  maxLength="30"
-                />
-              </div>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="name">Name</label>
+            <br />
+            <input
+              type="text"
+              id="name"
+              required
+              ref={nameRef}
+              maxLength="30"
+            />
+          </div>
 
-              <div>
-                <label htmlFor="code">Dodo code</label>
-                <br />
-                <input
-                  type="text"
-                  id="code"
-                  name="code"
-                  required
-                  ref={codeRef}
-                  maxLength="5"
-                  minLength="5"
-                />
-              </div>
+          <div>
+            <label htmlFor="code">Dodo code</label>
+            <br />
+            <input
+              type="text"
+              id="code"
+              name="code"
+              required
+              ref={codeRef}
+              maxLength="5"
+              minLength="5"
+            />
+          </div>
 
-              <div>
-                <label htmlFor="summary">Summary</label>
-                <br />
-                <textarea
-                  id="summary"
-                  name="summary"
-                  required
-                  ref={summaryRef}
-                  rows="5"
-                  maxLength="1000"
-                />
-              </div>
-              <div>
-                <button type="submit" disabled={isLoading}>
-                  Create visitor center
-                </button>
-              </div>
-            </form>
-          )}
-        </>
+          <div>
+            <label htmlFor="summary">Summary</label>
+            <br />
+            <textarea
+              id="summary"
+              name="summary"
+              required
+              ref={summaryRef}
+              rows="5"
+              maxLength="1000"
+            />
+          </div>
+          <div>
+            <button type="submit" disabled={isLoading}>
+              Create visitor center
+            </button>
+          </div>
+        </form>
       )}
     </>
   );
