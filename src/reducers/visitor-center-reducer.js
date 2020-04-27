@@ -12,7 +12,6 @@ const visitorCenterReducer = (state, action) => {
       return {
         ...state,
         isCreatingVisitorCenter: false,
-        centerId: action.centerId,
       };
     case "CREATE_VISITOR_CENTER_FAIL":
       return {
