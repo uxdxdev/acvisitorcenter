@@ -7,10 +7,9 @@ const useVisitorCenter = (centerId) => {
   const {
     dispatch,
     state: {
-      uid,
-      centerData: currentCenterData,
-      dodoCode: currentDodoCode,
-      onlineStatus,
+      auth: { uid, onlineStatus },
+      visitorCenter: { centerData: currentCenterData },
+      dodoCode: { code: currentDodoCode },
     },
   } = context;
 
@@ -165,6 +164,9 @@ const useVisitorCenter = (centerId) => {
     visitorCenterOnlineStatusRef.on("value", (snapshot) => {
       dispatch({ type: "ONLINE_STATUS", onlineStatus: snapshot.val() });
     });
+    return () => {
+      dispatch({ type: "RESET_FETCH_DODO_CODE" });
+    };
   }, [centerId, dispatch]);
 
   return {

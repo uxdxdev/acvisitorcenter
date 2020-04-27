@@ -6,12 +6,16 @@ const useVisitorCenter = (centerId) => {
   const context = useContext(store);
   const {
     dispatch,
-    state: { uid, centerData: currentCenterData, isJoiningQueue },
+    state: {
+      auth: { uid },
+      visitorCenter: { centerData: currentCenterData },
+      waitingList: { isJoiningQueue },
+    },
   } = context;
 
   const waitingList = currentCenterData?.waiting;
   const ownerUid = currentCenterData?.owner;
-  const isOwner = ownerUid === uid;
+  const isOwner = ownerUid && uid && ownerUid === uid;
 
   const setNextVisitor = useCallback(
     (nextVisitorUid) => {

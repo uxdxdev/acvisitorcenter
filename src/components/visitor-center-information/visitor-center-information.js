@@ -20,7 +20,6 @@ const VisitorCenterInformation = () => {
   const { uid } = useUser();
 
   const isUserFirstInQueue = waitingList && waitingList[0]?.uid === uid;
-
   const isVisitorCenterOpen = onlineStatus === "online";
 
   return (

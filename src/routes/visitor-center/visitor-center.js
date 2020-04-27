@@ -8,7 +8,6 @@ import { store } from "../../store";
 const VisitorCenter = () => {
   const context = useContext(store);
   const { dispatch } = context;
-
   const { uid } = useUser();
 
   // update online status
@@ -59,7 +58,9 @@ const VisitorCenter = () => {
           // it tells firebase to disconnect manually
           .set("going offline")
           // set the offline status in db
-          .then(() => userStatusDatabaseRef.set(isOfflineForDatabase));
+          .then(() => {
+            userStatusDatabaseRef.set(isOfflineForDatabase);
+          });
     };
   }, [uid, dispatch]);
 

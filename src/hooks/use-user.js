@@ -4,7 +4,9 @@ import { store } from "../store";
 const useUser = () => {
   const context = useContext(store);
   const {
-    state: { uid },
+    state: {
+      auth: { uid },
+    },
   } = context;
 
   return { uid };
