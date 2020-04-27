@@ -7,7 +7,7 @@ const useVisitorCenter = (centerId) => {
   const {
     dispatch,
     state: {
-      auth: { uid, onlineStatus },
+      auth: { uid },
       visitorCenter: { centerData: currentCenterData },
       dodoCode: { code: currentDodoCode },
     },
@@ -17,7 +17,6 @@ const useVisitorCenter = (centerId) => {
   const ownerUid = currentCenterData?.owner;
   const isOwner = ownerUid && uid && ownerUid === uid;
   const isUserFirstInQueue = waitingList && waitingList[0]?.uid === uid;
-  const isVisitorCenterOpen = onlineStatus === "online";
 
   /**
    * Fetch center data from firestore.
@@ -158,19 +157,6 @@ const useVisitorCenter = (centerId) => {
     }
   };
 
-  // listen for changes in online/offline status
-  useEffect(() => {
-    const visitorCenterOnlineStatusRef = firebase
-      .database()
-      .ref("users/" + centerId + "/state");
-    visitorCenterOnlineStatusRef.on("value", (snapshot) => {
-      dispatch({ type: "ONLINE_STATUS", onlineStatus: snapshot.val() });
-    });
-    return () => {
-      dispatch({ type: "RESET_FETCH_DODO_CODE" });
-    };
-  }, [centerId, dispatch]);
-
   return {
     isOwner,
     handleFetchDodoCode,
@@ -181,7 +167,6 @@ const useVisitorCenter = (centerId) => {
     centerInformation,
     latestDodoCode,
     isUserFirstInQueue,
-    isVisitorCenterOpen,
   };
 };
 

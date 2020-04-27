@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useVisitorCenterInformation } from "./hooks";
+import { VisitorCenterStatus } from "../visitor-center-status";
 
 const VisitorCenterInformation = () => {
   const { id: centerId } = useParams();
@@ -14,7 +15,6 @@ const VisitorCenterInformation = () => {
     centerInformation,
     latestDodoCode,
     isUserFirstInQueue,
-    isVisitorCenterOpen,
   } = useVisitorCenterInformation(centerId);
 
   return (
@@ -34,7 +34,7 @@ const VisitorCenterInformation = () => {
         </div>
       )}
 
-      <h2>{isVisitorCenterOpen ? "Open" : "Closed"}</h2>
+      <VisitorCenterStatus />
 
       <h2>Name</h2>
       {isEditable ? (
