@@ -16,6 +16,8 @@ const useVisitorCenter = (centerId) => {
   const waitingList = currentCenterData?.waiting;
   const ownerUid = currentCenterData?.owner;
   const isOwner = ownerUid && uid && ownerUid === uid;
+  const userAlreadyInQueue =
+    waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
 
   const setNextVisitor = useCallback(
     (nextVisitorUid) => {
@@ -151,9 +153,9 @@ const useVisitorCenter = (centerId) => {
    * @param {*} data.name visitor center name
    * @param {*} data.uid user id
    */
-  const joinVisitorQueue = (id, { name, uid }) => {
+  const joinVisitorQueue = (centerId, name) => {
     const db = firebase.firestore();
-    const centersRef = db.collection("centers").doc(id);
+    const centersRef = db.collection("centers").doc(centerId);
 
     dispatch({ type: "JOIN_QUEUE" });
 
@@ -180,6 +182,7 @@ const useVisitorCenter = (centerId) => {
     isOwner,
     joinVisitorQueue,
     isJoiningQueue,
+    userAlreadyInQueue,
   };
 };
 

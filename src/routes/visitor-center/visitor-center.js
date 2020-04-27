@@ -1,14 +1,17 @@
 import React, { useEffect, useContext } from "react";
 import WaitiingList from "../../components/waiting-list/waiting-list";
 import VisitorCenterInformation from "../../components/visitor-center-information/visitor-center-information";
-import { useUser } from "../../hooks";
 import { firebase } from "../../utils/firebase";
 import { store } from "../../store";
 
 const VisitorCenter = () => {
   const context = useContext(store);
-  const { dispatch } = context;
-  const { uid } = useUser();
+  const {
+    dispatch,
+    state: {
+      auth: { uid },
+    },
+  } = context;
 
   // update online status
   useEffect(() => {
