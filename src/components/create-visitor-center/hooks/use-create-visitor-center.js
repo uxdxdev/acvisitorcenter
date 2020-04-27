@@ -114,10 +114,6 @@ const useCreateVisitorCenter = () => {
 
   useEffect(() => {
     isAuthed && fetchVisitorCenterData();
-    return () => {
-      dispatch({ type: "RESET_VISITOR_CENTER" });
-      dispatch({ type: "RESET_DODO_CODE" });
-    };
   }, [dispatch, isAuthed, fetchVisitorCenterData]);
 
   return {
