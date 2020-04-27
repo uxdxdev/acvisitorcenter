@@ -7,20 +7,25 @@ const Root = () => {
 
   return (
     <>
-      {!hasUserConsentedToUseCookies && (
-        <div id="cookieConsent">
-          We use cookies to give you the best experience on our website. If you
-          continue to use this site we will assume that you are happy with it.
-          <button
-            onClick={() => {
-              updateCookieConsent(true);
-            }}
-          >
-            Hide
-          </button>
-        </div>
+      {uid && (
+        <>
+          {!hasUserConsentedToUseCookies && (
+            <div id="cookieConsent">
+              We use cookies to give you the best experience on our website. If
+              you continue to use this site we will assume that you are happy
+              with it.
+              <button
+                onClick={() => {
+                  updateCookieConsent(true);
+                }}
+              >
+                Hide
+              </button>
+            </div>
+          )}
+          <Routes />
+        </>
       )}
-      {uid && <Routes />}
     </>
   );
 };

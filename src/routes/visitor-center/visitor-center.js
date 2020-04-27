@@ -11,11 +11,10 @@ const VisitorCenter = () => {
   const [visitorCenterExists, setVisitorCenterExists] = useState(false);
 
   useEffect(() => {
-    async function checkIfExists() {
+    async function checkIfVisitorCenterExists() {
       const db = firebase.firestore();
 
-      // check if the visitor center exists before making any further requests
-      const visitorCenterExists = await db
+      await db
         .collection("centers")
         .doc(centerId)
         .get()
@@ -30,13 +29,10 @@ const VisitorCenter = () => {
           }
         })
         .catch((error) => {
-          // fails to listen
           dispatch({ type: "FETCH_VISITOR_CENTER_FAIL", error });
         });
-
-      if (!visitorCenterExists) return null;
     }
-    checkIfExists();
+    checkIfVisitorCenterExists();
   }, [centerId, dispatch]);
 
   return (
