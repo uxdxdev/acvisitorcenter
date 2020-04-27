@@ -1,7 +1,10 @@
 const initialState = {
   isFetchingDodoCode: false,
-  code: null,
   isFetchingDodoCodeError: null,
+  code: null,
+
+  isUpdatingDodoCode: false,
+  isUpdatingDodoCodeError: null,
 };
 
 const dodoCodeReducer = (state, action) => {
