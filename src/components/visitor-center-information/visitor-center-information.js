@@ -29,12 +29,12 @@ const VisitorCenterInformation = () => {
       </Link>
       {isOwner && (
         <>
-          {!isLoading ? (
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : (
             <button onClick={() => handleUpdateCenterInformation()}>
               {isEditable ? "Save" : "Edit information"}
             </button>
-          ) : (
-            <div>Loading...</div>
           )}
         </>
       )}
