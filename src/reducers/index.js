@@ -20,6 +20,7 @@ const rootReducer = (state, action) => {
   };
   if (process.env.NODE_ENV === "development") {
     console.log("ACTION:", action);
+    action.error && console.error("ERROR:", action.error);
     console.log("STATE:", newState);
   }
   return newState;
