@@ -80,11 +80,20 @@ const useVisitorCenter = (centerId) => {
     setDodoCode({ [id]: value });
   };
 
-  const [isEditable, setIsEditable] = useState(false);
+  const [isEditable, setIsEditable] = useState({});
 
-  const handleUpdateCenterInformation = () => {
-    setIsEditable(!isEditable);
-    if (isEditable) {
+  const handleUpdateCenterInformation = (key) => {
+    setIsEditable((currentState) => {
+      return {
+        ...currentState,
+        ...{
+          [key]: !isEditable[key],
+        },
+      };
+    });
+    // setIsEditable(!isEditable);
+
+    if (isEditable[key] === true) {
       if (
         visitorCenterData?.name !== centerInformation?.name ||
         visitorCenterData?.summary !== centerInformation?.summary
