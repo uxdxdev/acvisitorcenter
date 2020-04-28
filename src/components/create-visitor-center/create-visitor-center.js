@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useCreateVisitorCenter } from "./hooks";
 import { Link as RouterLink } from "react-router-dom";
-import { Typography, Paper, TextField, Button } from "@material-ui/core";
+import { Typography, Paper, TextField, Button, Box } from "@material-ui/core";
 import { Send as SendIcon } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import ButtonBox from "../../shared/ButtonBox";
@@ -48,23 +48,25 @@ const CreateVisitorCenter = () => {
   const url = visitorCenterData && `/center/${visitorCenterData?.owner}`;
 
   return (
-    <Paper className={classes.paper}>
+    <Paper elevation={0} variant="outlined" className={classes.paper}>
       <Typography variant="h2">Create visitor center</Typography>
       {isLoading ? (
         <Typography>Loading...</Typography>
       ) : (
         <>
           {visitorCenterData ? (
-            <Button
-              variant="outlined"
-              color="primary"
-              className={classes.button}
-              endIcon={<SendIcon />}
-              component={RouterLink}
-              to={url}
-            >
-              Go to your visitor center
-            </Button>
+            <Box mt={2}>
+              <Button
+                variant="outlined"
+                color="primary"
+                className={classes.button}
+                endIcon={<SendIcon />}
+                component={RouterLink}
+                to={url}
+              >
+                Go to your visitor center
+              </Button>
+            </Box>
           ) : (
             <form onSubmit={handleSubmit}>
               <TextField

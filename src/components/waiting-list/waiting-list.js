@@ -11,6 +11,7 @@ import {
   ListItem,
   ListItemText,
   ListItemAvatar,
+  Box,
 } from "@material-ui/core";
 import { Person as PersonIcon, FlightTakeoff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
@@ -69,16 +70,17 @@ const WaitiingList = (props) => {
             disabled={isOwner || userAlreadyInQueue}
           />
           <br />
-
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            type="submit"
-            disabled={isOwner || userAlreadyInQueue || !isVisitorCenterOpen}
-          >
-            Join queue
-          </Button>
+          <Box mt={1}>
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              type="submit"
+              disabled={isOwner || userAlreadyInQueue || !isVisitorCenterOpen}
+            >
+              Join queue
+            </Button>
+          </Box>
           {(isOwner || userAlreadyInQueue) && (
             <Typography>You are already in the queue</Typography>
           )}
