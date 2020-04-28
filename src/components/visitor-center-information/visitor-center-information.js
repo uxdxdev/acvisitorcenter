@@ -40,7 +40,6 @@ const VisitorCenterInformation = () => {
       <VisitorCenterStatus />
 
       <Paper elevation={0} variant="outlined" className={classes.paper}>
-        <Typography variant="h2">Name</Typography>
         {isEditable["name"] ? (
           <>
             <TextField
@@ -62,7 +61,7 @@ const VisitorCenterInformation = () => {
             <br />
           </>
         ) : (
-          <Typography>{updatedVisitorCenterData.name}</Typography>
+          <Typography variant="h2">{updatedVisitorCenterData.name}</Typography>
         )}
         {isOwner && (
           <Button
@@ -71,13 +70,9 @@ const VisitorCenterInformation = () => {
             size="small"
             onClick={() => handleEditSaveData("name")}
           >
-            {isEditable["name"] ? "Save" : "Edit"}
+            {isEditable["name"] ? "Save" : "Edit name"}
           </Button>
         )}
-      </Paper>
-
-      <Paper elevation={0} variant="outlined" className={classes.paper}>
-        <Typography variant="h2">Summary</Typography>
         {isEditable["summary"] ? (
           <>
             <TextField
@@ -111,7 +106,7 @@ const VisitorCenterInformation = () => {
             size="small"
             onClick={() => handleEditSaveData("summary")}
           >
-            {isEditable["summary"] ? "Save" : "Edit"}
+            {isEditable["summary"] ? "Save" : "Edit summary"}
           </Button>
         )}
       </Paper>
