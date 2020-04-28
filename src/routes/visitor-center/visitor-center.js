@@ -3,6 +3,7 @@ import { VisitorCenterInformation } from "../../components/visitor-center-inform
 import { store } from "../../store";
 import { useParams } from "react-router-dom";
 import { firebase } from "../../utils/firebase";
+import { Typography } from "@material-ui/core";
 
 const VisitorCenter = () => {
   const context = useContext(store);
@@ -40,7 +41,7 @@ const VisitorCenter = () => {
       {visitorCenterExists ? (
         <VisitorCenterInformation />
       ) : (
-        <div>Loading...</div>
+        <Typography>Loading...</Typography>
       )}
     </>
   );

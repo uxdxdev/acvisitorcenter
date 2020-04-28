@@ -2,7 +2,6 @@ import React from "react";
 import { useLatestVisitorCenterList } from "./hooks";
 import { Link as RouterLink } from "react-router-dom";
 import {
-  Link,
   Typography,
   Paper,
   List,
