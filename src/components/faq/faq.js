@@ -18,9 +18,9 @@ const questionsAnswers = [
       "No the code is only available to the first person in the waiting. They must click the 'Get code' button to see it.",
   },
   {
-    question: "Is the waiting list updated when the visitor center is closed?",
+    question: "How is the waiting list updated?",
     answer:
-      "No the waiting list is only updated when it is open. The owner of the visitor center must open the visitor center page in their browser to open it.",
+      "The owner of the visitor center must open have the visitor center page open in their browser. They will then remove each visitor from the waiting list when they have left the island. The person who is first in the queue can then see the code.",
   },
   {
     question: "Can I create multiple visitor centers?",
