@@ -9,7 +9,9 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
+  Button,
 } from "@material-ui/core";
+import { Send as SendIcon } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -41,9 +43,16 @@ const LatestVisitorCenterList = () => {
                   <ListItem key={id}>
                     <ListItemText primary={`${name}`} />
                     <ListItemSecondaryAction>
-                      <Link component={RouterLink} to={url}>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        className={classes.button}
+                        endIcon={<SendIcon />}
+                        component={RouterLink}
+                        to={url}
+                      >
                         Visit
-                      </Link>
+                      </Button>
                     </ListItemSecondaryAction>
                   </ListItem>
                 );

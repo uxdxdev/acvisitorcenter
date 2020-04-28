@@ -24,9 +24,16 @@ const Routes = () => {
   return (
     <Router>
       <Container>
-        <Link component={RouterLink} to={`/`}>
-          <Typography variant="h1">AC Visitor Center</Typography>
-        </Link>
+        <Typography variant="h1" align="center">
+          <Link
+            component={RouterLink}
+            to={`/`}
+            style={{ textDecoration: "none" }}
+          >
+            AC Visitor Center
+          </Link>
+        </Typography>
+
         {isVerified ? (
           <Switch>
             <Route exact path="/">

@@ -1,7 +1,8 @@
 import React, { useRef } from "react";
 import { useCreateVisitorCenter } from "./hooks";
 import { Link as RouterLink } from "react-router-dom";
-import { Link, Typography, Paper, TextField, Button } from "@material-ui/core";
+import { Typography, Paper, TextField, Button } from "@material-ui/core";
+import { Send as SendIcon } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import ButtonBox from "../../shared/ButtonBox";
 
@@ -49,9 +50,16 @@ const CreateVisitorCenter = () => {
       ) : (
         <>
           {visitorCenterData ? (
-            <Link component={RouterLink} to={url}>
+            <Button
+              variant="outlined"
+              color="primary"
+              className={classes.button}
+              endIcon={<SendIcon />}
+              component={RouterLink}
+              to={url}
+            >
               Go to your visitor center
-            </Link>
+            </Button>
           ) : (
             <form onSubmit={handleSubmit}>
               <TextField
@@ -60,8 +68,6 @@ const CreateVisitorCenter = () => {
                 required
                 type="text"
                 ref={nameRef}
-                // fullWidth
-                // onChange={handleChange}
                 inputProps={{ maxLength: "30" }}
                 variant="outlined"
                 margin="dense"
