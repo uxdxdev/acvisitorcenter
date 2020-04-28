@@ -94,6 +94,7 @@ const useVisitorCenter = (centerId) => {
 
   return {
     uid,
+    waitingList,
     handleDeleteUser,
     isOwner,
     joinVisitorQueue,

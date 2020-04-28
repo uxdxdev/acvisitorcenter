@@ -221,7 +221,6 @@ const useVisitorCenter = (centerId) => {
     updatedVisitorCenterData,
     isUserFirstInQueue,
     isVisitorCenterOpen,
-    waitingList,
     isLoading,
   };
 };
