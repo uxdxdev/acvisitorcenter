@@ -1,6 +1,7 @@
 import { useContext, useEffect, useCallback } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
+import { deleteUser } from "../../../actions";
 
 const useVisitorCenter = (centerId) => {
   const context = useContext(store);
@@ -55,28 +56,28 @@ const useVisitorCenter = (centerId) => {
     }
   }, [waitingList, setNextVisitor, isOwner]);
 
-  const deleteUser = (id, deleteUid) => {
-    const db = firebase.firestore();
-    const centersRef = db.collection("centers").doc(id);
+  // const deleteUser = (centerId, deleteUid) => {
+  //   const db = firebase.firestore();
+  //   const centersRef = db.collection("centers").doc(centerId);
 
-    dispatch({ type: "DELETE_USER" });
+  //   dispatch({ type: "DELETE_USER" });
 
-    // run transaction to join center
-    return db
-      .runTransaction((transaction) => {
-        return transaction.get(centersRef).then((snapshot) => {
-          let waitingArray = snapshot.get("waiting");
-          waitingArray = waitingArray.filter((user) => user.uid !== deleteUid);
-          transaction.update(centersRef, "waiting", waitingArray);
-        });
-      })
-      .then(() => {
-        dispatch({ type: "DELETE_USER_SUCCESS" });
-      })
-      .catch((error) => {
-        dispatch({ type: "DELETE_USER_FAIL", error });
-      });
-  };
+  //   // run transaction to join center
+  //   return db
+  //     .runTransaction((transaction) => {
+  //       return transaction.get(centersRef).then((snapshot) => {
+  //         let waitingArray = snapshot.get("waiting");
+  //         waitingArray = waitingArray.filter((user) => user.uid !== deleteUid);
+  //         transaction.update(centersRef, "waiting", waitingArray);
+  //       });
+  //     })
+  //     .then(() => {
+  //       dispatch({ type: "DELETE_USER_SUCCESS" });
+  //     })
+  //     .catch((error) => {
+  //       dispatch({ type: "DELETE_USER_FAIL", error });
+  //     });
+  // };
 
   const joinVisitorQueue = (centerId, name) => {
     if (!userAlreadyInQueue) {
@@ -103,8 +104,14 @@ const useVisitorCenter = (centerId) => {
     }
   };
 
+  const handleDeleteUser = (centerId, deleteUid) => {
+    if (centerId && deleteUid) {
+      deleteUser(dispatch, centerId, deleteUid);
+    }
+  };
+
   return {
-    deleteUser,
+    handleDeleteUser,
     isOwner,
     joinVisitorQueue,
     isJoiningQueue,

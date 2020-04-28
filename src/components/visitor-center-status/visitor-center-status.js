@@ -8,7 +8,6 @@ const VisitorCenterStatus = () => {
     <Box
       bgcolor={isVisitorCenterOpen ? "success.main" : "secondary.main"}
       borderRadius={16}
-      p={1}
       m={1}
     >
       <Typography align="center">
