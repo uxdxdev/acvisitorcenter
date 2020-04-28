@@ -32,7 +32,7 @@ const Root = () => {
   return (
     <AuthIsLoaded>
       {!hasUserConsentedToUseCookies && (
-        <Paper className={classes.paper}>
+        <Paper elevation={0} variant="outlined" className={classes.paper}>
           <Typography id="cookieConsent" align="center">
             We use cookies to give you the best experience on our website. If
             you continue to use this site we will assume that you are happy with

@@ -53,7 +53,7 @@ const WaitiingList = (props) => {
 
   return (
     <>
-      <Paper className={classes.paper}>
+      <Paper elevation={0} variant="outlined" className={classes.paper}>
         <Typography variant="h2">Join visitor queue</Typography>
 
         <form onSubmit={handleSubmit}>
@@ -87,7 +87,7 @@ const WaitiingList = (props) => {
         </form>
       </Paper>
 
-      <Paper className={classes.paper}>
+      <Paper elevation={0} variant="outlined" className={classes.paper}>
         <Typography variant="h2">Waiting list</Typography>
 
         {!waitingList ? (
