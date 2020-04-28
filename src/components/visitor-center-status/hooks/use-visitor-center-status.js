@@ -75,7 +75,7 @@ const useVisitorCenterStatus = () => {
             console.log("this is not your center!!");
           });
     };
-  }, [uid, centerId, dispatch]);
+  }, [uid, centerId, dispatch, isOwner]);
 
   // listen for changes in online/offline status
   // of visitor center

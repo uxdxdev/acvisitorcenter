@@ -1,36 +1,60 @@
 import React from "react";
 import { useLatestVisitorCenterList } from "./hooks";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import {
+  Link,
+  Typography,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    margin: theme.spacing(1),
+    padding: theme.spacing(1),
+  },
+}));
 
 const LatestVisitorCenterList = () => {
   const { latestCenters, isLoading } = useLatestVisitorCenterList();
+  const classes = useStyles();
 
   return (
-    <>
-      <h2>Latest visitor centers</h2>
+    <Paper className={classes.paper}>
+      <Typography variant="h2">Latest visitor centers</Typography>
+
       {isLoading ? (
-        <div>Loading...</div>
+        <Typography>Loading...</Typography>
       ) : (
         <>
           {latestCenters?.length > 0 ? (
-            <ul>
+            <List dense>
               {latestCenters?.map((center) => {
                 const id = center?.owner;
                 const url = `/center/${id}`;
                 const name = center?.name;
                 return (
-                  <li key={id}>
-                    {name} <Link to={url}>Visit</Link>
-                  </li>
+                  <ListItem key={id}>
+                    <ListItemText primary={`${name}`} />
+                    <ListItemSecondaryAction>
+                      <Link component={RouterLink} to={url}>
+                        Visit
+                      </Link>
+                    </ListItemSecondaryAction>
+                  </ListItem>
                 );
               })}
-            </ul>
+            </List>
           ) : (
-            <div>There are no visitor centers</div>
+            <Typography>There are no visitor centers</Typography>
           )}
         </>
       )}
-    </>
+    </Paper>
   );
 };
 

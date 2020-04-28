@@ -1,6 +1,15 @@
 import React, { useRef } from "react";
 import { useCreateVisitorCenter } from "./hooks";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import { Link, Typography, Paper } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    margin: theme.spacing(1),
+    padding: theme.spacing(1),
+  },
+}));
 
 const CreateVisitorCenter = () => {
   const {
@@ -8,6 +17,8 @@ const CreateVisitorCenter = () => {
     visitorCenterData,
     isLoading,
   } = useCreateVisitorCenter();
+
+  const classes = useStyles();
 
   let nameRef = useRef();
   let summaryRef = useRef();
@@ -30,16 +41,16 @@ const CreateVisitorCenter = () => {
   const url = visitorCenterData && `/center/${visitorCenterData?.owner}`;
 
   return (
-    <>
-      <h2>Create visitor center</h2>
+    <Paper className={classes.paper}>
+      <Typography variant="h2">Create visitor center</Typography>
       {isLoading ? (
-        <div>Loading...</div>
+        <Typography>Loading...</Typography>
       ) : (
         <>
           {visitorCenterData ? (
-            <div>
-              <Link to={url}>Go to your visitor center</Link>
-            </div>
+            <Link component={RouterLink} to={url}>
+              Go to your visitor center
+            </Link>
           ) : (
             <form onSubmit={handleSubmit}>
               <div>
@@ -89,7 +100,7 @@ const CreateVisitorCenter = () => {
           )}
         </>
       )}
-    </>
+    </Paper>
   );
 };
 
