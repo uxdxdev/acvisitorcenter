@@ -3,6 +3,15 @@ import { useParams } from "react-router-dom";
 import { useVisitorCenterInformation } from "./hooks";
 import { VisitorCenterStatus } from "../visitor-center-status";
 import { WaitingList } from "../../components/waiting-list";
+import { Typography, Paper, TextField, Button } from "@material-ui/core";
+import ButtonBox from "../../shared/ButtonBox";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  buttonMarginRight: {
+    marginRight: theme.spacing(1),
+  },
+}));
 
 const VisitorCenterInformation = () => {
   const { id: centerId } = useParams();
@@ -18,14 +27,15 @@ const VisitorCenterInformation = () => {
     waitingList,
     isVisitorCenterOpen,
   } = useVisitorCenterInformation(centerId);
+  const classes = useStyles();
 
   return isLoading ? (
-    <div>Loading...</div>
+    <Typography>Loading...</Typography>
   ) : (
     <>
       <VisitorCenterStatus />
 
-      <h2>Name</h2>
+      <Typography variant="h2">Name</Typography>
       {isEditable["name"] ? (
         <input
           type="text"
@@ -36,15 +46,20 @@ const VisitorCenterInformation = () => {
           disabled={!isEditable["name"]}
         />
       ) : (
-        <div>{updatedVisitorCenterData.name}</div>
+        <Typography>{updatedVisitorCenterData.name}</Typography>
       )}
       {isOwner && (
-        <button onClick={() => handleEditSaveData("name")}>
+        <Button
+          variant="outlined"
+          color="primary"
+          size="small"
+          onClick={() => handleEditSaveData("name")}
+        >
           {isEditable["name"] ? "Save" : "Edit"}
-        </button>
+        </Button>
       )}
 
-      <h2>Summary</h2>
+      <Typography variant="h2">Summary</Typography>
       {isEditable["summary"] ? (
         <input
           type="text"
@@ -56,17 +71,22 @@ const VisitorCenterInformation = () => {
           maxLength="1000"
         />
       ) : (
-        <div>{updatedVisitorCenterData.summary}</div>
+        <Typography>{updatedVisitorCenterData.summary}</Typography>
       )}
       {isOwner && (
-        <button onClick={() => handleEditSaveData("summary")}>
+        <Button
+          variant="outlined"
+          color="primary"
+          size="small"
+          onClick={() => handleEditSaveData("summary")}
+        >
           {isEditable["summary"] ? "Save" : "Edit"}
-        </button>
+        </Button>
       )}
 
       {(isOwner || isUserFirstInQueue) && (
         <>
-          <h2>Code</h2>
+          <Typography variant="h2">Code</Typography>
           {isVisitorCenterOpen ? (
             <>
               {isEditable["dodoCode"] ? (
@@ -82,17 +102,32 @@ const VisitorCenterInformation = () => {
                   maxLength="5"
                 />
               ) : (
-                <div>{updatedVisitorCenterData.dodoCode} </div>
+                <Typography>{updatedVisitorCenterData.dodoCode}</Typography>
               )}
-              {isOwner && (
-                <button onClick={() => handleEditSaveData("dodoCode")}>
-                  {isEditable["dodoCode"] ? "Save" : "Edit"}
-                </button>
-              )}
-              <button onClick={() => handleFetchDodoCode()}>Get code</button>
+              <ButtonBox>
+                {isOwner && (
+                  <Button
+                    className={classes.buttonMarginRight}
+                    variant="outlined"
+                    color="primary"
+                    size="small"
+                    onClick={() => handleEditSaveData("dodoCode")}
+                  >
+                    {isEditable["dodoCode"] ? "Save" : "Edit"}
+                  </Button>
+                )}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  onClick={() => handleFetchDodoCode()}
+                >
+                  Get code
+                </Button>
+              </ButtonBox>
             </>
           ) : (
-            <div>The visitor center is closed</div>
+            <Typography>The visitor center is closed</Typography>
           )}
         </>
       )}
