@@ -24,6 +24,10 @@ const App = () => {
             fontWeight: 600,
             fontSize: "18px",
           },
+          body2: {
+            fontWeight: 600,
+            fontSize: "16px",
+          },
           button: {
             fontWeight: 600,
             fontSize: "14px",
