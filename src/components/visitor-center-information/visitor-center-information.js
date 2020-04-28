@@ -46,7 +46,11 @@ const VisitorCenterInformation = () => {
             <TextField
               type="text"
               value={updatedVisitorCenterData.name}
-              onChange={(event) => handleCenterInformationChange(event.target)}
+              onChange={(event) => {
+                const id = event?.target?.id;
+                const value = event?.target?.value;
+                handleCenterInformationChange(id, value);
+              }}
               id="name"
               label="Name"
               maxLength="30"
@@ -79,7 +83,11 @@ const VisitorCenterInformation = () => {
             <TextField
               type="text"
               value={updatedVisitorCenterData.summary}
-              onChange={(event) => handleCenterInformationChange(event.target)}
+              onChange={(event) => {
+                const id = event?.target?.id;
+                const value = event?.target?.value;
+                handleCenterInformationChange(id, value);
+              }}
               id="summary"
               name="summary"
               label="Summary"
@@ -116,9 +124,11 @@ const VisitorCenterInformation = () => {
               <TextField
                 type="text"
                 value={updatedVisitorCenterData.dodoCode}
-                onChange={(event) =>
-                  handleCenterInformationChange(event.target)
-                }
+                onChange={(event) => {
+                  const id = event?.target?.id;
+                  const value = event?.target?.value;
+                  handleCenterInformationChange(id, value.toUpperCase());
+                }}
                 id="dodoCode"
                 label="Code"
                 disabled={!isEditable["dodoCode"]}

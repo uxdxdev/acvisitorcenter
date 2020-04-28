@@ -69,7 +69,7 @@ const useVisitorCenter = (centerId) => {
       });
   }, [visitorCenterData, currentDodoCode]);
 
-  const handleCenterInformationChange = ({ id, value }) => {
+  const handleCenterInformationChange = (id, value) => {
     setVisitorCenterData((currentState) => {
       return { ...currentState, ...{ [id]: value } };
     });
