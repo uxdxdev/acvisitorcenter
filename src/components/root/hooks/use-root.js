@@ -4,12 +4,7 @@ import { firebase } from "../../../utils/firebase";
 
 const useRoot = () => {
   const context = useContext(store);
-  const {
-    dispatch,
-    state: {
-      auth: { uid },
-    },
-  } = context;
+  const { dispatch } = context;
 
   // cookie consent
   let cookieConsent = localStorage.getItem("acvisitorcenter_cookie_consent");
@@ -46,7 +41,7 @@ const useRoot = () => {
     };
   }, [dispatch]);
 
-  return { hasUserConsentedToUseCookies, updateCookieConsent, uid };
+  return { hasUserConsentedToUseCookies, updateCookieConsent };
 };
 
 export default useRoot;
