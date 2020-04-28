@@ -54,6 +54,7 @@ const useCreateVisitorCenter = () => {
           owner: uid,
           createdAt: timestamp(),
           waiting: [],
+          participants: [],
           summary,
         })
         .then(() => {

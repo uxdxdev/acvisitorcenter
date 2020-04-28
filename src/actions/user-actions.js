@@ -11,8 +11,15 @@ export const deleteUser = (dispatch, centerId, deleteUid) => {
     .runTransaction((transaction) => {
       return transaction.get(centersRef).then((snapshot) => {
         let waitingArray = snapshot.get("waiting");
+        let participantsArray = snapshot.get("participants");
+
         waitingArray = waitingArray.filter((user) => user.uid !== deleteUid);
+        participantsArray = participantsArray.filter(
+          (uid) => uid !== deleteUid
+        );
+
         transaction.update(centersRef, "waiting", waitingArray);
+        transaction.update(centersRef, "participants", participantsArray);
       });
     })
     .then(() => {

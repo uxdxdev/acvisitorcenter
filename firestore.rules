@@ -3,7 +3,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
     
   	function validateResourceFields(data){
-    	return data.keys().hasOnly(['name','owner','summary','waiting','createdAt']) &&      	
+    	return data.keys().hasOnly(['name','owner','summary','waiting','participants','createdAt']) &&      	
               data.name is string && 
               data.name.size() <= 30 &&                      
               data.owner is string && 
@@ -12,6 +12,8 @@ service cloud.firestore {
               data.summary.size() <= 1000 &&
               data.waiting is list &&              
               data.waiting.size() <= 50 &&
+              data.participants is list &&              
+              data.participants.size() <= 50 &&
               data.createdAt is timestamp;
     }
     
@@ -58,6 +60,7 @@ service cloud.firestore {
                       resource == null &&
       								validateResourceFields(request.resource.data) &&                      
                       request.resource.data.waiting.size() == 0 &&
+                      request.resource.data.participants.size() == 0 &&
                       request.resource.data.createdAt == request.time);
       
       // allow reading multiple docs with limit
@@ -69,32 +72,51 @@ service cloud.firestore {
       allow update: if request.auth != null &&
       								// owner removing visitor from waiting list
                       // .update() used so request.resource.data contains the resource after update, which includes all other fields
-      								(request.auth.uid == resource.data.owner &&                      
+      								(request.auth.uid == resource.data.owner &&                                            
                       validateResourceFields(request.resource.data) &&
-                      // request.resource.data.waiting.size() == resource.data.waiting.size() - 1 &&
+                      validateResourceFields(resource.data) &&
+                      request.resource.data.waiting.size() == resource.data.waiting.size() - 1 &&
+                      request.resource.data.participants.size() == resource.data.participants.size() - 1 &&                    
                       // other data is unmodified
                       request.resource.data.name == resource.data.name &&
                       request.resource.data.owner == resource.data.owner &&
                       request.resource.data.summary == resource.data.summary &&
                       request.resource.data.createdAt == resource.data.createdAt) ||
 
-                      // owner updating center data
-                      (request.auth.uid == resource.data.owner &&
+                      // owner updating center data: name, summary
+                      (request.auth.uid == resource.data.owner &&                      
                       validateResourceFields(request.resource.data) &&
+                      validateResourceFields(resource.data) &&
                       // other data is unmodified           
                       request.resource.data.owner == resource.data.owner &&                      
                       request.resource.data.createdAt == resource.data.createdAt &&
-      								request.resource.data.waiting.size() == resource.data.waiting.size()) ||
+      								request.resource.data.waiting.size() == resource.data.waiting.size() &&
+                      request.resource.data.participants.size() == resource.data.participants.size()) ||
 
                       // user adding themselves to waiting list
                       (validateResourceFields(request.resource.data) &&                      
       								request.resource.data.waiting.size() == resource.data.waiting.size() + 1 &&                      
+                      request.resource.data.participants.size() == resource.data.participants.size() + 1 &&    
+                      request.auth.uid in request.resource.data.participants &&                  
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].keys().hasOnly(['name', 'uid', 'joinedAt']) &&
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].uid == request.auth.uid &&
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].name is string &&
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].name.size() <= 30 &&
                       request.resource.data.waiting[request.resource.data.waiting.size() - 1].joinedAt is timestamp &&
                       // other data is unmodified
+                      request.resource.data.name == resource.data.name &&
+                      request.resource.data.owner == resource.data.owner &&
+                      request.resource.data.summary == resource.data.summary &&
+                      request.resource.data.createdAt == resource.data.createdAt) || 
+
+                      // user removing themselves from the queue
+                      (validateResourceFields(request.resource.data) &&
+                      // existing data contains request.uid, new data does not                      
+                      request.auth.uid in resource.data.participants &&                      
+                      (request.auth.uid in request.resource.data.participants) == false &&
+      								request.resource.data.waiting.size() == resource.data.waiting.size() - 1 &&  
+                      request.resource.data.participants.size() == resource.data.participants.size() - 1 &&                    
+      								// other data is unmodified
                       request.resource.data.name == resource.data.name &&
                       request.resource.data.owner == resource.data.owner &&
                       request.resource.data.summary == resource.data.summary &&

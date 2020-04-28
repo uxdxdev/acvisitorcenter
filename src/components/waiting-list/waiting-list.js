@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 const WaitiingList = (props) => {
   const { id: centerId } = useParams();
   const {
+    uid,
     handleDeleteUser,
     isOwner,
     joinVisitorQueue,
@@ -44,7 +45,6 @@ const WaitiingList = (props) => {
     event.preventDefault();
 
     let name = event.target.name.value;
-    console.log(nameInputRef);
     nameInputRef.current.value = "";
 
     if (name && centerId && !userAlreadyInQueue) {
@@ -73,6 +73,7 @@ const WaitiingList = (props) => {
           <br />
           <Box mt={1}>
             <Button
+              className={classes.buttonMarginRight}
               variant="contained"
               color="primary"
               size="small"
@@ -81,6 +82,15 @@ const WaitiingList = (props) => {
             >
               Join queue
             </Button>
+            {userAlreadyInQueue && (
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={() => handleDeleteUser(centerId, uid)}
+              >
+                Leave
+              </Button>
+            )}
           </Box>
           {(isOwner || userAlreadyInQueue) && (
             <Typography>You are already in the queue</Typography>
