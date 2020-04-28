@@ -93,7 +93,10 @@ const useVisitorCenter = (centerId) => {
         visitorCenterData?.name !== updatedVisitorCenterData?.name ||
         visitorCenterData?.summary !== updatedVisitorCenterData?.summary
       ) {
-        saveCenterData(centerId, updatedVisitorCenterData);
+        saveCenterData(
+          updatedVisitorCenterData?.name,
+          updatedVisitorCenterData?.summary
+        );
       }
 
       // save dodo code
@@ -107,9 +110,8 @@ const useVisitorCenter = (centerId) => {
     }
   };
 
-  const saveCenterData = (centerId, data) => {
-    const { name, summary } = data;
-    if (name && summary) {
+  const saveCenterData = (name, summary) => {
+    if (name && summary && centerId) {
       const db = firebase.firestore();
 
       dispatch({ type: "UPDATE_VISITOR_CENTER_DATA" });
