@@ -29,41 +29,46 @@ const VisitorCenterInformation = () => {
       <Link to={`/`}>
         <h1>AC Visitor Center</h1>
       </Link>
-      {isOwner && (
-        <button onClick={() => handleUpdateCenterInformation()}>
-          {isEditable ? "Save" : "Edit information"}
-        </button>
-      )}
 
       <VisitorCenterStatus />
 
       <h2>Name</h2>
-      {isEditable ? (
+      {isEditable["name"] ? (
         <input
           type="text"
           value={centerInformation.name}
           onChange={(event) => handleCenterInformationChange(event.target)}
           id="name"
           maxLength="30"
-          disabled={!isEditable}
+          disabled={!isEditable["name"]}
         />
       ) : (
         <div>{centerInformation.name}</div>
       )}
+      {isOwner && (
+        <button onClick={() => handleUpdateCenterInformation("name")}>
+          {isEditable["name"] ? "Save" : "Edit"}
+        </button>
+      )}
 
       <h2>Summary</h2>
-      {isEditable ? (
+      {isEditable["summary"] ? (
         <input
           type="text"
           value={centerInformation.summary}
           onChange={(event) => handleCenterInformationChange(event.target)}
           id="summary"
           name="summary"
-          disabled={!isEditable}
+          disabled={!isEditable["summary"]}
           maxLength="1000"
         />
       ) : (
         <div>{centerInformation.summary}</div>
+      )}
+      {isOwner && (
+        <button onClick={() => handleUpdateCenterInformation("summary")}>
+          {isEditable["summary"] ? "Save" : "Edit"}
+        </button>
       )}
 
       {(isOwner || isUserFirstInQueue) && (
@@ -71,25 +76,27 @@ const VisitorCenterInformation = () => {
           <h2>Code</h2>
           {isVisitorCenterOpen ? (
             <>
-              {isEditable ? (
+              {isEditable["dodoCode"] ? (
                 <input
                   type="text"
                   value={latestDodoCode.dodoCode}
                   onChange={(event) => handleDodoCodeChange(event.target)}
                   id="dodoCode"
-                  disabled={!isEditable}
+                  disabled={!isEditable["dodoCode"]}
                   minLength="5"
                   maxLength="5"
                 />
               ) : (
                 <div>{latestDodoCode.dodoCode} </div>
               )}
-              <button
-                onClick={() => handleFetchDodoCode()}
-                disabled={isEditable}
-              >
-                Get code
-              </button>
+              {isOwner && (
+                <button
+                  onClick={() => handleUpdateCenterInformation("dodoCode")}
+                >
+                  {isEditable["dodoCode"] ? "Save" : "Edit"}
+                </button>
+              )}
+              <button onClick={() => handleFetchDodoCode()}>Get code</button>
             </>
           ) : (
             <div>The visitor center is closed</div>
