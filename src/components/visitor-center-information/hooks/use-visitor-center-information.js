@@ -42,15 +42,13 @@ const useVisitorCenter = (centerId) => {
         .catch((error) => {
           dispatch({
             type: "FETCH_DODO_CODE_FAIL",
-            error:
-              "User is not owner, first in the queue, or the visitor center is closed",
+            error: "Error fetching dodo code",
           });
         });
     } else {
       dispatch({
         type: "FETCH_DODO_CODE_FAIL",
-        error:
-          "User is not owner, first in the queue, or the visitor center is closed",
+        error: "Error fetching dodo code",
       });
     }
   };

@@ -16,27 +16,23 @@ const useCreateVisitorCenter = () => {
     isFetchingVisitorCenterData || visitorCenterData === undefined;
 
   const updateUserData = async (dodoCode) => {
-    if (dodoCode) {
-      const db = firebase.firestore();
+    const db = firebase.firestore();
 
-      dispatch({ type: "UPDATE_DODO_CODE" });
+    dispatch({ type: "UPDATE_DODO_CODE" });
 
-      await db
-        .collection("users")
-        .doc(uid)
-        .set({
-          dodoCode,
-          next: "",
-        })
-        .then(() => {
-          dispatch({ type: "UPDATE_DODO_CODE_SUCCESS" });
-        })
-        .catch((error) => {
-          dispatch({ type: "UPDATE_DODO_CODE_FAIL", error });
-        });
-    } else {
-      dispatch({ type: "UPDATE_DODO_CODE_FAIL", error: "Invalid dodo code" });
-    }
+    await db
+      .collection("users")
+      .doc(uid)
+      .set({
+        dodoCode: dodoCode || "00000",
+        next: "",
+      })
+      .then(() => {
+        dispatch({ type: "UPDATE_DODO_CODE_SUCCESS" });
+      })
+      .catch((error) => {
+        dispatch({ type: "UPDATE_DODO_CODE_FAIL", error });
+      });
   };
 
   const createVisitorCenter = async (name, summary) => {
