@@ -7,7 +7,6 @@ const useLatestVisitorCenterList = () => {
   const {
     dispatch,
     state: {
-      auth: { uid },
       visitorCenter: { latestCenters, isFetchingLatestCenters },
     },
   } = context;
@@ -35,11 +34,11 @@ const useLatestVisitorCenterList = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const unsubscribe = uid && fetchLatestCenters();
+    const unsubscribe = fetchLatestCenters();
     return () => {
-      uid && unsubscribe();
+      unsubscribe();
     };
-  }, [uid, dispatch, fetchLatestCenters]);
+  }, [dispatch, fetchLatestCenters]);
 
   return { latestCenters, isLoading };
 };

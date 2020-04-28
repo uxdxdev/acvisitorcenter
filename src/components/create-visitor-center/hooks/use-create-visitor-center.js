@@ -12,12 +12,11 @@ const useCreateVisitorCenter = () => {
     dispatch,
   } = context;
 
-  const isAuthed = uid !== null && uid !== undefined;
   const isLoading =
     isFetchingVisitorCenterData || visitorCenterData === undefined;
 
   const updateUserData = async (dodoCode) => {
-    if (uid && dodoCode) {
+    if (dodoCode) {
       const db = firebase.firestore();
 
       dispatch({ type: "UPDATE_DODO_CODE" });
@@ -41,7 +40,7 @@ const useCreateVisitorCenter = () => {
   };
 
   const createVisitorCenter = async (name, summary) => {
-    if (uid && name && summary) {
+    if (name && summary) {
       const db = firebase.firestore();
       const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
@@ -69,33 +68,29 @@ const useCreateVisitorCenter = () => {
   };
 
   const fetchVisitorCenterData = useCallback(() => {
-    if (uid) {
-      dispatch({ type: "FETCH_VISITOR_CENTER" });
+    dispatch({ type: "FETCH_VISITOR_CENTER" });
 
-      return firebase
-        .firestore()
-        .collection("centers")
-        .doc(uid)
-        .get()
-        .then((result) => {
-          if (result.exists) {
-            dispatch({
-              type: "FETCH_VISITOR_CENTER_SUCCESS",
-              visitorCenterData: result.data(),
-            });
-          } else {
-            dispatch({
-              type: "FETCH_VISITOR_CENTER_FAIL",
-              error: "The user has not yet created a visitor center",
-            });
-          }
-        })
-        .catch((error) => {
-          dispatch({ type: "FETCH_VISITOR_CENTER_FAIL", error });
-        });
-    } else {
-      dispatch({ type: "FETCH_VISITOR_CENTER_FAIL", error: "Invalid data" });
-    }
+    return firebase
+      .firestore()
+      .collection("centers")
+      .doc(uid)
+      .get()
+      .then((result) => {
+        if (result.exists) {
+          dispatch({
+            type: "FETCH_VISITOR_CENTER_SUCCESS",
+            visitorCenterData: result.data(),
+          });
+        } else {
+          dispatch({
+            type: "FETCH_VISITOR_CENTER_FAIL",
+            error: "The user has not yet created a visitor center",
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({ type: "FETCH_VISITOR_CENTER_FAIL", error });
+      });
   }, [uid, dispatch]);
 
   const handleCreateVisitorCenter = async (name, summary, dodoCode) => {
@@ -105,8 +100,8 @@ const useCreateVisitorCenter = () => {
   };
 
   useEffect(() => {
-    isAuthed && fetchVisitorCenterData();
-  }, [dispatch, isAuthed, fetchVisitorCenterData]);
+    fetchVisitorCenterData();
+  }, [dispatch, fetchVisitorCenterData]);
 
   return {
     handleCreateVisitorCenter,

@@ -15,7 +15,7 @@ const useVisitorCenterStatus = () => {
   const { id: centerId } = useParams();
 
   const isVisitorCenterOpen = onlineStatus === "online";
-  const isAuthed = uid !== null && uid !== undefined;
+  const isOwner = uid === centerId;
 
   // init listeners for online status
   useEffect(() => {
@@ -25,7 +25,7 @@ const useVisitorCenterStatus = () => {
       last_changed: firebase.database.ServerValue.TIMESTAMP,
     };
 
-    if (isAuthed && centerId && uid === centerId) {
+    if (centerId && isOwner) {
       const isOnlineForDatabase = {
         state: "online",
         last_changed: firebase.database.ServerValue.TIMESTAMP,
@@ -75,13 +75,13 @@ const useVisitorCenterStatus = () => {
             console.log("this is not your center!!");
           });
     };
-  }, [isAuthed, uid, centerId, dispatch]);
+  }, [uid, centerId, dispatch]);
 
   // listen for changes in online/offline status
   // of visitor center
   useEffect(() => {
     let visitorCenterOnlineStatusRef;
-    if (isAuthed && centerId) {
+    if (centerId) {
       visitorCenterOnlineStatusRef = firebase
         .database()
         .ref("users/" + centerId + "/state");
@@ -95,7 +95,7 @@ const useVisitorCenterStatus = () => {
     return () => {
       visitorCenterOnlineStatusRef && visitorCenterOnlineStatusRef.off();
     };
-  }, [isAuthed, centerId, dispatch]);
+  }, [centerId, dispatch]);
 
   return {
     isVisitorCenterOpen,

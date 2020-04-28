@@ -64,14 +64,14 @@ const WaitiingList = (props) => {
             <>
               <div>You can get the code when you are next in the queue</div>
               <ol>
-                {waitingList.map(({ name, joinedAt, uid }, index) => {
+                {waitingList.map(({ name, joinedAt, uid: userId }, index) => {
                   const date = moment(joinedAt.toDate()).calendar();
                   return (
                     <li key={index}>
                       {name} {date}{" "}
                       {isOwner && index === 0 && (
                         <>
-                          <button onClick={() => deleteUser(centerId, uid)}>
+                          <button onClick={() => deleteUser(centerId, userId)}>
                             Done
                           </button>
                         </>
