@@ -15,7 +15,7 @@ const questionsAnswers = [
   {
     question: "Can people in the waiting list see my code?",
     answer:
-      "No the code is only available to the first person in the waiting. They must click the 'Get code' button to see it.",
+      "No, the code is only available to the first person in the waiting list. They must click the 'Get code' button to see it.",
   },
   {
     question: "How is the waiting list updated?",
@@ -25,7 +25,7 @@ const questionsAnswers = [
   {
     question: "Can I create multiple visitor centers?",
     answer:
-      "No each user can only create a single visitor center. It is easy to update your visitor center by clicking the 'Edit' button next to each label.",
+      "No, each user can only create a single visitor center. It is easy to update your visitor center by clicking the 'Edit' button next to each label on the visitor center page.",
   },
   {
     question: "How many waiting lists can I join?",
