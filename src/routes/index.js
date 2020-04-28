@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { LandingPage } from "./landing-page";
 import { VisitorCenter } from "./visitor-center";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Link as RouterLink } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link as RouterLink,
+} from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import logo from "../logo.png";
-
 import { Box, Link, Container, Typography } from "@material-ui/core";
 
 const Routes = () => {

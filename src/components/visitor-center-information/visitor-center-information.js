@@ -118,6 +118,9 @@ const VisitorCenterInformation = () => {
 
       <Paper elevation={0} variant="outlined" className={classes.paper}>
         <Typography variant="h2">Code</Typography>
+        <Typography variant="subtitle1">
+          You can get the code when you are next in queue
+        </Typography>
         {isVisitorCenterOpen ? (
           <>
             {isEditable["dodoCode"] ? (

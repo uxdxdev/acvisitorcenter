@@ -12,6 +12,7 @@ import {
   ListItemText,
   ListItemAvatar,
   Box,
+  Chip,
 } from "@material-ui/core";
 import { Person as PersonIcon, FlightTakeoff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 const WaitiingList = (props) => {
   const { id: centerId } = useParams();
   const {
-    deleteUser,
+    handleDeleteUser,
     isOwner,
     joinVisitorQueue,
     isVisitorCenterOpen,
@@ -95,40 +96,39 @@ const WaitiingList = (props) => {
         ) : (
           <>
             {waitingList?.length > 0 ? (
-              <>
-                <Typography>
-                  You can get the code when you are next in the queue
-                </Typography>
-                <List dense>
-                  {waitingList.map(({ name, joinedAt, uid: userId }, index) => {
-                    const date = moment(joinedAt.toDate()).calendar();
-                    return (
-                      <ListItem key={userId}>
-                        <ListItemAvatar>
-                          {index === 0 ? <FlightTakeoff /> : <PersonIcon />}
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={`${name}`}
-                          secondary={`Joined: ${date}`}
-                        />
-
-                        {isOwner && index === 0 && (
-                          <>
-                            <Button
-                              variant="outlined"
-                              color="primary"
-                              size="small"
-                              onClick={() => deleteUser(centerId, userId)}
-                            >
-                              Done
-                            </Button>
-                          </>
-                        )}
-                      </ListItem>
-                    );
-                  })}
-                </List>
-              </>
+              <List dense>
+                {waitingList.map(({ name, joinedAt, uid: userId }, index) => {
+                  const date = moment(joinedAt.toDate()).calendar();
+                  return (
+                    <ListItem key={userId}>
+                      <ListItemAvatar>
+                        {index === 0 ? <FlightTakeoff /> : <PersonIcon />}
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={`${name}`}
+                        secondary={`Joined: ${date}`}
+                      />
+                      {index === 0 ? (
+                        <Chip color="primary" size="small" label="Next" />
+                      ) : (
+                        <Chip size="small" label="Please wait..." />
+                      )}
+                      {isOwner && index === 0 && (
+                        <Box ml={1}>
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            size="small"
+                            onClick={() => handleDeleteUser(centerId, userId)}
+                          >
+                            Done
+                          </Button>
+                        </Box>
+                      )}
+                    </ListItem>
+                  );
+                })}
+              </List>
             ) : (
               <Typography>Visitor center is empty</Typography>
             )}
