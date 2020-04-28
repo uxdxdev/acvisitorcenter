@@ -24,22 +24,20 @@ const useRoot = () => {
   };
 
   useEffect(() => {
-    firebase
-      .auth()
-      .signInAnonymously()
-      .catch((error) => {
-        // error signing in
-      });
-  }, []);
-
-  useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user?.uid) {
         // user signed in
         dispatch({ type: "AUTH", uid: user.uid });
       } else {
-        // user signed out
+        // only sign in if the user does not have an account id already.
         dispatch({ type: "UNAUTH" });
+
+        firebase
+          .auth()
+          .signInAnonymously()
+          .catch((error) => {
+            // error signing in
+          });
       }
     });
 
