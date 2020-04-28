@@ -1,10 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useCreateVisitorCenter } from "./hooks";
 import { Link as RouterLink } from "react-router-dom";
 import { Typography, Paper, TextField, Button, Box } from "@material-ui/core";
 import { Send as SendIcon } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import ButtonBox from "../../shared/ButtonBox";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -125,7 +124,7 @@ const CreateVisitorCenter = () => {
                 rows={8}
               />
 
-              <ButtonBox>
+              <Box mt={1}>
                 <Button
                   type="submit"
                   disabled={isLoading}
@@ -134,7 +133,7 @@ const CreateVisitorCenter = () => {
                 >
                   Create visitor center
                 </Button>
-              </ButtonBox>
+              </Box>
             </form>
           )}
         </>

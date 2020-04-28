@@ -39,7 +39,7 @@ const VisitorCenterInformation = () => {
     <>
       <VisitorCenterStatus />
 
-      <Paper className={classes.paper}>
+      <Paper elevation={0} variant="outlined" className={classes.paper}>
         <Typography variant="h2">Name</Typography>
         {isEditable["name"] ? (
           <>
@@ -76,7 +76,7 @@ const VisitorCenterInformation = () => {
         )}
       </Paper>
 
-      <Paper className={classes.paper}>
+      <Paper elevation={0} variant="outlined" className={classes.paper}>
         <Typography variant="h2">Summary</Typography>
         {isEditable["summary"] ? (
           <>
@@ -116,7 +116,7 @@ const VisitorCenterInformation = () => {
         )}
       </Paper>
 
-      <Paper className={classes.paper}>
+      <Paper elevation={0} variant="outlined" className={classes.paper}>
         <Typography variant="h2">Code</Typography>
         {isVisitorCenterOpen ? (
           <>

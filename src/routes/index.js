@@ -46,12 +46,14 @@ const Routes = () => {
             </Route>
           </Switch>
         ) : (
-          <ReCAPTCHA
-            sitekey={"6LdRQe4UAAAAACXdpngpIJRqwXsBweATo0zFa-WJ"}
-            onChange={onChange}
-            onExpired={onChange}
-            onErrored={onChange}
-          />
+          <Box align="center">
+            <ReCAPTCHA
+              sitekey={"6LdRQe4UAAAAACXdpngpIJRqwXsBweATo0zFa-WJ"}
+              onChange={onChange}
+              onExpired={onChange}
+              onErrored={onChange}
+            />
+          </Box>
         )}
       </Container>
     </Router>

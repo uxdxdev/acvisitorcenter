@@ -26,7 +26,7 @@ const LatestVisitorCenterList = () => {
   const classes = useStyles();
 
   return (
-    <Paper className={classes.paper}>
+    <Paper elevation={0} variant="outlined" className={classes.paper}>
       <Typography variant="h2">Latest visitor centers</Typography>
 
       {isLoading ? (
