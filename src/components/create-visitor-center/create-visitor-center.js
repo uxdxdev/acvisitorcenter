@@ -1,13 +1,14 @@
 import React, { useRef } from "react";
 import { useCreateVisitorCenter } from "./hooks";
 import { Link as RouterLink } from "react-router-dom";
-import { Link, Typography, Paper } from "@material-ui/core";
+import { Link, Typography, Paper, TextField, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import ButtonBox from "../../shared/ButtonBox";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    margin: theme.spacing(1),
-    padding: theme.spacing(1),
+    margin: theme.spacing(2),
+    padding: theme.spacing(2),
   },
 }));
 
@@ -53,49 +54,54 @@ const CreateVisitorCenter = () => {
             </Link>
           ) : (
             <form onSubmit={handleSubmit}>
-              <div>
-                <label htmlFor="name">Name</label>
-                <br />
-                <input
-                  type="text"
-                  id="name"
-                  required
-                  ref={nameRef}
-                  maxLength="30"
-                />
-              </div>
+              <TextField
+                id="name"
+                label="Name"
+                required
+                type="text"
+                ref={nameRef}
+                // fullWidth
+                // onChange={handleChange}
+                inputProps={{ maxLength: "30" }}
+                variant="outlined"
+                margin="dense"
+              />
+              <br />
+              <TextField
+                id="code"
+                label="Code"
+                required
+                type="text"
+                ref={codeRef}
+                inputProps={{ maxLength: "5", minLength: "5" }}
+                variant="outlined"
+                margin="dense"
+              />
 
-              <div>
-                <label htmlFor="code">Dodo code</label>
-                <br />
-                <input
-                  type="text"
-                  id="code"
-                  name="code"
-                  required
-                  ref={codeRef}
-                  maxLength="5"
-                  minLength="5"
-                />
-              </div>
+              <TextField
+                id="summary"
+                label="Summary"
+                required
+                type="text"
+                ref={summaryRef}
+                fullWidth
+                inputProps={{ maxLength: "1000" }}
+                variant="outlined"
+                margin="dense"
+                multiline
+                rows={8}
+              />
 
-              <div>
-                <label htmlFor="summary">Summary</label>
-                <br />
-                <textarea
-                  id="summary"
-                  name="summary"
-                  required
-                  ref={summaryRef}
-                  rows="5"
-                  maxLength="1000"
-                />
-              </div>
-              <div>
-                <button type="submit" disabled={isLoading}>
+              <ButtonBox>
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  variant="contained"
+                  color="primary"
+                >
                   Create visitor center
-                </button>
-              </div>
+                </Button>
+              </ButtonBox>
             </form>
           )}
         </>
