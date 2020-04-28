@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
 }));
-const WaitiingList = (props) => {
+const WaitingList = () => {
   const { id: centerId } = useParams();
   const {
     uid,
@@ -35,8 +35,8 @@ const WaitiingList = (props) => {
     joinVisitorQueue,
     isVisitorCenterOpen,
     userAlreadyInQueue,
+    waitingList,
   } = useWaitingList(centerId);
-  const { waitingList } = props;
   const classes = useStyles();
 
   const nameInputRef = useRef();
@@ -51,6 +51,9 @@ const WaitiingList = (props) => {
       joinVisitorQueue(centerId, name);
     }
   };
+
+  const positionInQueue =
+    waitingList && waitingList.findIndex((user) => user?.uid === uid) + 1;
 
   return (
     <>
@@ -71,7 +74,7 @@ const WaitiingList = (props) => {
             disabled={isOwner || userAlreadyInQueue || !isVisitorCenterOpen}
           />
           <br />
-          <Box mt={1}>
+          <Box mt={1} mb={1}>
             <Button
               className={classes.buttonMarginRight}
               variant="contained"
@@ -93,7 +96,7 @@ const WaitiingList = (props) => {
             )}
           </Box>
           {(isOwner || userAlreadyInQueue) && (
-            <Typography>You are already in the queue</Typography>
+            <Typography>Position #{positionInQueue}</Typography>
           )}
         </form>
       </Paper>
@@ -115,7 +118,7 @@ const WaitiingList = (props) => {
                         {index === 0 ? <FlightTakeoff /> : <PersonIcon />}
                       </ListItemAvatar>
                       <ListItemText
-                        primary={`${name}`}
+                        primary={`#${index + 1} ${name}`}
                         secondary={`Joined: ${date}`}
                       />
                       {index === 0 ? (
@@ -149,4 +152,4 @@ const WaitiingList = (props) => {
   );
 };
 
-export default WaitiingList;
+export default WaitingList;

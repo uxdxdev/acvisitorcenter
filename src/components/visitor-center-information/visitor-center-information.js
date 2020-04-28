@@ -28,7 +28,6 @@ const VisitorCenterInformation = () => {
     updatedVisitorCenterData,
     isUserFirstInQueue,
     isLoading,
-    waitingList,
     isVisitorCenterOpen,
   } = useVisitorCenterInformation(centerId);
   const classes = useStyles();
@@ -113,9 +112,6 @@ const VisitorCenterInformation = () => {
 
       <Paper elevation={0} variant="outlined" className={classes.paper}>
         <Typography variant="h2">Code</Typography>
-        <Typography variant="subtitle1">
-          Code available to next visitor
-        </Typography>
         {isVisitorCenterOpen ? (
           <>
             {isEditable["dodoCode"] ? (
@@ -156,7 +152,9 @@ const VisitorCenterInformation = () => {
                 onClick={() => handleFetchDodoCode()}
                 disabled={!isOwner && !isUserFirstInQueue}
               >
-                Get code
+                {!isOwner && !isUserFirstInQueue
+                  ? "Code unavailable"
+                  : "Get code"}
               </Button>
             </ButtonBox>
           </>
@@ -165,7 +163,7 @@ const VisitorCenterInformation = () => {
         )}
       </Paper>
 
-      <WaitingList waitingList={waitingList} />
+      <WaitingList />
     </>
   );
 };
