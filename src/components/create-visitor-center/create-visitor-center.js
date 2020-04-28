@@ -31,9 +31,6 @@ const CreateVisitorCenter = () => {
 
   return (
     <>
-      <Link to={`/`}>
-        <h1>AC Visitor Center</h1>
-      </Link>
       <h2>Create visitor center</h2>
       {isLoading ? (
         <div>Loading...</div>

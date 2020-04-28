@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { useVisitorCenterInformation } from "./hooks";
 import { VisitorCenterStatus } from "../visitor-center-status";
 import { WaitingList } from "../../components/waiting-list";
-import { Link } from "react-router-dom";
 
 const VisitorCenterInformation = () => {
   const { id: centerId } = useParams();
@@ -24,10 +23,6 @@ const VisitorCenterInformation = () => {
     <div>Loading...</div>
   ) : (
     <>
-      <Link to={`/`}>
-        <h1>AC Visitor Center</h1>
-      </Link>
-
       <VisitorCenterStatus />
 
       <h2>Name</h2>
