@@ -8,7 +8,7 @@ const useVisitorCenter = (centerId) => {
     dispatch,
     state: {
       auth: { uid },
-      visitorCenter: { visitorCenterData: currentCenterData },
+      visitorCenter: { visitorCenterData: currentCenterData, onlineStatus },
       waitingList: { isJoiningQueue },
     },
   } = context;
@@ -16,6 +16,9 @@ const useVisitorCenter = (centerId) => {
   // const waitingList = currentCenterData?.waiting;
   const isOwner = centerId === uid;
   const waitingList = currentCenterData?.waiting;
+  const isVisitorCenterOpen = onlineStatus === "online";
+  const userAlreadyInQueue =
+    waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
 
   const setNextVisitor = useCallback(
     (nextVisitorUid) => {
@@ -76,34 +79,37 @@ const useVisitorCenter = (centerId) => {
   };
 
   const joinVisitorQueue = (centerId, name) => {
-    const db = firebase.firestore();
-    const centersRef = db.collection("centers").doc(centerId);
+    if (!userAlreadyInQueue) {
+      const db = firebase.firestore();
+      const centersRef = db.collection("centers").doc(centerId);
 
-    dispatch({ type: "JOIN_QUEUE" });
+      dispatch({ type: "JOIN_QUEUE" });
 
-    // run transaction to join center
-    db.runTransaction((transaction) => {
-      return transaction.get(centersRef).then((snapshot) => {
-        const waitingArray = snapshot.get("waiting");
-        const joinedAt = firebase.firestore.Timestamp.fromDate(new Date());
-        waitingArray.push({ name, uid, joinedAt });
-        transaction.update(centersRef, "waiting", waitingArray);
-      });
-    })
-      .then(() => {
-        dispatch({ type: "JOIN_QUEUE_SUCCESS" });
+      // run transaction to join center
+      db.runTransaction((transaction) => {
+        return transaction.get(centersRef).then((snapshot) => {
+          const waitingArray = snapshot.get("waiting");
+          const joinedAt = firebase.firestore.Timestamp.fromDate(new Date());
+          waitingArray.push({ name, uid, joinedAt });
+          transaction.update(centersRef, "waiting", waitingArray);
+        });
       })
-      .catch((error) => {
-        dispatch({ type: "JOIN_QUEUE_FAIL", error });
-      });
+        .then(() => {
+          dispatch({ type: "JOIN_QUEUE_SUCCESS" });
+        })
+        .catch((error) => {
+          dispatch({ type: "JOIN_QUEUE_FAIL", error });
+        });
+    }
   };
 
   return {
-    uid,
     deleteUser,
     isOwner,
     joinVisitorQueue,
     isJoiningQueue,
+    isVisitorCenterOpen,
+    userAlreadyInQueue,
   };
 };
 

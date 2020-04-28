@@ -67,18 +67,19 @@ const CreateVisitorCenter = () => {
                 label="Name"
                 required
                 type="text"
-                ref={nameRef}
+                inputRef={nameRef}
                 inputProps={{ maxLength: "30" }}
                 variant="outlined"
                 margin="dense"
               />
               <br />
+
               <TextField
                 id="code"
                 label="Code"
                 required
                 type="text"
-                ref={codeRef}
+                inputRef={codeRef}
                 inputProps={{ maxLength: "5", minLength: "5" }}
                 variant="outlined"
                 margin="dense"
@@ -89,7 +90,7 @@ const CreateVisitorCenter = () => {
                 label="Summary"
                 required
                 type="text"
-                ref={summaryRef}
+                inputRef={summaryRef}
                 fullWidth
                 inputProps={{ maxLength: "1000" }}
                 variant="outlined"
