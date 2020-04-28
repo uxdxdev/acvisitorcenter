@@ -140,7 +140,7 @@ const useVisitorCenter = (centerId) => {
   };
 
   const updateDodoCode = (dodoCode) => {
-    if (uid && dodoCode) {
+    if (dodoCode) {
       const db = firebase.firestore();
       dispatch({ type: "UPDATE_DODO_CODE" });
 

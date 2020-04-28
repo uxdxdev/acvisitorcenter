@@ -1,6 +1,12 @@
 const initialState = {
-  uid: null,
-  onlineStatus: null,
+  isJoiningQueue: false,
+  isJoiningQueueError: null,
+
+  isDeletingUser: false,
+  isDeletingUserError: null,
+
+  isSettingNextVisitor: false,
+  isSettingNextVisitorError: null,
 };
 
 const waitingListReducer = (state, action) => {

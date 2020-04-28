@@ -14,7 +14,7 @@ const useVisitorCenter = (centerId) => {
   } = context;
 
   // const waitingList = currentCenterData?.waiting;
-  const isOwner = centerId && centerId === uid;
+  const isOwner = centerId === uid;
   const waitingList = currentCenterData?.waiting;
 
   const setNextVisitor = useCallback(
