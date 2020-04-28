@@ -71,7 +71,7 @@ service cloud.firestore {
                       // .update() used so request.resource.data contains the resource after update, which includes all other fields
       								(request.auth.uid == resource.data.owner &&                      
                       validateResourceFields(request.resource.data) &&
-                      request.resource.data.waiting.size() == resource.data.waiting.size() - 1 &&
+                      // request.resource.data.waiting.size() == resource.data.waiting.size() - 1 &&
                       // other data is unmodified
                       request.resource.data.name == resource.data.name &&
                       request.resource.data.owner == resource.data.owner &&

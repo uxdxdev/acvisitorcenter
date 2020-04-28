@@ -48,7 +48,7 @@ const VisitorCenterInformation = () => {
               value={updatedVisitorCenterData.name}
               onChange={(event) => handleCenterInformationChange(event.target)}
               id="name"
-              required
+              label="Name"
               maxLength="30"
               disabled={!isEditable["name"]}
               inputProps={{ maxLength: "30" }}
@@ -82,6 +82,7 @@ const VisitorCenterInformation = () => {
               onChange={(event) => handleCenterInformationChange(event.target)}
               id="summary"
               name="summary"
+              label="Summary"
               disabled={!isEditable["summary"]}
               inputProps={{ maxLength: "1000" }}
               variant="outlined"
@@ -107,54 +108,55 @@ const VisitorCenterInformation = () => {
         )}
       </Paper>
 
-      {(isOwner || isUserFirstInQueue) && (
-        <Paper className={classes.paper}>
-          <Typography variant="h2">Code</Typography>
-          {isVisitorCenterOpen ? (
-            <>
-              {isEditable["dodoCode"] ? (
-                <TextField
-                  type="text"
-                  value={updatedVisitorCenterData.dodoCode}
-                  onChange={(event) =>
-                    handleCenterInformationChange(event.target)
-                  }
-                  id="dodoCode"
-                  disabled={!isEditable["dodoCode"]}
-                  inputProps={{ maxLength: "5", minLength: "5" }}
-                  variant="outlined"
-                  margin="dense"
-                />
-              ) : (
-                <Typography>{updatedVisitorCenterData.dodoCode}</Typography>
-              )}
-              <ButtonBox>
-                {isOwner && (
-                  <Button
-                    className={classes.buttonMarginRight}
-                    variant="outlined"
-                    color="primary"
-                    size="small"
-                    onClick={() => handleEditSaveData("dodoCode")}
-                  >
-                    {isEditable["dodoCode"] ? "Save" : "Edit"}
-                  </Button>
-                )}
+      <Paper className={classes.paper}>
+        <Typography variant="h2">Code</Typography>
+        {isVisitorCenterOpen ? (
+          <>
+            {isEditable["dodoCode"] ? (
+              <TextField
+                type="text"
+                value={updatedVisitorCenterData.dodoCode}
+                onChange={(event) =>
+                  handleCenterInformationChange(event.target)
+                }
+                id="dodoCode"
+                label="Code"
+                disabled={!isEditable["dodoCode"]}
+                inputProps={{ maxLength: "5", minLength: "5" }}
+                variant="outlined"
+                margin="dense"
+              />
+            ) : (
+              <Typography>{updatedVisitorCenterData.dodoCode}</Typography>
+            )}
+            <ButtonBox>
+              {isOwner && (
                 <Button
-                  variant="contained"
+                  className={classes.buttonMarginRight}
+                  variant="outlined"
                   color="primary"
                   size="small"
-                  onClick={() => handleFetchDodoCode()}
+                  onClick={() => handleEditSaveData("dodoCode")}
                 >
-                  Get code
+                  {isEditable["dodoCode"] ? "Save" : "Edit"}
                 </Button>
-              </ButtonBox>
-            </>
-          ) : (
-            <Typography>The visitor center is closed</Typography>
-          )}
-        </Paper>
-      )}
+              )}
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                onClick={() => handleFetchDodoCode()}
+                disabled={!isOwner && !isUserFirstInQueue}
+              >
+                Get code
+              </Button>
+            </ButtonBox>
+          </>
+        ) : (
+          <Typography>The visitor center is closed</Typography>
+        )}
+      </Paper>
+
       <WaitingList waitingList={waitingList} />
     </>
   );
