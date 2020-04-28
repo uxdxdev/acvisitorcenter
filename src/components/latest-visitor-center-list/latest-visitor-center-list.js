@@ -7,7 +7,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemSecondaryAction,
   Button,
   ListItemAvatar,
 } from "@material-ui/core";
@@ -17,7 +16,7 @@ import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    margin: theme.spacing(2),
+    margin: theme.spacing(1),
     padding: theme.spacing(2),
   },
 }));
@@ -40,7 +39,7 @@ const LatestVisitorCenterList = () => {
                 const id = center?.owner;
                 const url = `/center/${id}`;
                 const name = center?.name;
-                const date = moment(center?.createdAt.toDate()).calendar();
+                const date = moment(center?.createdAt?.toDate()).calendar();
 
                 return (
                   <ListItem key={id}>
@@ -51,18 +50,16 @@ const LatestVisitorCenterList = () => {
                       primary={`${name}`}
                       secondary={`Created: ${date}`}
                     />
-                    <ListItemSecondaryAction>
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        className={classes.button}
-                        endIcon={<SendIcon />}
-                        component={RouterLink}
-                        to={url}
-                      >
-                        Visit
-                      </Button>
-                    </ListItemSecondaryAction>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      className={classes.button}
+                      endIcon={<SendIcon />}
+                      component={RouterLink}
+                      to={url}
+                    >
+                      Visit
+                    </Button>
                   </ListItem>
                 );
               })}
