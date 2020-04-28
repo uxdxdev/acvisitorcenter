@@ -55,34 +55,29 @@ const useVisitorCenter = (centerId) => {
     }
   };
 
-  const [centerInformation, setCenterInformation] = useState({
+  const [updatedVisitorCenterData, setVisitorCenterData] = useState({
     name: "Loading...",
     summary: "Loading...",
+    dodoCode: "*****",
   });
 
   useEffect(() => {
-    visitorCenterData && setCenterInformation(visitorCenterData);
-  }, [visitorCenterData]);
+    visitorCenterData &&
+      setVisitorCenterData({
+        ...visitorCenterData,
+        dodoCode: currentDodoCode || "*****",
+      });
+  }, [visitorCenterData, currentDodoCode]);
 
   const handleCenterInformationChange = ({ id, value }) => {
-    setCenterInformation((currentState) => {
+    setVisitorCenterData((currentState) => {
       return { ...currentState, ...{ [id]: value } };
     });
   };
 
-  const [latestDodoCode, setDodoCode] = useState({ dodoCode: "*****" });
-
-  useEffect(() => {
-    currentDodoCode && setDodoCode({ dodoCode: currentDodoCode });
-  }, [currentDodoCode]);
-
-  const handleDodoCodeChange = ({ id, value }) => {
-    setDodoCode({ [id]: value });
-  };
-
   const [isEditable, setIsEditable] = useState({});
 
-  const handleUpdateCenterInformation = (key) => {
+  const handleEditSaveData = (key) => {
     setIsEditable((currentState) => {
       return {
         ...currentState,
@@ -91,27 +86,37 @@ const useVisitorCenter = (centerId) => {
         },
       };
     });
-    // setIsEditable(!isEditable);
 
     if (isEditable[key] === true) {
+      // save visitor center data
       if (
-        visitorCenterData?.name !== centerInformation?.name ||
-        visitorCenterData?.summary !== centerInformation?.summary
+        visitorCenterData?.name !== updatedVisitorCenterData?.name ||
+        visitorCenterData?.summary !== updatedVisitorCenterData?.summary
       ) {
-        saveCenterData(centerId, centerInformation);
+        saveCenterData(centerId, updatedVisitorCenterData);
       } else {
-        setCenterInformation(visitorCenterData);
+        setVisitorCenterData((current) => {
+          return {
+            ...current,
+            ...visitorCenterData,
+          };
+        });
       }
 
-      // validate dodo code
+      // save dodo code
       if (
-        latestDodoCode?.dodoCode?.length === 5 &&
-        latestDodoCode?.dodoCode !== currentDodoCode &&
-        latestDodoCode?.dodoCode !== "*****"
+        updatedVisitorCenterData?.dodoCode?.length === 5 &&
+        updatedVisitorCenterData?.dodoCode !== currentDodoCode &&
+        updatedVisitorCenterData?.dodoCode !== "*****"
       ) {
-        updateDodoCode(latestDodoCode?.dodoCode);
+        updateDodoCode(updatedVisitorCenterData?.dodoCode);
       } else {
-        setDodoCode({ dodoCode: currentDodoCode || "*****" });
+        setVisitorCenterData((current) => {
+          return {
+            ...current,
+            ...{ dodoCode: currentDodoCode || "*****" },
+          };
+        });
       }
     }
   };
@@ -222,10 +227,8 @@ const useVisitorCenter = (centerId) => {
     handleFetchDodoCode,
     isEditable,
     handleCenterInformationChange,
-    handleDodoCodeChange,
-    handleUpdateCenterInformation,
-    centerInformation,
-    latestDodoCode,
+    handleEditSaveData,
+    updatedVisitorCenterData,
     isUserFirstInQueue,
     isVisitorCenterOpen,
     waitingList,
