@@ -12,6 +12,18 @@ const App = () => {
       createMuiTheme({
         typography: {
           fontFamily: ["Nunito", "-apple-system"].join(","),
+          h1: {
+            fontWeight: 900,
+            fontSize: "40px",
+          },
+          h2: {
+            fontWeight: 800,
+            fontSize: "28px",
+          },
+          body1: {
+            fontWeight: 600,
+            fontSize: "18px",
+          },
         },
         palette: {
           type: prefersDarkMode ? "dark" : "light",

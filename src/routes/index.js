@@ -28,7 +28,7 @@ const Routes = () => {
           <Link
             component={RouterLink}
             to={`/`}
-            style={{ textDecoration: "none" }}
+            style={{ textDecoration: "none", color: "inherit" }}
           >
             AC Visitor Center
           </Link>

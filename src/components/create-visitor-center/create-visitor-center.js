@@ -8,7 +8,7 @@ import ButtonBox from "../../shared/ButtonBox";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    margin: theme.spacing(2),
+    margin: theme.spacing(1),
     padding: theme.spacing(2),
   },
 }));
