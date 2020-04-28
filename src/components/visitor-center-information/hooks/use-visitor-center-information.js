@@ -106,6 +106,10 @@ const useVisitorCenter = (centerId) => {
         updatedVisitorCenterData?.dodoCode !== "*****"
       ) {
         updateDodoCode(updatedVisitorCenterData?.dodoCode);
+      } else {
+        setVisitorCenterData((currentState) => {
+          return { ...currentState, dodoCode: currentDodoCode || "*****" };
+        });
       }
     }
   };
