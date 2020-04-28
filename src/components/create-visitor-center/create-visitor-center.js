@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useCreateVisitorCenter } from "./hooks";
 import { Link as RouterLink } from "react-router-dom";
 import { Typography, Paper, TextField, Button } from "@material-ui/core";
@@ -21,23 +21,28 @@ const CreateVisitorCenter = () => {
   } = useCreateVisitorCenter();
 
   const classes = useStyles();
+  const [formInput, setFormInput] = useState({
+    name: "",
+    summary: "",
+    code: "",
+  });
 
-  let nameRef = useRef();
-  let summaryRef = useRef();
-  let codeRef = useRef();
+  const onChange = (id, value) => {
+    setFormInput((current) => {
+      return {
+        ...current,
+        [id]: value,
+      };
+    });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    let name = event.target.name.value;
-    let summary = event.target.summary.value;
-    let code = event.target.code.value;
-
-    nameRef.current.value = "";
-    summaryRef.current.value = "";
-    codeRef.current.value = "";
-
-    handleCreateVisitorCenter(name, summary, code);
+    handleCreateVisitorCenter(
+      formInput?.name,
+      formInput?.summary,
+      formInput?.code
+    );
   };
 
   const url = visitorCenterData && `/center/${visitorCenterData?.owner}`;
@@ -67,7 +72,12 @@ const CreateVisitorCenter = () => {
                 label="Name"
                 required
                 type="text"
-                inputRef={nameRef}
+                onChange={(event) => {
+                  const id = event?.target?.id;
+                  const value = event?.target?.value;
+                  onChange(id, value);
+                }}
+                value={formInput?.name}
                 inputProps={{ maxLength: "30" }}
                 variant="outlined"
                 margin="dense"
@@ -79,8 +89,17 @@ const CreateVisitorCenter = () => {
                 label="Code"
                 required
                 type="text"
-                inputRef={codeRef}
-                inputProps={{ maxLength: "5", minLength: "5" }}
+                onChange={(event) => {
+                  const id = event?.target?.id;
+                  const value = event?.target?.value;
+                  onChange(id, value.toUpperCase());
+                }}
+                value={formInput?.code}
+                inputProps={{
+                  maxLength: "5",
+                  minLength: "5",
+                  "text-transform": "uppercase",
+                }}
                 variant="outlined"
                 margin="dense"
               />
@@ -90,7 +109,12 @@ const CreateVisitorCenter = () => {
                 label="Summary"
                 required
                 type="text"
-                inputRef={summaryRef}
+                onChange={(event) => {
+                  const id = event?.target?.id;
+                  const value = event?.target?.value;
+                  onChange(id, value);
+                }}
+                value={formInput?.summary}
                 fullWidth
                 inputProps={{ maxLength: "1000" }}
                 variant="outlined"
