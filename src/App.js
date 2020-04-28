@@ -24,6 +24,10 @@ const App = () => {
             fontWeight: 600,
             fontSize: "18px",
           },
+          button: {
+            fontWeight: 600,
+            fontSize: "14px",
+          },
         },
         palette: {
           type: prefersDarkMode ? "dark" : "light",

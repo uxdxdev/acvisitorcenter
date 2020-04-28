@@ -67,7 +67,7 @@ const WaitiingList = (props) => {
             inputProps={{ maxLength: "30" }}
             variant="outlined"
             margin="dense"
-            disabled={isOwner || userAlreadyInQueue}
+            disabled={isOwner || userAlreadyInQueue || !isVisitorCenterOpen}
           />
           <br />
           <Box mt={1}>
