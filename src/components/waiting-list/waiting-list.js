@@ -100,7 +100,7 @@ const WaitiingList = (props) => {
                 {waitingList.map(({ name, joinedAt, uid: userId }, index) => {
                   const date = moment(joinedAt.toDate()).calendar();
                   return (
-                    <ListItem key={userId}>
+                    <ListItem key={index}>
                       <ListItemAvatar>
                         {index === 0 ? <FlightTakeoff /> : <PersonIcon />}
                       </ListItemAvatar>
