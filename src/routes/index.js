@@ -25,16 +25,25 @@ const Routes = () => {
   return (
     <Router>
       <Container>
-        <Link
-          component={RouterLink}
-          to={`/`}
-          style={{ textDecoration: "none", color: "inherit" }}
-        >
-          <Box align="center" mt={4} mb={2}>
-            <img src={logo} alt="crossed arrows" width="100" />
-            <Typography variant="h1">AC Visitor Center</Typography>
-          </Box>
-        </Link>
+        <Box align="center" mt={4} mb={2}>
+          <img src={logo} alt="crossed arrows" width="100" />
+          <Link
+            component={RouterLink}
+            to={`/`}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Typography variant="h1">AC Visitor Center</Typography>{" "}
+          </Link>
+
+          <Link
+            href="https://discord.gg/kwzezy"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Typography>Join the Discord server</Typography>
+          </Link>
+        </Box>
 
         {isVerified ? (
           <Switch>

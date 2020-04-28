@@ -1,19 +1,5 @@
-import React, { useRef } from "react";
-import { useParams } from "react-router-dom";
-import moment from "moment";
-import {
-  Typography,
-  Paper,
-  TextField,
-  Button,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
-  Box,
-  Grid,
-} from "@material-ui/core";
-import { Person as PersonIcon, FlightTakeoff } from "@material-ui/icons";
+import React from "react";
+import { Typography, Paper, Box, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
