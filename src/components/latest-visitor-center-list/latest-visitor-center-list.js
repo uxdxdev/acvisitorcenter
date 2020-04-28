@@ -9,9 +9,11 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Button,
+  ListItemAvatar,
 } from "@material-ui/core";
-import { Send as SendIcon } from "@material-ui/icons";
+import { Send as SendIcon, BeachAccess } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,9 +40,17 @@ const LatestVisitorCenterList = () => {
                 const id = center?.owner;
                 const url = `/center/${id}`;
                 const name = center?.name;
+                const date = moment(center?.createdAt.toDate()).calendar();
+
                 return (
                   <ListItem key={id}>
-                    <ListItemText primary={`${name}`} />
+                    <ListItemAvatar>
+                      <BeachAccess />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={`${name}`}
+                      secondary={`Created: ${date}`}
+                    />
                     <ListItemSecondaryAction>
                       <Button
                         variant="outlined"

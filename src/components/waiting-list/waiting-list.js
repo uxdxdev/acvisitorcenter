@@ -2,7 +2,17 @@ import React, { useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useWaitingList } from "./hooks";
 import moment from "moment";
-import { Typography, Paper, TextField, Button } from "@material-ui/core";
+import {
+  Typography,
+  Paper,
+  TextField,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+} from "@material-ui/core";
+import { Person as PersonIcon, FlightTakeoff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -87,25 +97,35 @@ const WaitiingList = (props) => {
                 <Typography>
                   You can get the code when you are next in the queue
                 </Typography>
-                <ol>
+                <List dense>
                   {waitingList.map(({ name, joinedAt, uid: userId }, index) => {
                     const date = moment(joinedAt.toDate()).calendar();
                     return (
-                      <li key={index}>
-                        {name} {date}{" "}
+                      <ListItem key={userId}>
+                        <ListItemAvatar>
+                          {index === 0 ? <FlightTakeoff /> : <PersonIcon />}
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={`${name}`}
+                          secondary={`Joined: ${date}`}
+                        />
+
                         {isOwner && index === 0 && (
                           <>
-                            <button
+                            <Button
+                              variant="outlined"
+                              color="primary"
+                              size="small"
                               onClick={() => deleteUser(centerId, userId)}
                             >
                               Done
-                            </button>
+                            </Button>
                           </>
                         )}
-                      </li>
+                      </ListItem>
                     );
                   })}
-                </ol>
+                </List>
               </>
             ) : (
               <Typography>Visitor center is empty</Typography>
