@@ -1,9 +1,20 @@
 import React from "react";
 import { useVisitorCenterStatus } from "./hooks";
+import { Box, Typography } from "@material-ui/core";
 
 const VisitorCenterStatus = () => {
   const { isVisitorCenterOpen } = useVisitorCenterStatus();
-  return <h2>{isVisitorCenterOpen ? "Open" : "Closed"}</h2>;
+  return (
+    <Box
+      bgcolor={isVisitorCenterOpen ? "success.main" : "secondary.main"}
+      borderRadius={16}
+      p={2}
+    >
+      <Typography align="center">
+        {isVisitorCenterOpen ? "Open" : "Closed"}
+      </Typography>
+    </Box>
+  );
 };
 
 export default VisitorCenterStatus;
