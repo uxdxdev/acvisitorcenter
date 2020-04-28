@@ -94,13 +94,6 @@ const useVisitorCenter = (centerId) => {
         visitorCenterData?.summary !== updatedVisitorCenterData?.summary
       ) {
         saveCenterData(centerId, updatedVisitorCenterData);
-      } else {
-        setVisitorCenterData((current) => {
-          return {
-            ...current,
-            ...visitorCenterData,
-          };
-        });
       }
 
       // save dodo code
@@ -110,13 +103,6 @@ const useVisitorCenter = (centerId) => {
         updatedVisitorCenterData?.dodoCode !== "*****"
       ) {
         updateDodoCode(updatedVisitorCenterData?.dodoCode);
-      } else {
-        setVisitorCenterData((current) => {
-          return {
-            ...current,
-            ...{ dodoCode: currentDodoCode || "*****" },
-          };
-        });
       }
     }
   };
