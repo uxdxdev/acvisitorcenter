@@ -56,29 +56,6 @@ const useVisitorCenter = (centerId) => {
     }
   }, [waitingList, setNextVisitor, isOwner]);
 
-  // const deleteUser = (centerId, deleteUid) => {
-  //   const db = firebase.firestore();
-  //   const centersRef = db.collection("centers").doc(centerId);
-
-  //   dispatch({ type: "DELETE_USER" });
-
-  //   // run transaction to join center
-  //   return db
-  //     .runTransaction((transaction) => {
-  //       return transaction.get(centersRef).then((snapshot) => {
-  //         let waitingArray = snapshot.get("waiting");
-  //         waitingArray = waitingArray.filter((user) => user.uid !== deleteUid);
-  //         transaction.update(centersRef, "waiting", waitingArray);
-  //       });
-  //     })
-  //     .then(() => {
-  //       dispatch({ type: "DELETE_USER_SUCCESS" });
-  //     })
-  //     .catch((error) => {
-  //       dispatch({ type: "DELETE_USER_FAIL", error });
-  //     });
-  // };
-
   const joinVisitorQueue = (centerId, name) => {
     if (!userAlreadyInQueue) {
       const db = firebase.firestore();
@@ -90,9 +67,14 @@ const useVisitorCenter = (centerId) => {
       db.runTransaction((transaction) => {
         return transaction.get(centersRef).then((snapshot) => {
           const waitingArray = snapshot.get("waiting");
+          const participantsArray = snapshot.get("participants");
+
           const joinedAt = firebase.firestore.Timestamp.fromDate(new Date());
           waitingArray.push({ name, uid, joinedAt });
+          participantsArray.push(uid);
+
           transaction.update(centersRef, "waiting", waitingArray);
+          transaction.update(centersRef, "participants", participantsArray);
         });
       })
         .then(() => {
@@ -111,6 +93,7 @@ const useVisitorCenter = (centerId) => {
   };
 
   return {
+    uid,
     handleDeleteUser,
     isOwner,
     joinVisitorQueue,
