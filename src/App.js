@@ -13,7 +13,7 @@ const App = () => {
         typography: {
           fontFamily: ["Nunito", "-apple-system"].join(","),
           h1: {
-            fontWeight: 900,
+            fontWeight: 800,
             fontSize: "40px",
           },
           h2: {
