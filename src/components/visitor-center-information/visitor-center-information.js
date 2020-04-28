@@ -11,6 +11,10 @@ const useStyles = makeStyles((theme) => ({
   buttonMarginRight: {
     marginRight: theme.spacing(1),
   },
+  paper: {
+    margin: theme.spacing(2),
+    padding: theme.spacing(2),
+  },
 }));
 
 const VisitorCenterInformation = () => {
@@ -35,72 +39,76 @@ const VisitorCenterInformation = () => {
     <>
       <VisitorCenterStatus />
 
-      <Typography variant="h2">Name</Typography>
-      {isEditable["name"] ? (
-        <>
-          <TextField
-            type="text"
-            value={updatedVisitorCenterData.name}
-            onChange={(event) => handleCenterInformationChange(event.target)}
-            id="name"
-            required
-            maxLength="30"
-            disabled={!isEditable["name"]}
-            inputProps={{ maxLength: "30" }}
+      <Paper className={classes.paper}>
+        <Typography variant="h2">Name</Typography>
+        {isEditable["name"] ? (
+          <>
+            <TextField
+              type="text"
+              value={updatedVisitorCenterData.name}
+              onChange={(event) => handleCenterInformationChange(event.target)}
+              id="name"
+              required
+              maxLength="30"
+              disabled={!isEditable["name"]}
+              inputProps={{ maxLength: "30" }}
+              variant="outlined"
+              margin="dense"
+            />
+            <br />
+          </>
+        ) : (
+          <Typography>{updatedVisitorCenterData.name}</Typography>
+        )}
+        {isOwner && (
+          <Button
             variant="outlined"
-            margin="dense"
-          />
-          <br />
-        </>
-      ) : (
-        <Typography>{updatedVisitorCenterData.name}</Typography>
-      )}
-      {isOwner && (
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          onClick={() => handleEditSaveData("name")}
-        >
-          {isEditable["name"] ? "Save" : "Edit"}
-        </Button>
-      )}
+            color="primary"
+            size="small"
+            onClick={() => handleEditSaveData("name")}
+          >
+            {isEditable["name"] ? "Save" : "Edit"}
+          </Button>
+        )}
+      </Paper>
 
-      <Typography variant="h2">Summary</Typography>
-      {isEditable["summary"] ? (
-        <>
-          <TextField
-            type="text"
-            value={updatedVisitorCenterData.summary}
-            onChange={(event) => handleCenterInformationChange(event.target)}
-            id="summary"
-            name="summary"
-            disabled={!isEditable["summary"]}
-            inputProps={{ maxLength: "1000" }}
+      <Paper className={classes.paper}>
+        <Typography variant="h2">Summary</Typography>
+        {isEditable["summary"] ? (
+          <>
+            <TextField
+              type="text"
+              value={updatedVisitorCenterData.summary}
+              onChange={(event) => handleCenterInformationChange(event.target)}
+              id="summary"
+              name="summary"
+              disabled={!isEditable["summary"]}
+              inputProps={{ maxLength: "1000" }}
+              variant="outlined"
+              fullWidth
+              margin="dense"
+              multiline
+              rows={8}
+            />
+            <br />
+          </>
+        ) : (
+          <Typography>{updatedVisitorCenterData.summary}</Typography>
+        )}
+        {isOwner && (
+          <Button
             variant="outlined"
-            fullWidth
-            margin="dense"
-            multiline
-            rows={8}
-          />
-          <br />
-        </>
-      ) : (
-        <Typography>{updatedVisitorCenterData.summary}</Typography>
-      )}
-      {isOwner && (
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          onClick={() => handleEditSaveData("summary")}
-        >
-          {isEditable["summary"] ? "Save" : "Edit"}
-        </Button>
-      )}
+            color="primary"
+            size="small"
+            onClick={() => handleEditSaveData("summary")}
+          >
+            {isEditable["summary"] ? "Save" : "Edit"}
+          </Button>
+        )}
+      </Paper>
 
       {(isOwner || isUserFirstInQueue) && (
-        <>
+        <Paper className={classes.paper}>
           <Typography variant="h2">Code</Typography>
           {isVisitorCenterOpen ? (
             <>
@@ -145,7 +153,7 @@ const VisitorCenterInformation = () => {
           ) : (
             <Typography>The visitor center is closed</Typography>
           )}
-        </>
+        </Paper>
       )}
       <WaitingList waitingList={waitingList} />
     </>
