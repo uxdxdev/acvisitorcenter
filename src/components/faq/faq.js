@@ -39,8 +39,8 @@ const WaitiingList = (props) => {
     <Paper elevation={0} variant="outlined" className={classes.paper}>
       <Typography variant="h2">F.A.Q</Typography>
       <Grid container>
-        {questionsAnswers.map((data) => (
-          <Grid item xs={12} sm={6} md={4}>
+        {questionsAnswers.map((data, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
             <Box p={2}>
               <Typography variant="h6">{data.question}</Typography>
               <Typography>{data.answer}</Typography>
