@@ -37,14 +37,21 @@ const VisitorCenterInformation = () => {
 
       <Typography variant="h2">Name</Typography>
       {isEditable["name"] ? (
-        <input
-          type="text"
-          value={updatedVisitorCenterData.name}
-          onChange={(event) => handleCenterInformationChange(event.target)}
-          id="name"
-          maxLength="30"
-          disabled={!isEditable["name"]}
-        />
+        <>
+          <TextField
+            type="text"
+            value={updatedVisitorCenterData.name}
+            onChange={(event) => handleCenterInformationChange(event.target)}
+            id="name"
+            required
+            maxLength="30"
+            disabled={!isEditable["name"]}
+            inputProps={{ maxLength: "30" }}
+            variant="outlined"
+            margin="dense"
+          />
+          <br />
+        </>
       ) : (
         <Typography>{updatedVisitorCenterData.name}</Typography>
       )}
@@ -61,15 +68,23 @@ const VisitorCenterInformation = () => {
 
       <Typography variant="h2">Summary</Typography>
       {isEditable["summary"] ? (
-        <input
-          type="text"
-          value={updatedVisitorCenterData.summary}
-          onChange={(event) => handleCenterInformationChange(event.target)}
-          id="summary"
-          name="summary"
-          disabled={!isEditable["summary"]}
-          maxLength="1000"
-        />
+        <>
+          <TextField
+            type="text"
+            value={updatedVisitorCenterData.summary}
+            onChange={(event) => handleCenterInformationChange(event.target)}
+            id="summary"
+            name="summary"
+            disabled={!isEditable["summary"]}
+            inputProps={{ maxLength: "1000" }}
+            variant="outlined"
+            fullWidth
+            margin="dense"
+            multiline
+            rows={8}
+          />
+          <br />
+        </>
       ) : (
         <Typography>{updatedVisitorCenterData.summary}</Typography>
       )}
@@ -90,7 +105,7 @@ const VisitorCenterInformation = () => {
           {isVisitorCenterOpen ? (
             <>
               {isEditable["dodoCode"] ? (
-                <input
+                <TextField
                   type="text"
                   value={updatedVisitorCenterData.dodoCode}
                   onChange={(event) =>
@@ -98,8 +113,9 @@ const VisitorCenterInformation = () => {
                   }
                   id="dodoCode"
                   disabled={!isEditable["dodoCode"]}
-                  minLength="5"
-                  maxLength="5"
+                  inputProps={{ maxLength: "5", minLength: "5" }}
+                  variant="outlined"
+                  margin="dense"
                 />
               ) : (
                 <Typography>{updatedVisitorCenterData.dodoCode}</Typography>
