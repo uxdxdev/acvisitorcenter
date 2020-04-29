@@ -60,9 +60,6 @@ const WaitingList = () => {
   const positionInQueue =
     waitingList && waitingList.findIndex((user) => user?.uid === uid) + 1;
 
-  const queueEnabled =
-    !userAlreadyInQueue && isVisitorCenterOpen && !isQueueFull;
-
   return (
     <>
       {!isOwner && (
