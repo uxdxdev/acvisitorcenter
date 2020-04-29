@@ -31,6 +31,7 @@ const WaitingList = () => {
   const {
     uid,
     handleDeleteUser,
+    handleClearWaitingList,
     isOwner,
     joinVisitorQueue,
     isVisitorCenterOpen,
@@ -102,7 +103,20 @@ const WaitingList = () => {
       </Paper>
 
       <Paper elevation={0} variant="outlined" className={classes.paper}>
-        <Typography variant="h2">Waiting list</Typography>
+        <Typography variant="h2">
+          Waiting list{" "}
+          {isOwner && waitingList?.length > 0 && (
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={() => {
+                handleClearWaitingList();
+              }}
+            >
+              Clear all
+            </Button>
+          )}
+        </Typography>
 
         {!waitingList ? (
           <Typography>Loading...</Typography>

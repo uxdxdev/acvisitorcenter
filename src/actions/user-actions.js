@@ -29,3 +29,26 @@ export const deleteUser = (dispatch, centerId, deleteUid) => {
       dispatch({ type: "DELETE_USER_FAIL", error });
     });
 };
+
+export const clearWaitingList = (dispatch, centerId) => {
+  const db = firebase.firestore();
+
+  dispatch({ type: "CLEAR_WAITING_LIST" });
+
+  db.collection("centers")
+    .doc(centerId)
+    .set(
+      {
+        waiting: [],
+        participants: [],
+      },
+      { merge: true }
+    )
+
+    .then(() => {
+      dispatch({ type: "CLEAR_WAITING_LIST_SUCCESS" });
+    })
+    .catch((error) => {
+      dispatch({ type: "CLEAR_WAITING_LIST_FAIL", error });
+    });
+};

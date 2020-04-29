@@ -93,6 +93,20 @@ service cloud.firestore {
       								request.resource.data.waiting.size() == resource.data.waiting.size() &&
                       request.resource.data.participants.size() == resource.data.participants.size()) ||
 
+                      // owner clearing waiting list
+                      (request.auth.uid == resource.data.owner &&                                            
+                      validateResourceFields(request.resource.data) &&
+                      validateResourceFields(resource.data) &&
+                      request.resource.data.waiting.size() == 0 &&
+                      request.resource.data.participants.size() == 0 &&                    
+                      resource.data.waiting.size() != 0 &&
+                      resource.data.participants.size() != 0 &&                    
+                      // other data is unmodified
+                      request.resource.data.name == resource.data.name &&
+                      request.resource.data.owner == resource.data.owner &&
+                      request.resource.data.summary == resource.data.summary &&
+                      request.resource.data.createdAt == resource.data.createdAt) || 
+
                       // user adding themselves to waiting list
                       (validateResourceFields(request.resource.data) &&                      
       								request.resource.data.waiting.size() == resource.data.waiting.size() + 1 &&                      

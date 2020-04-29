@@ -1,7 +1,7 @@
 import { useContext, useEffect, useCallback } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
-import { deleteUser } from "../../../actions";
+import { deleteUser, clearWaitingList } from "../../../actions";
 
 const useVisitorCenter = (centerId) => {
   const context = useContext(store);
@@ -87,9 +87,15 @@ const useVisitorCenter = (centerId) => {
     }
   };
 
-  const handleDeleteUser = (centerId, deleteUid) => {
+  const handleDeleteUser = (deleteUid) => {
     if (centerId && deleteUid) {
       deleteUser(dispatch, centerId, deleteUid);
+    }
+  };
+
+  const handleClearWaitingList = () => {
+    if (centerId) {
+      clearWaitingList(dispatch, centerId);
     }
   };
 
@@ -97,6 +103,7 @@ const useVisitorCenter = (centerId) => {
     uid,
     waitingList,
     handleDeleteUser,
+    handleClearWaitingList,
     isOwner,
     joinVisitorQueue,
     isJoiningQueue,
