@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useVisitorCenterInformation } from "./hooks";
 import { VisitorCenterStatus } from "../visitor-center-status";
@@ -6,6 +6,7 @@ import { WaitingList } from "../../components/waiting-list";
 import { Typography, Paper, TextField, Button } from "@material-ui/core";
 import ButtonBox from "../../shared/ButtonBox";
 import { makeStyles } from "@material-ui/core/styles";
+import { AlertDialog } from "../alert-dialog";
 
 const useStyles = makeStyles((theme) => ({
   buttonMarginRight: {
@@ -32,10 +33,30 @@ const VisitorCenterInformation = () => {
   } = useVisitorCenterInformation(centerId);
   const classes = useStyles();
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    isUserFirstInQueue && handleOpen();
+  }, [isUserFirstInQueue]);
+
   return isLoading ? (
     <Typography>Loading...</Typography>
   ) : (
     <>
+      <AlertDialog
+        open={open}
+        code={updatedVisitorCenterData.dodoCode}
+        getCode={handleFetchDodoCode}
+        handleClose={handleClose}
+      />
       <VisitorCenterStatus />
 
       <Paper elevation={0} variant="outlined" className={classes.paper}>
