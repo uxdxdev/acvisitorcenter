@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useVisitorCenterInformation } from "./hooks";
 import { VisitorCenterStatus } from "../visitor-center-status";
@@ -33,7 +33,7 @@ const VisitorCenterInformation = () => {
   } = useVisitorCenterInformation(centerId);
   const classes = useStyles();
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
     setOpen(true);

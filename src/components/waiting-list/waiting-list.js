@@ -86,15 +86,14 @@ const WaitingList = () => {
             >
               Join queue
             </Button>
-            {userAlreadyInQueue && (
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={() => handleDeleteUser(centerId, uid)}
-              >
-                Leave
-              </Button>
-            )}
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => handleDeleteUser(uid)}
+              disabled={!isVisitorCenterOpen || !userAlreadyInQueue}
+            >
+              Leave
+            </Button>
           </Box>
           {(isOwner || userAlreadyInQueue) && (
             <Typography>Position #{positionInQueue}</Typography>
@@ -146,7 +145,7 @@ const WaitingList = () => {
                             variant="outlined"
                             color="primary"
                             size="small"
-                            onClick={() => handleDeleteUser(centerId, userId)}
+                            onClick={() => handleDeleteUser(userId)}
                           >
                             Done
                           </Button>

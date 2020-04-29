@@ -17,7 +17,8 @@ const useVisitorCenter = (centerId) => {
   // const waitingList = currentCenterData?.waiting;
   const isOwner = centerId === uid;
   const waitingList = currentCenterData?.waiting;
-  const isVisitorCenterOpen = onlineStatus === "online";
+  const gatesOpen = currentCenterData?.gatesOpen;
+  const isVisitorCenterOpen = onlineStatus === "online" && gatesOpen;
   const userAlreadyInQueue =
     waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
 

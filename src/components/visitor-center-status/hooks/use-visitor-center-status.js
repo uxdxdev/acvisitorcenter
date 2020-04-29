@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { firebase } from "../../../utils/firebase";
 import { store } from "../../../store";
 import { useParams } from "react-router-dom";
+import { setGatesOpen } from "../../../actions";
 
 const useVisitorCenterStatus = () => {
   const context = useContext(store);
@@ -9,12 +10,19 @@ const useVisitorCenterStatus = () => {
     dispatch,
     state: {
       auth: { uid },
-      visitorCenter: { onlineStatus },
+      visitorCenter: {
+        onlineStatus,
+        visitorCenterData: { gatesOpen },
+      },
     },
   } = context;
   const { id: centerId } = useParams();
 
-  const isVisitorCenterOpen = onlineStatus === "online";
+  const toggleGates = () => {
+    setGatesOpen(dispatch, centerId, !gatesOpen);
+  };
+
+  const isVisitorCenterOpen = onlineStatus === "online" && gatesOpen;
   const isOwner = uid === centerId;
 
   // init listeners for online status
@@ -99,6 +107,9 @@ const useVisitorCenterStatus = () => {
 
   return {
     isVisitorCenterOpen,
+    isOwner,
+    toggleGates,
+    gatesOpen,
   };
 };
 
