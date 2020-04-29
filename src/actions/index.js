@@ -1,2 +1,3 @@
 import { deleteUser, clearWaitingList } from "./user-actions";
-export { deleteUser, clearWaitingList };
+import { setGatesOpen } from "./visitor-center-actions";
+export { deleteUser, clearWaitingList, setGatesOpen };

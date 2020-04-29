@@ -3,7 +3,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
     
   	function validateResourceFields(data){
-    	return data.keys().hasOnly(['name','owner','summary','waiting','participants','createdAt']) &&      	
+    	return data.keys().hasOnly(['name','owner','summary','waiting','participants','createdAt', 'gatesOpen']) &&      	
               data.name is string && 
               data.name.size() <= 30 &&                      
               data.owner is string && 
@@ -14,7 +14,8 @@ service cloud.firestore {
               data.waiting.size() <= 50 &&
               data.participants is list &&              
               data.participants.size() <= 50 &&
-              data.createdAt is timestamp;
+              data.createdAt is timestamp &&
+              data.gatesOpen is bool;
     }
     
     match /users/{userId} {
@@ -79,6 +80,7 @@ service cloud.firestore {
                       request.resource.data.participants.size() == resource.data.participants.size() - 1 &&                    
                       // other data is unmodified
                       request.resource.data.name == resource.data.name &&
+                      request.resource.data.gatesOpen == resource.data.gatesOpen &&
                       request.resource.data.owner == resource.data.owner &&
                       request.resource.data.summary == resource.data.summary &&
                       request.resource.data.createdAt == resource.data.createdAt) ||
@@ -88,7 +90,20 @@ service cloud.firestore {
                       validateResourceFields(request.resource.data) &&
                       validateResourceFields(resource.data) &&
                       // other data is unmodified           
-                      request.resource.data.owner == resource.data.owner &&                      
+                      request.resource.data.owner == resource.data.owner &&    
+                      request.resource.data.gatesOpen == resource.data.gatesOpen &&                  
+                      request.resource.data.createdAt == resource.data.createdAt &&
+      								request.resource.data.waiting.size() == resource.data.waiting.size() &&
+                      request.resource.data.participants.size() == resource.data.participants.size()) ||
+
+                      // owner updating gates open status
+                      (request.auth.uid == resource.data.owner &&                      
+                      validateResourceFields(request.resource.data) &&
+                      validateResourceFields(resource.data) &&
+                      // status has changed
+                      request.resource.data.gatesOpen != resource.data.gatesOpen &&
+                      // other data is unmodified           
+                      request.resource.data.owner == resource.data.owner &&                          
                       request.resource.data.createdAt == resource.data.createdAt &&
       								request.resource.data.waiting.size() == resource.data.waiting.size() &&
                       request.resource.data.participants.size() == resource.data.participants.size()) ||
@@ -103,15 +118,17 @@ service cloud.firestore {
                       resource.data.participants.size() != 0 &&                    
                       // other data is unmodified
                       request.resource.data.name == resource.data.name &&
+                      request.resource.data.gatesOpen == resource.data.gatesOpen &&
                       request.resource.data.owner == resource.data.owner &&
                       request.resource.data.summary == resource.data.summary &&
                       request.resource.data.createdAt == resource.data.createdAt) || 
 
                       // user adding themselves to waiting list
-                      (validateResourceFields(request.resource.data) &&                      
+                      (validateResourceFields(request.resource.data) &&   
+                      resource.data.gatesOpen == true &&                   
       								request.resource.data.waiting.size() == resource.data.waiting.size() + 1 &&                      
                       request.resource.data.participants.size() == resource.data.participants.size() + 1 &&    
-                      request.auth.uid in request.resource.data.participants &&                  
+                      request.auth.uid in request.resource.data.participants &&              
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].keys().hasOnly(['name', 'uid', 'joinedAt']) &&
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].uid == request.auth.uid &&
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].name is string &&
@@ -121,15 +138,15 @@ service cloud.firestore {
                       request.resource.data.name == resource.data.name &&
                       request.resource.data.owner == resource.data.owner &&
                       request.resource.data.summary == resource.data.summary &&
-                      request.resource.data.createdAt == resource.data.createdAt) || 
+                      request.resource.data.createdAt == resource.data.createdAt) ||
 
                       // user removing themselves from the queue
-                      (validateResourceFields(request.resource.data) &&
-                      // existing data contains request.uid, new data does not                      
-                      request.auth.uid in resource.data.participants &&                      
+                      (validateResourceFields(request.resource.data) &&                      
+                      request.auth.uid in resource.data.participants &&
+                      resource.data.gatesOpen == true &&         
                       (request.auth.uid in request.resource.data.participants) == false &&
       								request.resource.data.waiting.size() == resource.data.waiting.size() - 1 &&  
-                      request.resource.data.participants.size() == resource.data.participants.size() - 1 &&                    
+                      request.resource.data.participants.size() == resource.data.participants.size() - 1 &&
       								// other data is unmodified
                       request.resource.data.name == resource.data.name &&
                       request.resource.data.owner == resource.data.owner &&
