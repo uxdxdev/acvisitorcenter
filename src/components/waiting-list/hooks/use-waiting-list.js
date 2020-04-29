@@ -24,6 +24,8 @@ const useVisitorCenter = (centerId) => {
   const userAlreadyInQueue =
     waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
 
+  const isQueueFull = waitingList?.length >= 20;
+
   const toggleGates = () => {
     setGatesOpen(dispatch, centerId, !gatesOpen);
   };
@@ -64,7 +66,7 @@ const useVisitorCenter = (centerId) => {
   }, [waitingList, setNextVisitor, isOwner]);
 
   const joinVisitorQueue = (centerId, name) => {
-    if (!userAlreadyInQueue) {
+    if (!userAlreadyInQueue && !isQueueFull) {
       const db = firebase.firestore();
       const centersRef = db.collection("centers").doc(centerId);
 
@@ -86,6 +88,8 @@ const useVisitorCenter = (centerId) => {
       })
         .then(() => {
           dispatch({ type: "JOIN_QUEUE_SUCCESS" });
+
+          // reset the dodo code when a user joins the queue again
           dispatch({ type: "FETCH_DODO_CODE_SUCCESS", dodoCode: "*****" });
         })
         .catch((error) => {
