@@ -57,6 +57,7 @@ const VisitorCenterInformation = () => {
         getCode={handleFetchDodoCode}
         handleClose={handleClose}
       />
+
       <VisitorCenterStatus />
 
       <Paper elevation={0} variant="outlined" className={classes.paper}>
