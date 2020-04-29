@@ -14,10 +14,11 @@ export default function AlertDialog(props) {
   const playerRef = useRef();
 
   useEffect(() => {
-    playerRef.current.play().catch((error) => {
-      //   console.log(error);
-    });
-  }, []);
+    open &&
+      playerRef.current.play().catch((error) => {
+        //   console.log(error);
+      });
+  }, [open]);
 
   return (
     <div>
