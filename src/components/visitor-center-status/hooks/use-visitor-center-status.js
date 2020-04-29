@@ -68,10 +68,9 @@ const useVisitorCenterStatus = () => {
           .onDisconnect()
           // this can be set to any value
           // it tells firebase to disconnect manually
-          .set("going offline")
+          .set(isOfflineForDatabase)
           // set the offline status in db
           .then(() => {
-            userStatusDatabaseRef.set(isOfflineForDatabase);
             setGatesOpen(dispatch, centerId, false);
           })
           .catch((error) => {
