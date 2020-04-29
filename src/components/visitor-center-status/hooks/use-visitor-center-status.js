@@ -102,6 +102,7 @@ const useVisitorCenterStatus = () => {
 
   return {
     isVisitorCenterOpen,
+    isOwner,
   };
 };
 

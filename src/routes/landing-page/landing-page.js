@@ -7,8 +7,8 @@ const LandingPage = () => {
   return (
     <>
       <CreateVisitorCenter />
-      <Faq />
       <LatestVisitorCenterList />
+      <Faq />
     </>
   );
 };
