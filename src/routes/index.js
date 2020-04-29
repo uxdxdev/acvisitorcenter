@@ -35,8 +35,8 @@ const Routes = () => {
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <img src={logo} alt="crossed arrows" width="100" />
-            <Typography variant="h1">AC Visitor Center</Typography>{" "}
           </Link>
+          <Typography variant="h1">AC Visitor Center</Typography>
 
           <Link
             href="https://discord.gg/kwzezy"
