@@ -44,6 +44,8 @@ const WaitingList = () => {
 
   const nameInputRef = useRef();
 
+  const isQueueFull = waitingList?.length >= 20;
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -51,86 +53,94 @@ const WaitingList = () => {
     nameInputRef.current.value = "";
 
     if (name && centerId && !userAlreadyInQueue) {
-      joinVisitorQueue(centerId, name);
+      !isQueueFull && joinVisitorQueue(centerId, name);
     }
   };
 
   const positionInQueue =
     waitingList && waitingList.findIndex((user) => user?.uid === uid) + 1;
 
+  const queueEnabled =
+    !userAlreadyInQueue && isVisitorCenterOpen && !isQueueFull;
+
   return (
     <>
-      <Paper elevation={0} variant="outlined" className={classes.paper}>
-        <Typography variant="h2">Join visitor queue</Typography>
+      {!isOwner && (
+        <Paper elevation={0} variant="outlined" className={classes.paper}>
+          <Typography variant="h2">Join visitor queue</Typography>
 
-        <form onSubmit={handleSubmit}>
-          <TextField
-            type="text"
-            label="Name"
-            inputRef={nameInputRef}
-            id="name"
-            required
-            maxLength="30"
-            inputProps={{ maxLength: "30" }}
-            variant="outlined"
-            margin="dense"
-            disabled={isOwner || userAlreadyInQueue || !isVisitorCenterOpen}
-          />
-          <br />
-          <Box mt={1} mb={1}>
-            <Button
-              className={classes.buttonMarginRight}
-              variant="contained"
-              color="primary"
-              size="small"
-              type="submit"
-              disabled={isOwner || userAlreadyInQueue || !isVisitorCenterOpen}
-            >
-              Join queue
-            </Button>
-            <Button
+          <form onSubmit={handleSubmit}>
+            <TextField
+              type="text"
+              label="Name"
+              inputRef={nameInputRef}
+              id="name"
+              required
+              maxLength="30"
+              inputProps={{ maxLength: "30" }}
               variant="outlined"
-              size="small"
-              onClick={() => handleDeleteUser(uid)}
-              disabled={!isVisitorCenterOpen || !userAlreadyInQueue}
-            >
-              Leave
-            </Button>
-          </Box>
-          {(isOwner || userAlreadyInQueue) && (
-            <Typography>Position #{positionInQueue}</Typography>
-          )}
-        </form>
-      </Paper>
-
-      <Paper elevation={0} variant="outlined" className={classes.paper}>
-        <Typography variant="h2">
-          Waiting list{" "}
-          {isOwner && (
-            <>
+              margin="dense"
+              disabled={
+                userAlreadyInQueue || !isVisitorCenterOpen || isQueueFull
+              }
+            />
+            <br />
+            <Box mt={1} mb={1}>
               <Button
                 className={classes.buttonMarginRight}
+                variant="contained"
+                color="primary"
                 size="small"
-                variant="outlined"
-                disabled={waitingList?.length <= 0}
-                onClick={() => {
-                  handleClearWaitingList();
-                }}
+                type="submit"
+                disabled={
+                  userAlreadyInQueue || !isVisitorCenterOpen || isQueueFull
+                }
               >
-                Clear all
+                Join queue
               </Button>
               <Button
-                variant="contained"
-                color={isVisitorCenterOpen ? "secondary" : "primary"}
+                variant="outlined"
+                color="primary"
                 size="small"
-                onClick={() => toggleGates()}
+                onClick={() => handleDeleteUser(uid)}
+                disabled={!isVisitorCenterOpen || !userAlreadyInQueue}
               >
-                {gatesOpen ? "Close gates" : "Open gates"}
+                Leave
               </Button>
-            </>
-          )}
-        </Typography>
+            </Box>
+            {userAlreadyInQueue && (
+              <Typography>Position #{positionInQueue}</Typography>
+            )}
+          </form>
+        </Paper>
+      )}
 
+      <Paper elevation={0} variant="outlined" className={classes.paper}>
+        <Typography variant="h2">Waiting list (Max 20) </Typography>
+        {isOwner && (
+          <>
+            <Button
+              className={classes.buttonMarginRight}
+              size="small"
+              color="primary"
+              variant="outlined"
+              disabled={waitingList?.length <= 0}
+              onClick={() => {
+                handleClearWaitingList();
+              }}
+            >
+              Clear all
+            </Button>
+            <Button
+              variant="contained"
+              color={isVisitorCenterOpen ? "secondary" : "primary"}
+              size="small"
+              onClick={() => toggleGates()}
+            >
+              {gatesOpen ? "Close gates" : "Open gates"}
+            </Button>
+          </>
+        )}
         {!waitingList ? (
           <Typography>Loading...</Typography>
         ) : (
