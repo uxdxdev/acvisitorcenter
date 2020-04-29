@@ -79,6 +79,7 @@ const useVisitorCenter = (centerId) => {
       })
         .then(() => {
           dispatch({ type: "JOIN_QUEUE_SUCCESS" });
+          dispatch({ type: "FETCH_DODO_CODE_SUCCESS", dodoCode: "*****" });
         })
         .catch((error) => {
           dispatch({ type: "JOIN_QUEUE_FAIL", error });
