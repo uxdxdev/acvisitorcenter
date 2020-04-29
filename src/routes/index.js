@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { LandingPage } from "./landing-page";
 import { VisitorCenter } from "./visitor-center";
 import {
@@ -10,6 +10,7 @@ import {
 import ReCAPTCHA from "react-google-recaptcha";
 import logo from "../logo.png";
 import { Box, Link, Container, Typography } from "@material-ui/core";
+import Analytics from "react-router-ga";
 
 const Routes = () => {
   const isDevEnv = process.env.NODE_ENV === "development";
@@ -49,14 +50,16 @@ const Routes = () => {
         </Box>
 
         {isVerified ? (
-          <Switch>
-            <Route exact path="/">
-              <LandingPage />
-            </Route>
-            <Route path="/center/:id">
-              <VisitorCenter />
-            </Route>
-          </Switch>
+          <Analytics id="UA-63312977-16" debug>
+            <Switch>
+              <Route exact path="/">
+                <LandingPage />
+              </Route>
+              <Route path="/center/:id">
+                <VisitorCenter />
+              </Route>
+            </Switch>
+          </Analytics>
         ) : (
           <Box align="center">
             <ReCAPTCHA
