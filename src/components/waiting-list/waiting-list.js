@@ -37,6 +37,8 @@ const WaitingList = () => {
     isVisitorCenterOpen,
     userAlreadyInQueue,
     waitingList,
+    toggleGates,
+    gatesOpen,
   } = useWaitingList(centerId);
   const classes = useStyles();
 
@@ -104,16 +106,28 @@ const WaitingList = () => {
       <Paper elevation={0} variant="outlined" className={classes.paper}>
         <Typography variant="h2">
           Waiting list{" "}
-          {isOwner && waitingList?.length > 0 && (
-            <Button
-              size="small"
-              variant="outlined"
-              onClick={() => {
-                handleClearWaitingList();
-              }}
-            >
-              Clear all
-            </Button>
+          {isOwner && (
+            <>
+              <Button
+                className={classes.buttonMarginRight}
+                size="small"
+                variant="outlined"
+                disabled={waitingList?.length <= 0}
+                onClick={() => {
+                  handleClearWaitingList();
+                }}
+              >
+                Clear all
+              </Button>
+              <Button
+                variant="contained"
+                color={isVisitorCenterOpen ? "secondary" : "primary"}
+                size="small"
+                onClick={() => toggleGates()}
+              >
+                {gatesOpen ? "Close gates" : "Open gates"}
+              </Button>
+            </>
           )}
         </Typography>
 
