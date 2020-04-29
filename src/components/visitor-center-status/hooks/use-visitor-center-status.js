@@ -71,6 +71,7 @@ const useVisitorCenterStatus = () => {
           .set(isOfflineForDatabase)
           // set the offline status in db
           .then(() => {
+            userStatusDatabaseRef.set(isOfflineForDatabase);
             setGatesOpen(dispatch, centerId, false);
           })
           .catch((error) => {
