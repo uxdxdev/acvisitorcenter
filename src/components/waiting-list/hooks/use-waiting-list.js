@@ -2,6 +2,7 @@ import { useContext, useEffect, useCallback } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
 import { deleteUser, clearWaitingList } from "../../../actions";
+import { setGatesOpen } from "../../../actions";
 
 const useVisitorCenter = (centerId) => {
   const context = useContext(store);
@@ -18,9 +19,14 @@ const useVisitorCenter = (centerId) => {
   const isOwner = centerId === uid;
   const waitingList = currentCenterData?.waiting;
   const gatesOpen = currentCenterData?.gatesOpen;
+
   const isVisitorCenterOpen = onlineStatus === "online" && gatesOpen;
   const userAlreadyInQueue =
     waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
+
+  const toggleGates = () => {
+    setGatesOpen(dispatch, centerId, !gatesOpen);
+  };
 
   const setNextVisitor = useCallback(
     (nextVisitorUid) => {
@@ -110,6 +116,8 @@ const useVisitorCenter = (centerId) => {
     isJoiningQueue,
     isVisitorCenterOpen,
     userAlreadyInQueue,
+    toggleGates,
+    gatesOpen,
   };
 };
 

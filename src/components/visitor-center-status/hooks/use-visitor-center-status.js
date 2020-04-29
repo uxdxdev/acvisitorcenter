@@ -18,10 +18,6 @@ const useVisitorCenterStatus = () => {
   } = context;
   const { id: centerId } = useParams();
 
-  const toggleGates = () => {
-    setGatesOpen(dispatch, centerId, !gatesOpen);
-  };
-
   const isVisitorCenterOpen = onlineStatus === "online" && gatesOpen;
   const isOwner = uid === centerId;
 
@@ -78,6 +74,7 @@ const useVisitorCenterStatus = () => {
           // set the offline status in db
           .then(() => {
             userStatusDatabaseRef.set(isOfflineForDatabase);
+            setGatesOpen(dispatch, centerId, false);
           })
           .catch((error) => {
             console.log("this is not your center!!");
@@ -107,9 +104,6 @@ const useVisitorCenterStatus = () => {
 
   return {
     isVisitorCenterOpen,
-    isOwner,
-    toggleGates,
-    gatesOpen,
   };
 };
 

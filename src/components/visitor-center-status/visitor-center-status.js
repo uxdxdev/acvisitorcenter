@@ -1,14 +1,9 @@
 import React from "react";
 import { useVisitorCenterStatus } from "./hooks";
-import { Box, Typography, Button } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 
 const VisitorCenterStatus = () => {
-  const {
-    isVisitorCenterOpen,
-    isOwner,
-    gatesOpen,
-    toggleGates,
-  } = useVisitorCenterStatus();
+  const { isVisitorCenterOpen } = useVisitorCenterStatus();
 
   return (
     <>
@@ -23,19 +18,6 @@ const VisitorCenterStatus = () => {
             : "Visitor center is closed"}
         </Typography>
       </Box>
-      {isOwner && (
-        <>
-          <Typography>Gates are {gatesOpen ? "open" : "closed"}</Typography>
-          <Button
-            variant="outlined"
-            color="primary"
-            size="small"
-            onClick={() => toggleGates()}
-          >
-            {gatesOpen ? "Close gates" : "Open gates"}
-          </Button>
-        </>
-      )}
     </>
   );
 };
