@@ -10,14 +10,12 @@ const useVisitorCenterStatus = () => {
     dispatch,
     state: {
       auth: { uid },
-      visitorCenter: {
-        onlineStatus,
-        visitorCenterData: { gatesOpen },
-      },
+      visitorCenter: { onlineStatus, visitorCenterData },
     },
   } = context;
   const { id: centerId } = useParams();
 
+  const gatesOpen = visitorCenterData?.gatesOpen;
   const isVisitorCenterOpen = onlineStatus === "online" && gatesOpen;
   const isOwner = uid === centerId;
 

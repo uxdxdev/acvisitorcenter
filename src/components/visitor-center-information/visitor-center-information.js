@@ -44,8 +44,11 @@ const VisitorCenterInformation = () => {
   };
 
   useEffect(() => {
-    isUserFirstInQueue && handleOpen();
-  }, [isUserFirstInQueue]);
+    isVisitorCenterOpen && isUserFirstInQueue && handleOpen();
+  }, [isUserFirstInQueue, isVisitorCenterOpen]);
+
+  const isCodeAvailable =
+    isOwner || (isUserFirstInQueue && isVisitorCenterOpen);
 
   return isLoading ? (
     <Typography>Loading...</Typography>
@@ -134,7 +137,7 @@ const VisitorCenterInformation = () => {
 
       <Paper elevation={0} variant="outlined" className={classes.paper}>
         <Typography variant="h2">Code</Typography>
-        {isVisitorCenterOpen ? (
+        {isOwner || isVisitorCenterOpen ? (
           <>
             {isEditable["dodoCode"] ? (
               <TextField
@@ -172,11 +175,9 @@ const VisitorCenterInformation = () => {
                 color="primary"
                 size="small"
                 onClick={() => handleFetchDodoCode()}
-                disabled={!isOwner && !isUserFirstInQueue}
+                disabled={!isCodeAvailable}
               >
-                {!isOwner && !isUserFirstInQueue
-                  ? "Code unavailable"
-                  : "Get code"}
+                {isCodeAvailable ? "Get code" : "Code unavailable"}
               </Button>
             </ButtonBox>
           </>

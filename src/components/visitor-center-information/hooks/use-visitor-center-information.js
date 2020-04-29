@@ -19,10 +19,11 @@ const useVisitorCenter = (centerId) => {
 
   const waitingList = visitorCenterData?.waiting;
   const ownerUid = visitorCenterData?.owner;
+  const gatesOpen = visitorCenterData?.gatesOpen;
 
   const isOwner = uid === centerId;
   const isUserFirstInQueue = waitingList && waitingList[0]?.uid === uid;
-  const isVisitorCenterOpen = onlineStatus === "online";
+  const isVisitorCenterOpen = onlineStatus === "online" && gatesOpen;
   const isLoading =
     isFetchingVisitorCenterData || visitorCenterData === undefined;
 

@@ -29,12 +29,12 @@ const Routes = () => {
     <Router>
       <Container>
         <Box align="center" mt={4} mb={2}>
-          <img src={logo} alt="crossed arrows" width="100" />
           <Link
             component={RouterLink}
             to={`/`}
             style={{ textDecoration: "none", color: "inherit" }}
           >
+            <img src={logo} alt="crossed arrows" width="100" />
             <Typography variant="h1">AC Visitor Center</Typography>{" "}
           </Link>
 
