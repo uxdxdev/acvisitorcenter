@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const VisitorCenterStatus = () => {
-  const { isVisitorCenterOpen, isOwner } = useVisitorCenterStatus();
+  const { isVisitorCenterOpen } = useVisitorCenterStatus();
   const classes = useStyles();
   return (
     <>
