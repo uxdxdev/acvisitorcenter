@@ -60,21 +60,47 @@ const useVisitorCenter = (centerId) => {
     dodoCode: "*****",
   });
 
+  const [isEditable, setIsEditable] = useState({});
+
   useEffect(() => {
-    visitorCenterData &&
-      setVisitorCenterData({
-        ...visitorCenterData,
-        dodoCode: currentDodoCode || "*****",
-      });
-  }, [visitorCenterData, currentDodoCode]);
+    if (visitorCenterData) {
+      const updatedData = Object.assign(
+        {},
+        {
+          name:
+            // don't update the name or summary if the owner is editing it
+            isOwner && isEditable["name"]
+              ? updatedVisitorCenterData.name
+              : visitorCenterData.name,
+          summary:
+            isOwner && isEditable["summary"]
+              ? updatedVisitorCenterData.summary
+              : visitorCenterData.summary,
+          owner: visitorCenterData.owner,
+          waiting: visitorCenterData.waiting,
+          participants: visitorCenterData.participants,
+          gatesOpen: visitorCenterData.gatesOpen,
+          createdAt: visitorCenterData.createdAt,
+        }
+      );
+      visitorCenterData &&
+        setVisitorCenterData({
+          ...updatedData,
+          dodoCode: currentDodoCode || "*****",
+        });
+    }
+  }, [
+    updatedVisitorCenterData.name,
+    updatedVisitorCenterData.summary,
+    visitorCenterData,
+    currentDodoCode,
+  ]);
 
   const handleCenterInformationChange = (id, value) => {
     setVisitorCenterData((currentState) => {
       return { ...currentState, ...{ [id]: value } };
     });
   };
-
-  const [isEditable, setIsEditable] = useState({});
 
   const handleEditSaveData = (key) => {
     setIsEditable((currentState) => {
