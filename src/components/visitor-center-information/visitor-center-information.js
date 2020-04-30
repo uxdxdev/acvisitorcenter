@@ -44,8 +44,8 @@ const VisitorCenterInformation = () => {
   };
 
   useEffect(() => {
-    isVisitorCenterOpen && isUserFirstInQueue && handleOpen();
-  }, [isUserFirstInQueue, isVisitorCenterOpen]);
+    isUserFirstInQueue && handleOpen();
+  }, [isUserFirstInQueue]);
 
   const isCodeAvailable =
     isOwner || (isUserFirstInQueue && isVisitorCenterOpen);
@@ -137,53 +137,50 @@ const VisitorCenterInformation = () => {
 
       <Paper elevation={0} variant="outlined" className={classes.paper}>
         <Typography variant="h2">Code</Typography>
-        {isOwner || isVisitorCenterOpen ? (
-          <>
-            {isEditable["dodoCode"] ? (
-              <TextField
-                type="text"
-                value={updatedVisitorCenterData.dodoCode}
-                onChange={(event) => {
-                  const id = event?.target?.id;
-                  const value = event?.target?.value;
-                  handleCenterInformationChange(id, value.toUpperCase());
-                }}
-                id="dodoCode"
-                label="Code"
-                disabled={!isEditable["dodoCode"]}
-                inputProps={{ maxLength: "5", minLength: "5" }}
-                variant="outlined"
-                margin="dense"
-              />
-            ) : (
-              <Typography>{updatedVisitorCenterData.dodoCode}</Typography>
-            )}
-            <ButtonBox>
-              {isOwner && (
-                <Button
-                  className={classes.buttonMarginRight}
-                  variant="outlined"
-                  color="primary"
-                  size="small"
-                  onClick={() => handleEditSaveData("dodoCode")}
-                >
-                  {isEditable["dodoCode"] ? "Save" : "Edit"}
-                </Button>
-              )}
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                onClick={() => handleFetchDodoCode()}
-                disabled={!isCodeAvailable}
-              >
-                {isCodeAvailable ? "Get code" : "Code unavailable"}
-              </Button>
-            </ButtonBox>
-          </>
+
+        {isEditable["dodoCode"] ? (
+          <TextField
+            type="text"
+            value={updatedVisitorCenterData.dodoCode}
+            onChange={(event) => {
+              const id = event?.target?.id;
+              const value = event?.target?.value;
+              handleCenterInformationChange(id, value.toUpperCase());
+            }}
+            id="dodoCode"
+            label="Code"
+            disabled={!isEditable["dodoCode"]}
+            inputProps={{ maxLength: "5", minLength: "5" }}
+            variant="outlined"
+            margin="dense"
+          />
         ) : (
-          <Typography>The visitor center is closed</Typography>
+          <Typography>{updatedVisitorCenterData.dodoCode}</Typography>
         )}
+        <ButtonBox>
+          {isOwner && (
+            <Button
+              className={classes.buttonMarginRight}
+              variant="outlined"
+              color="primary"
+              size="small"
+              onClick={() => handleEditSaveData("dodoCode")}
+            >
+              {isEditable["dodoCode"] ? "Save" : "Edit"}
+            </Button>
+          )}
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleFetchDodoCode()}
+            disabled={!isCodeAvailable && !isUserFirstInQueue}
+          >
+            {isCodeAvailable || isUserFirstInQueue
+              ? "Get code"
+              : "Code unavailable"}
+          </Button>
+        </ButtonBox>
       </Paper>
 
       <WaitingList />
