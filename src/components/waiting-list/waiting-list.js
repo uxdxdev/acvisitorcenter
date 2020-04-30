@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useWaitingList } from "./hooks";
 import moment from "moment";
@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
 }));
+
 const WaitingList = () => {
   const { id: centerId } = useParams();
   const {
@@ -41,6 +42,38 @@ const WaitingList = () => {
     gatesOpen,
   } = useWaitingList(centerId);
   const classes = useStyles();
+
+  const [prevVisitor, setPrevVisitor] = useState(null);
+  const [currentVisitor, setCurrentVisitor] = useState(null);
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    if (waitingList) {
+      setPrevVisitor(String(currentVisitor));
+      setCurrentVisitor(String(waitingList[0]?.uid));
+
+      if (prevVisitor !== currentVisitor) {
+        setSeconds(0);
+      }
+    }
+  }, [waitingList, prevVisitor, currentVisitor]);
+
+  const NextVisitorTimer = () => {
+    const tick = () => {
+      setSeconds((current) => current + 1);
+    };
+
+    useEffect(() => {
+      let interval = null;
+      if (waitingList?.length > 0) {
+        interval = setInterval(tick, 1000);
+      }
+      return () => {
+        interval && clearInterval(interval);
+      };
+    }, []);
+    return <div>Next visitor is waiting {seconds} seconds</div>;
+  };
 
   const nameInputRef = useRef();
 
@@ -113,9 +146,11 @@ const WaitingList = () => {
       )}
 
       <Paper elevation={0} variant="outlined" className={classes.paper}>
-        <Typography variant="h2">Waiting list (Max 20) </Typography>
+        <Typography variant="h2">Waiting list (Max 20)</Typography>
         {isOwner && (
           <>
+            <NextVisitorTimer />
+
             <Button
               className={classes.buttonMarginRight}
               size="small"
@@ -155,6 +190,7 @@ const WaitingList = () => {
                         primary={`#${index + 1} ${name}`}
                         secondary={`Joined: ${date}`}
                       />
+
                       {index === 0 ? (
                         <Chip color="primary" size="small" label="Next" />
                       ) : (
