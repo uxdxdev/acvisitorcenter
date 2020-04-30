@@ -64,7 +64,7 @@ const LatestVisitorCenterList = () => {
                   <ListItem key={id} dense disableGutters>
                     <ListItemText
                       primary={`${name}`}
-                      secondary={`Created: ${date}`}
+                      secondary={`${date}`}
                       secondaryTypographyProps={{ variant: "subtitle2" }}
                     />
 
