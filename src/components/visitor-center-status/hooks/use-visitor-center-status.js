@@ -55,7 +55,7 @@ const useVisitorCenterStatus = () => {
               userStatusDatabaseRef.set(isOnlineForDatabase);
             })
             .catch((error) => {
-              console.log("this is not your center!!");
+              // console.log("this is not your center!!");
             });
         });
     }
@@ -75,7 +75,7 @@ const useVisitorCenterStatus = () => {
             setGatesOpen(dispatch, centerId, false);
           })
           .catch((error) => {
-            console.log("this is not your center!!");
+            // console.log("this is not your center!!");
           });
     };
   }, [uid, centerId, dispatch, isOwner]);

@@ -47,7 +47,6 @@ const LatestVisitorCenterList = () => {
           {latestCenters?.length > 0 ? (
             <List dense>
               {latestCenters?.map((center) => {
-                console.log(center);
                 const id = center?.owner;
                 const url = `/center/${id}`;
                 const name = center?.name;
