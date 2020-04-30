@@ -17,6 +17,7 @@ import {
 import { Person as PersonIcon, FlightTakeoff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { PageLoadingSpinner } from "../page-loading-spinner";
+import { firebase } from "../../utils/firebase";
 
 const useStyles = makeStyles((theme) => ({
   buttonMarginRight: {
@@ -149,7 +150,10 @@ const WaitingList = () => {
               <Button
                 variant="outlined"
                 size="small"
-                onClick={() => handleDeleteUser(uid)}
+                onClick={() => {
+                  firebase.analytics().logEvent("button_click_join_queue");
+                  handleDeleteUser(uid);
+                }}
                 disabled={!userAlreadyInQueue || isDeletingUser}
               >
                 Leave

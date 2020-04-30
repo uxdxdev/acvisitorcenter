@@ -2,6 +2,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 import "firebase/database";
+import "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDO7BqcLUNL0RCvhlNdO3YGiekQXE9-S-w",
@@ -18,6 +19,7 @@ const firebaseConfig = {
   measurementId: "G-KW9G89BTCG",
 };
 const firebaseApp = firebase.initializeApp(firebaseConfig);
+firebase.analytics();
 const firestoreDb = firebaseApp.firestore();
 
 // this will connect the browser to the local emulator for firestore, avoiding using the quota during development.
