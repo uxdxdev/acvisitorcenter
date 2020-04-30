@@ -69,11 +69,11 @@ const useVisitorCenter = (centerId) => {
         {
           name:
             // don't update the name or summary if the owner is editing it
-            isOwner && isEditable["name"]
+            isOwner && isEditable.name
               ? updatedVisitorCenterData.name
               : visitorCenterData.name,
           summary:
-            isOwner && isEditable["summary"]
+            isOwner && isEditable.summary
               ? updatedVisitorCenterData.summary
               : visitorCenterData.summary,
           owner: visitorCenterData.owner,
@@ -90,8 +90,11 @@ const useVisitorCenter = (centerId) => {
         });
     }
   }, [
+    isEditable.name,
+    isEditable.summary,
     updatedVisitorCenterData.name,
     updatedVisitorCenterData.summary,
+    isOwner,
     visitorCenterData,
     currentDodoCode,
   ]);
