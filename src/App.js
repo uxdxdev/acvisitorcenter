@@ -3,6 +3,7 @@ import { Root } from "./components/root";
 import { StateProvider } from "./store";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { useMediaQuery, CssBaseline } from "@material-ui/core";
+// import { red, blue } from "@material-ui/core/colors";
 
 const App = () => {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -33,14 +34,13 @@ const App = () => {
             fontSize: "16px",
           },
           button: {
-            fontWeight: 600,
+            fontWeight: 800,
             fontSize: "14px",
           },
         },
         palette: {
           type: prefersDarkMode ? "dark" : "light",
-          primary: { main: "#00B0FF" },
-          secondary: { main: "#F50057" },
+          // error: red,
         },
         overrides: {
           MuiCssBaseline: {
