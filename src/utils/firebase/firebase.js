@@ -15,7 +15,7 @@ const firebaseConfig = {
   storageBucket: "acvisitorcenter.appspot.com",
   messagingSenderId: "783477777649",
   appId: "1:783477777649:web:12de6a85b3c7608f8a7550",
-  measurementId: "G-7VJ2M3VSY7",
+  measurementId: "G-KW9G89BTCG",
 };
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const firestoreDb = firebaseApp.firestore();
