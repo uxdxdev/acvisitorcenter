@@ -17,7 +17,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   summary: {
-    whiteSpace: "pre",
+    whiteSpace: "pre-wrap",
+    overflowWrap: "break-word",
   },
 }));
 
