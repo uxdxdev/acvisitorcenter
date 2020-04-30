@@ -8,10 +8,9 @@ import {
   ListItem,
   ListItemText,
   Button,
-  ListItemAvatar,
   Chip,
 } from "@material-ui/core";
-import { Send as SendIcon, BeachAccess } from "@material-ui/icons";
+import { Send as SendIcon } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import { PageLoadingSpinner } from "../page-loading-spinner";
@@ -60,9 +59,6 @@ const LatestVisitorCenterList = () => {
 
                 return (
                   <ListItem key={id}>
-                    <ListItemAvatar>
-                      <BeachAccess />
-                    </ListItemAvatar>
                     <ListItemText
                       primary={`${name}`}
                       secondary={`Created: ${date}`}
