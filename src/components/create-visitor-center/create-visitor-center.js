@@ -4,6 +4,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { Typography, Paper, TextField, Button, Box } from "@material-ui/core";
 import { Send as SendIcon } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
+import { PageLoadingSpinner } from "../page-loading-spinner";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -48,13 +49,13 @@ const CreateVisitorCenter = () => {
 
   return (
     <Paper elevation={0} variant="outlined" className={classes.paper}>
-      <Typography variant="h2">Create visitor center</Typography>
       {isLoading ? (
-        <Typography>Loading...</Typography>
+        <PageLoadingSpinner />
       ) : (
         <>
           {visitorCenterData ? (
-            <Box mt={2}>
+            <Box>
+              <Typography variant="h2">{visitorCenterData?.name}</Typography>
               <Button
                 variant="contained"
                 color="primary"
@@ -67,73 +68,77 @@ const CreateVisitorCenter = () => {
               </Button>
             </Box>
           ) : (
-            <form onSubmit={handleSubmit}>
-              <TextField
-                id="name"
-                label="Name"
-                required
-                type="text"
-                onChange={(event) => {
-                  const id = event?.target?.id;
-                  const value = event?.target?.value;
-                  onChange(id, value);
-                }}
-                value={formInput?.name}
-                inputProps={{ maxLength: "30" }}
-                variant="outlined"
-                margin="dense"
-              />
-              <br />
+            <>
+              <Typography variant="h2">Create visitor center</Typography>
 
-              <TextField
-                id="summary"
-                label="Summary"
-                required
-                type="text"
-                onChange={(event) => {
-                  const id = event?.target?.id;
-                  const value = event?.target?.value;
-                  onChange(id, value);
-                }}
-                value={formInput?.summary}
-                fullWidth
-                inputProps={{ maxLength: "1000" }}
-                variant="outlined"
-                margin="dense"
-                multiline
-                rows={8}
-              />
+              <form onSubmit={handleSubmit}>
+                <TextField
+                  id="name"
+                  label="Name"
+                  required
+                  type="text"
+                  onChange={(event) => {
+                    const id = event?.target?.id;
+                    const value = event?.target?.value;
+                    onChange(id, value);
+                  }}
+                  value={formInput?.name}
+                  inputProps={{ maxLength: "30" }}
+                  variant="outlined"
+                  margin="dense"
+                />
+                <br />
 
-              <TextField
-                id="code"
-                label="Code"
-                type="text"
-                onChange={(event) => {
-                  const id = event?.target?.id;
-                  const value = event?.target?.value;
-                  onChange(id, value.toUpperCase());
-                }}
-                value={formInput?.code}
-                inputProps={{
-                  maxLength: "5",
-                  minLength: "5",
-                  "text-transform": "uppercase",
-                }}
-                variant="outlined"
-                margin="dense"
-              />
+                <TextField
+                  id="summary"
+                  label="Summary"
+                  required
+                  type="text"
+                  onChange={(event) => {
+                    const id = event?.target?.id;
+                    const value = event?.target?.value;
+                    onChange(id, value);
+                  }}
+                  value={formInput?.summary}
+                  fullWidth
+                  inputProps={{ maxLength: "1000" }}
+                  variant="outlined"
+                  margin="dense"
+                  multiline
+                  rows={8}
+                />
 
-              <Box mt={1}>
-                <Button
-                  type="submit"
-                  disabled={isLoading}
-                  variant="contained"
-                  color="primary"
-                >
-                  Create visitor center
-                </Button>
-              </Box>
-            </form>
+                <TextField
+                  id="code"
+                  label="Code"
+                  type="text"
+                  onChange={(event) => {
+                    const id = event?.target?.id;
+                    const value = event?.target?.value;
+                    onChange(id, value.toUpperCase());
+                  }}
+                  value={formInput?.code}
+                  inputProps={{
+                    maxLength: "5",
+                    minLength: "5",
+                    "text-transform": "uppercase",
+                  }}
+                  variant="outlined"
+                  margin="dense"
+                />
+
+                <Box mt={1}>
+                  <Button
+                    type="submit"
+                    disabled={isLoading}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Create visitor center
+                  </Button>
+                </Box>
+              </form>
+            </>
           )}
         </>
       )}

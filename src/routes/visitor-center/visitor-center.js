@@ -3,7 +3,7 @@ import { VisitorCenterInformation } from "../../components/visitor-center-inform
 import { store } from "../../store";
 import { useParams } from "react-router-dom";
 import { firebase } from "../../utils/firebase";
-import { Typography } from "@material-ui/core";
+import { PageLoadingSpinner } from "../../components/page-loading-spinner";
 
 const VisitorCenter = () => {
   const context = useContext(store);
@@ -41,7 +41,7 @@ const VisitorCenter = () => {
       {visitorCenterExists ? (
         <VisitorCenterInformation />
       ) : (
-        <Typography>Loading...</Typography>
+        <PageLoadingSpinner />
       )}
     </>
   );

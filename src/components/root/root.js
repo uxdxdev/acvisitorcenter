@@ -14,7 +14,7 @@ const AuthIsLoaded = ({ children }) => {
     },
   } = context;
 
-  if (!uid) return <PageLoadingSpinner />;
+  if (!uid) return <PageLoadingSpinner height="80vh" />;
   return children;
 };
 

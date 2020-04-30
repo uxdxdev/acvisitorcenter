@@ -7,6 +7,7 @@ import { Typography, Paper, TextField, Button } from "@material-ui/core";
 import ButtonBox from "../../shared/ButtonBox";
 import { makeStyles } from "@material-ui/core/styles";
 import { AlertDialog } from "../alert-dialog";
+import { PageLoadingSpinner } from "../page-loading-spinner";
 
 const useStyles = makeStyles((theme) => ({
   buttonMarginRight: {
@@ -55,7 +56,7 @@ const VisitorCenterInformation = () => {
     isOwner || (isUserFirstInQueue && isVisitorCenterOpen);
 
   return isLoading ? (
-    <Typography>Loading...</Typography>
+    <PageLoadingSpinner />
   ) : (
     <>
       <AlertDialog
