@@ -18,19 +18,22 @@ const useLatestVisitorCenterList = () => {
 
     dispatch({ type: "LISTEN_LATEST_CENTERS" });
 
-    return db
-      .collection("centers")
-      .orderBy("createdAt", "desc")
-      .limit(10)
-      .onSnapshot((latestCenters) => {
-        const data = latestCenters.docs.map((doc) => ({
-          ...doc.data(),
-        }));
-        dispatch({
-          type: "LISTEN_LATEST_CENTERS_SUCCESS",
-          latestCenters: data,
-        });
-      });
+    return (
+      db
+        .collection("centers")
+        // .orderBy("createdAt", "desc")
+        .orderBy("gatesOpen", "desc")
+        .limit(10)
+        .onSnapshot((latestCenters) => {
+          const data = latestCenters.docs.map((doc) => ({
+            ...doc.data(),
+          }));
+          dispatch({
+            type: "LISTEN_LATEST_CENTERS_SUCCESS",
+            latestCenters: data,
+          });
+        })
+    );
   }, [dispatch]);
 
   useEffect(() => {
