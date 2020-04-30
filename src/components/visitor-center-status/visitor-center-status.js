@@ -25,14 +25,12 @@ const VisitorCenterStatus = () => {
             : "Visitor center gates closed"}
         </Typography>
       </Box>
-      {isOwner && (
-        <Box borderRadius={16} m={1}>
-          <Typography align="center" className={classes.subtitle}>
-            Keep this page open in your browser so that your visitor center can
-            operate correctly.
-          </Typography>
-        </Box>
-      )}
+      <Box borderRadius={16} m={1}>
+        <Typography align="center" className={classes.subtitle}>
+          Keep this page open in your browser so that the visitor center can
+          operate correctly.
+        </Typography>
+      </Box>
     </>
   );
 };

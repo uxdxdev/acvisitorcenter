@@ -35,7 +35,9 @@ export default function AlertDialog(props) {
           </Typography>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText align="center">{code}</DialogContentText>
+          <DialogContentText align="center" variant="h2">
+            {code}
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button
