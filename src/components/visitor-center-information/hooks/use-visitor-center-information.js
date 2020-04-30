@@ -86,14 +86,19 @@ const useVisitorCenter = (centerId) => {
       visitorCenterData &&
         setVisitorCenterData({
           ...updatedData,
-          dodoCode: currentDodoCode || "*****",
+          dodoCode:
+            isOwner && isEditable.dodoCode
+              ? updatedVisitorCenterData.dodoCode
+              : currentDodoCode || "*****",
         });
     }
   }, [
     isEditable.name,
     isEditable.summary,
+    isEditable.dodoCode,
     updatedVisitorCenterData.name,
     updatedVisitorCenterData.summary,
+    updatedVisitorCenterData.dodoCode,
     isOwner,
     visitorCenterData,
     currentDodoCode,
@@ -106,27 +111,24 @@ const useVisitorCenter = (centerId) => {
   };
 
   const handleEditSaveData = (key) => {
-    setIsEditable((currentState) => {
-      return {
-        ...currentState,
-        ...{
-          [key]: !isEditable[key],
-        },
-      };
+    setIsEditable({
+      [key]: !isEditable[key],
     });
 
-    if (isEditable[key] === true) {
+    if (isEditable.name === true && updatedVisitorCenterData?.name) {
       // save visitor center data
-      if (
-        visitorCenterData?.name !== updatedVisitorCenterData?.name ||
-        visitorCenterData?.summary !== updatedVisitorCenterData?.summary
-      ) {
-        saveCenterData(
-          updatedVisitorCenterData?.name,
-          updatedVisitorCenterData?.summary
-        );
+      if (visitorCenterData?.name !== updatedVisitorCenterData?.name) {
+        saveCenterData({ name: updatedVisitorCenterData?.name });
       }
+    }
+    if (isEditable.summary === true && updatedVisitorCenterData?.summary) {
+      // save visitor center data
+      if (visitorCenterData?.summary !== updatedVisitorCenterData?.summary) {
+        saveCenterData({ summary: updatedVisitorCenterData?.summary });
+      }
+    }
 
+    if (isEditable.dodoCode === true && updatedVisitorCenterData?.dodoCode) {
       // save dodo code
       if (
         updatedVisitorCenterData?.dodoCode?.length === 5 &&
@@ -142,33 +144,27 @@ const useVisitorCenter = (centerId) => {
     }
   };
 
-  const saveCenterData = (name, summary) => {
-    if (name && summary && centerId) {
-      const db = firebase.firestore();
+  const saveCenterData = ({ name, summary }) => {
+    const db = firebase.firestore();
 
-      dispatch({ type: "UPDATE_VISITOR_CENTER_DATA" });
+    dispatch({ type: "UPDATE_VISITOR_CENTER_DATA" });
 
-      db.collection("centers")
-        .doc(centerId)
-        .set(
-          {
-            name,
-            summary,
-          },
-          { merge: true }
-        )
-        .then(() => {
-          dispatch({ type: "UPDATE_VISITOR_CENTER_DATA_SUCCESS" });
-        })
-        .catch((error) => {
-          dispatch({ type: "UPDATE_VISITOR_CENTER_DATA_FAIL", error });
-        });
-    } else {
-      dispatch({
-        type: "UPDATE_VISITOR_CENTER_DATA_FAIL",
-        error: "Invalid visitor center data",
+    db.collection("centers")
+      .doc(centerId)
+      .set(
+        {
+          // optionally add key to object
+          ...(name && { name }),
+          ...(summary && { summary }),
+        },
+        { merge: true }
+      )
+      .then(() => {
+        dispatch({ type: "UPDATE_VISITOR_CENTER_DATA_SUCCESS" });
+      })
+      .catch((error) => {
+        dispatch({ type: "UPDATE_VISITOR_CENTER_DATA_FAIL", error });
       });
-    }
   };
 
   const updateDodoCode = (dodoCode) => {

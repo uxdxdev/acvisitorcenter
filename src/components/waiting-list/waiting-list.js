@@ -72,7 +72,14 @@ const WaitingList = () => {
         interval && clearInterval(interval);
       };
     }, []);
-    return <div>Next visitor is waiting {seconds} seconds</div>;
+
+    const formatted = moment.utc(seconds * 1000).format("HH:mm:ss");
+
+    return (
+      <Typography variant="subtitle1">
+        Next visitor is waiting {formatted}
+      </Typography>
+    );
   };
 
   const nameInputRef = useRef();
