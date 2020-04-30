@@ -46,6 +46,11 @@ const questionsAnswers = [
     body:
       "No, each user can only create a single visitor center. It is easy to update your visitor center by clicking the 'Edit' button next to each label on the visitor center page.",
   },
+  {
+    title: "What does 'Visitor center gates are closed' mean?",
+    body:
+      "It means the owner of the visitor center has either closed the visitor center page or has closed the gates to the visitor center to prevent people joining the queue. Visitors in the queue may still be able to visit the owners island so stay in the queue!",
+  },
 ];
 const Faq = (props) => {
   const classes = useStyles();
