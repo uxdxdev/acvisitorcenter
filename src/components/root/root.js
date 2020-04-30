@@ -3,7 +3,7 @@ import Routes from "../../routes";
 import { useRoot } from "./hooks";
 import { store } from "../../store";
 import { PageLoadingSpinner } from "../page-loading-spinner";
-import { Paper, Button, Typography } from "@material-ui/core";
+import { Paper, Button, Typography, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const AuthIsLoaded = ({ children }) => {
@@ -32,22 +32,24 @@ const Root = () => {
   return (
     <AuthIsLoaded>
       {!hasUserConsentedToUseCookies && (
-        <Paper elevation={0} variant="outlined" className={classes.paper}>
-          <Typography id="cookieConsent" align="center">
-            We use cookies to give you the best experience on our website. If
-            you continue to use this site we will assume that you are happy with
-            it.{" "}
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                updateCookieConsent(true);
-              }}
-            >
-              Hide
-            </Button>
-          </Typography>
-        </Paper>
+        <Container>
+          <Paper elevation={0} variant="outlined" className={classes.paper}>
+            <Typography id="cookieConsent" align="center">
+              We use cookies to give you the best experience on our website. If
+              you continue to use this site we will assume that you are happy
+              with it.{" "}
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  updateCookieConsent(true);
+                }}
+              >
+                Hide
+              </Button>
+            </Typography>
+          </Paper>
+        </Container>
       )}
       <Routes />
     </AuthIsLoaded>
