@@ -100,7 +100,7 @@ const WaitingList = () => {
                 color="primary"
                 size="small"
                 onClick={() => handleDeleteUser(uid)}
-                disabled={!isVisitorCenterOpen || !userAlreadyInQueue}
+                disabled={!userAlreadyInQueue}
               >
                 Leave
               </Button>
