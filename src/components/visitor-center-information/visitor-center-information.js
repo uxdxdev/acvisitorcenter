@@ -68,7 +68,7 @@ const VisitorCenterInformation = () => {
       <VisitorCenterStatus />
 
       <Paper elevation={0} variant="outlined" className={classes.paper}>
-        {isEditable["name"] ? (
+        {isEditable.name ? (
           <>
             <TextField
               type="text"
@@ -81,7 +81,7 @@ const VisitorCenterInformation = () => {
               id="name"
               label="Name"
               maxLength="30"
-              disabled={!isEditable["name"]}
+              disabled={!isEditable.name}
               inputProps={{ maxLength: "30" }}
               variant="outlined"
               margin="dense"
@@ -97,10 +97,10 @@ const VisitorCenterInformation = () => {
             size="small"
             onClick={() => handleEditSaveData("name")}
           >
-            {isEditable["name"] ? "Save" : "Edit name"}
+            {isEditable.name ? "Save" : "Edit name"}
           </Button>
         )}
-        {isEditable["summary"] ? (
+        {isEditable.summary ? (
           <>
             <TextField
               type="text"
@@ -113,7 +113,7 @@ const VisitorCenterInformation = () => {
               id="summary"
               name="summary"
               label="Summary"
-              disabled={!isEditable["summary"]}
+              disabled={!isEditable.summary}
               inputProps={{ maxLength: "1000" }}
               variant="outlined"
               fullWidth
@@ -134,7 +134,7 @@ const VisitorCenterInformation = () => {
             size="small"
             onClick={() => handleEditSaveData("summary")}
           >
-            {isEditable["summary"] ? "Save" : "Edit summary"}
+            {isEditable.summary ? "Save" : "Edit summary"}
           </Button>
         )}
       </Paper>
@@ -142,7 +142,7 @@ const VisitorCenterInformation = () => {
       <Paper elevation={0} variant="outlined" className={classes.paper}>
         <Typography variant="h2">Code</Typography>
 
-        {isEditable["dodoCode"] ? (
+        {isEditable.dodoCode ? (
           <TextField
             type="text"
             value={updatedVisitorCenterData.dodoCode}
@@ -153,7 +153,7 @@ const VisitorCenterInformation = () => {
             }}
             id="dodoCode"
             label="Code"
-            disabled={!isEditable["dodoCode"]}
+            disabled={!isEditable.dodoCode}
             inputProps={{ maxLength: "5", minLength: "5" }}
             variant="outlined"
             margin="dense"
@@ -169,7 +169,7 @@ const VisitorCenterInformation = () => {
               size="small"
               onClick={() => handleEditSaveData("dodoCode")}
             >
-              {isEditable["dodoCode"] ? "Save" : "Edit"}
+              {isEditable.dodoCode ? "Save" : "Edit"}
             </Button>
           )}
           <Button
