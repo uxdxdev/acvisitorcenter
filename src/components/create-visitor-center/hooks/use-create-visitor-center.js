@@ -7,13 +7,23 @@ const useCreateVisitorCenter = () => {
   const {
     state: {
       auth: { uid },
-      visitorCenter: { visitorCenterData, isFetchingVisitorCenterData },
+      visitorCenter: {
+        visitorCenterData,
+        isFetchingVisitorCenterData,
+        isCreatingVisitorCenter,
+      },
+      dodoCode: { isUpdatingDodoCode },
     },
     dispatch,
   } = context;
 
   const isLoading =
     isFetchingVisitorCenterData || visitorCenterData === undefined;
+
+  const isCreatingVisitorCenterPending =
+    isCreatingVisitorCenter ||
+    isUpdatingDodoCode ||
+    isFetchingVisitorCenterData;
 
   const updateUserData = async (dodoCode) => {
     const db = firebase.firestore();
@@ -105,6 +115,7 @@ const useCreateVisitorCenter = () => {
     handleCreateVisitorCenter,
     visitorCenterData,
     isLoading,
+    isCreatingVisitorCenterPending,
   };
 };
 
