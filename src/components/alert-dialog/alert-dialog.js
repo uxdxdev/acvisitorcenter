@@ -15,10 +15,7 @@ export default function AlertDialog(props) {
 
   useEffect(() => {
     const player = playerRef.current;
-    open &&
-      player.play().catch((error) => {
-        //   console.log(error);
-      });
+    open && player.play().catch((error) => {});
     return () => {
       player.pause();
     };
