@@ -26,14 +26,10 @@ const VisitorCenterStatus = () => {
         </Typography>
       </Box>
       {isOwner && (
-        <Box
-          // bgcolor={isVisitorCenterOpen ? "success.main" : "secondary.main"}
-          borderRadius={16}
-          m={1}
-        >
+        <Box borderRadius={16} m={1}>
           <Typography align="center" className={classes.subtitle}>
-            Remember you must keep this page open in your browser so that your
-            visitor center can operate correctly.
+            Keep this page open in your browser so that your visitor center can
+            operate correctly.
           </Typography>
         </Box>
       )}
