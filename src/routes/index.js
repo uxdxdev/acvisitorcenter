@@ -11,10 +11,18 @@ import ReCAPTCHA from "react-google-recaptcha";
 import logo from "../logo.png";
 import { Box, Link, Container, Typography } from "@material-ui/core";
 import Analytics from "react-router-ga";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  title: {
+    color: theme.palette.primary.main,
+  },
+}));
 
 const Routes = () => {
   const isDevEnv = process.env.NODE_ENV === "development";
   const [isVerified, setIsVerified] = useState(isDevEnv);
+  const classes = useStyles();
 
   // recaptcha onChange
   const onChange = (token) => {
@@ -37,16 +45,24 @@ const Routes = () => {
           >
             <img src={logo} alt="crossed arrows" width="100" />
           </Link>
-          <Typography variant="h1">AC Visitor Center</Typography>
-
-          <Link
-            href="https://discord.gg/kwzezy"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <Typography>Join the Discord server</Typography>
-          </Link>
+          <Typography variant="h2" component="h1" className={classes.title}>
+            <Link
+              component={RouterLink}
+              to={`/`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              AC Visitor Center
+            </Link>
+          </Typography>
+          <Typography>
+            <Link
+              href="https://discord.gg/kwzezy"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Join the Discord server
+            </Link>
+          </Typography>
         </Box>
 
         {isVerified ? (

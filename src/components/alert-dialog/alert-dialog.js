@@ -43,7 +43,7 @@ export default function AlertDialog(props) {
               playerRef.current.pause();
               handleClose();
             }}
-            color="primary"
+            variant="outlined"
           >
             Close
           </Button>

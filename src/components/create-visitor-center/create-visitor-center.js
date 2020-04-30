@@ -56,7 +56,7 @@ const CreateVisitorCenter = () => {
           {visitorCenterData ? (
             <Box mt={2}>
               <Button
-                variant="outlined"
+                variant="contained"
                 color="primary"
                 className={classes.button}
                 endIcon={<SendIcon />}

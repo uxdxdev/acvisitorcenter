@@ -52,7 +52,6 @@ const LatestVisitorCenterList = () => {
                     />
                     <Button
                       variant="outlined"
-                      color="primary"
                       className={classes.button}
                       endIcon={<SendIcon />}
                       component={RouterLink}

@@ -90,7 +90,6 @@ const VisitorCenterInformation = () => {
         {isOwner && (
           <Button
             variant="outlined"
-            color="primary"
             size="small"
             onClick={() => handleEditSaveData("name")}
           >
@@ -126,7 +125,6 @@ const VisitorCenterInformation = () => {
         {isOwner && (
           <Button
             variant="outlined"
-            color="primary"
             size="small"
             onClick={() => handleEditSaveData("summary")}
           >
@@ -162,7 +160,6 @@ const VisitorCenterInformation = () => {
             <Button
               className={classes.buttonMarginRight}
               variant="outlined"
-              color="primary"
               size="small"
               onClick={() => handleEditSaveData("dodoCode")}
             >
@@ -176,9 +173,7 @@ const VisitorCenterInformation = () => {
             onClick={() => handleFetchDodoCode()}
             disabled={!isCodeAvailable && !isUserFirstInQueue}
           >
-            {isCodeAvailable || isUserFirstInQueue
-              ? "Get code"
-              : "Code unavailable"}
+            Get code
           </Button>
         </ButtonBox>
       </Paper>

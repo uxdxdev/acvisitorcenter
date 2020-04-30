@@ -130,7 +130,6 @@ const WaitingList = () => {
               </Button>
               <Button
                 variant="outlined"
-                color="primary"
                 size="small"
                 onClick={() => handleDeleteUser(uid)}
                 disabled={!userAlreadyInQueue}
@@ -154,7 +153,6 @@ const WaitingList = () => {
             <Button
               className={classes.buttonMarginRight}
               size="small"
-              color="primary"
               variant="outlined"
               disabled={waitingList?.length <= 0}
               onClick={() => {
@@ -192,15 +190,14 @@ const WaitingList = () => {
                       />
 
                       {index === 0 ? (
-                        <Chip color="primary" size="small" label="Next" />
+                        <Chip color="primary" label="Next" />
                       ) : (
-                        <Chip size="small" label="Please wait..." />
+                        <Chip label="Please wait..." />
                       )}
                       {isOwner && index === 0 && (
                         <Box ml={1}>
                           <Button
                             variant="outlined"
-                            color="primary"
                             size="small"
                             onClick={() => handleDeleteUser(userId)}
                           >
