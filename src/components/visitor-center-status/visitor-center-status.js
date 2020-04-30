@@ -14,8 +14,8 @@ const VisitorCenterStatus = () => {
       >
         <Typography align="center">
           {isVisitorCenterOpen
-            ? "Visitor center is open"
-            : "Visitor center is closed"}
+            ? "Visitor center gates are open"
+            : "Visitor center gates closed"}
         </Typography>
       </Box>
       {isOwner && (
