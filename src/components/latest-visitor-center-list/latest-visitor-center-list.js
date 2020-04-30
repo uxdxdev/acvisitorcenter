@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import { BeachAccess, FlightTakeoff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import moment from "moment";
+// import moment from "moment";
 import { PageLoadingSpinner } from "../page-loading-spinner";
 
 const useStyles = makeStyles((theme) => ({
@@ -52,7 +52,7 @@ const LatestVisitorCenterList = () => {
                 const id = center?.owner;
                 const url = `/center/${id}`;
                 const name = center?.name;
-                const date = moment(center?.createdAt?.toDate()).calendar();
+                // const date = moment(center?.createdAt?.toDate()).calendar();
                 const gatesOpen = center?.gatesOpen;
                 const chipClassName = {
                   ...(gatesOpen
@@ -62,11 +62,7 @@ const LatestVisitorCenterList = () => {
 
                 return (
                   <ListItem key={id} dense disableGutters>
-                    <ListItemText
-                      primary={`${name}`}
-                      secondary={`${date}`}
-                      secondaryTypographyProps={{ variant: "subtitle2" }}
-                    />
+                    <ListItemText primary={`${name}`} />
 
                     <Chip
                       {...chipClassName}
