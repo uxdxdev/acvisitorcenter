@@ -18,6 +18,7 @@ const CreateVisitorCenter = () => {
     handleCreateVisitorCenter,
     visitorCenterData,
     isLoading,
+    isCreatingVisitorCenterPending,
   } = useCreateVisitorCenter();
 
   const classes = useStyles();
@@ -130,7 +131,7 @@ const CreateVisitorCenter = () => {
                 <Box mt={1}>
                   <Button
                     type="submit"
-                    disabled={isLoading}
+                    disabled={isCreatingVisitorCenterPending}
                     variant="contained"
                     color="primary"
                   >
