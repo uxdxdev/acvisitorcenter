@@ -10,7 +10,7 @@ import {
   Button,
   Chip,
 } from "@material-ui/core";
-import { Send as SendIcon } from "@material-ui/icons";
+import { BeachAccess, FlightTakeoff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import { PageLoadingSpinner } from "../page-loading-spinner";
@@ -41,7 +41,10 @@ const LatestVisitorCenterList = () => {
         <PageLoadingSpinner />
       ) : (
         <>
-          <Typography variant="h2">Latest visitor centers</Typography>
+          <Typography variant="h2">
+            Visitor centers <BeachAccess fontSize="small" />
+            <FlightTakeoff fontSize="small" />
+          </Typography>
 
           {latestCenters?.length > 0 ? (
             <List dense>
@@ -58,20 +61,22 @@ const LatestVisitorCenterList = () => {
                 };
 
                 return (
-                  <ListItem key={id}>
+                  <ListItem key={id} dense disableGutters>
                     <ListItemText
                       primary={`${name}`}
                       secondary={`Created: ${date}`}
+                      secondaryTypographyProps={{ variant: "subtitle2" }}
                     />
 
                     <Chip
                       {...chipClassName}
                       label={gatesOpen ? "Gates open" : "Gates closed"}
+                      size="small"
                     />
                     <Button
                       variant="outlined"
+                      size="small"
                       className={classes.button}
-                      endIcon={<SendIcon />}
                       component={RouterLink}
                       to={url}
                     >
