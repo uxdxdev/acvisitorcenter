@@ -66,7 +66,7 @@ const Routes = () => {
         </Box>
 
         {isVerified ? (
-          <Analytics id="UA-63312977-16" debug>
+          <Analytics id="UA-63312977-16">
             <Switch>
               <Route exact path="/">
                 <LandingPage />
