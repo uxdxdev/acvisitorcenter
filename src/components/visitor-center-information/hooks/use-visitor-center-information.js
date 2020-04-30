@@ -13,7 +13,7 @@ const useVisitorCenter = (centerId) => {
         onlineStatus,
         isFetchingVisitorCenterData,
       },
-      dodoCode: { code: currentDodoCode },
+      dodoCode: { code: currentDodoCode, isFetchingDodoCode },
     },
   } = context;
 
@@ -248,6 +248,7 @@ const useVisitorCenter = (centerId) => {
     isUserFirstInQueue,
     isVisitorCenterOpen,
     isLoading,
+    isFetchingDodoCode,
   };
 };
 

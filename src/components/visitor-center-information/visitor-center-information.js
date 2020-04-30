@@ -35,6 +35,7 @@ const VisitorCenterInformation = () => {
     isUserFirstInQueue,
     isLoading,
     isVisitorCenterOpen,
+    isFetchingDodoCode,
   } = useVisitorCenterInformation(centerId);
   const classes = useStyles();
 
@@ -64,6 +65,7 @@ const VisitorCenterInformation = () => {
         code={updatedVisitorCenterData.dodoCode}
         getCode={handleFetchDodoCode}
         handleClose={handleClose}
+        isFetchingDodoCode={isFetchingDodoCode}
       />
 
       <VisitorCenterStatus />
@@ -178,7 +180,9 @@ const VisitorCenterInformation = () => {
             color="primary"
             size="small"
             onClick={() => handleFetchDodoCode()}
-            disabled={!isCodeAvailable && !isUserFirstInQueue}
+            disabled={
+              (!isCodeAvailable && !isUserFirstInQueue) || isFetchingDodoCode
+            }
           >
             Get code
           </Button>

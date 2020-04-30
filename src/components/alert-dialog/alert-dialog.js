@@ -9,15 +9,19 @@ import { Typography } from "@material-ui/core";
 import ding from "../../ding.mp3";
 
 export default function AlertDialog(props) {
-  const { open, handleClose, code, getCode } = props;
+  const { open, handleClose, code, getCode, isFetchingDodoCode } = props;
 
   const playerRef = useRef();
 
   useEffect(() => {
+    const player = playerRef.current;
     open &&
-      playerRef.current.play().catch((error) => {
+      player.play().catch((error) => {
         //   console.log(error);
       });
+    return () => {
+      player.pause();
+    };
   }, [open]);
 
   return (
@@ -42,7 +46,6 @@ export default function AlertDialog(props) {
         <DialogActions>
           <Button
             onClick={() => {
-              playerRef.current.pause();
               handleClose();
             }}
             variant="outlined"
@@ -57,6 +60,7 @@ export default function AlertDialog(props) {
             color="primary"
             variant="contained"
             autoFocus
+            disabled={isFetchingDodoCode}
           >
             Get code
           </Button>

@@ -10,8 +10,12 @@ const useVisitorCenter = (centerId) => {
     dispatch,
     state: {
       auth: { uid },
-      visitorCenter: { visitorCenterData: currentCenterData, onlineStatus },
-      waitingList: { isJoiningQueue },
+      visitorCenter: {
+        visitorCenterData: currentCenterData,
+        onlineStatus,
+        isUpdatingVisitorGateStatus,
+      },
+      waitingList: { isJoiningQueue, isDeletingUser, isClearingWaitlist },
     },
   } = context;
 
@@ -122,6 +126,9 @@ const useVisitorCenter = (centerId) => {
     userAlreadyInQueue,
     toggleGates,
     gatesOpen,
+    isDeletingUser,
+    isClearingWaitlist,
+    isUpdatingVisitorGateStatus,
   };
 };
 
