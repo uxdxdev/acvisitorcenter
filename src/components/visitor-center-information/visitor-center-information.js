@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     padding: theme.spacing(2),
   },
+  summary: {
+    whiteSpace: "pre",
+  },
 }));
 
 const VisitorCenterInformation = () => {
@@ -120,7 +123,9 @@ const VisitorCenterInformation = () => {
             <br />
           </>
         ) : (
-          <Typography>{updatedVisitorCenterData.summary}</Typography>
+          <Typography className={classes.summary}>
+            {updatedVisitorCenterData.summary}
+          </Typography>
         )}
         {isOwner && (
           <Button
