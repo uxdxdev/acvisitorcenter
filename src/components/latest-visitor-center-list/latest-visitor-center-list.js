@@ -9,6 +9,7 @@ import {
   ListItemText,
   Button,
   ListItemAvatar,
+  Chip,
 } from "@material-ui/core";
 import { Send as SendIcon, BeachAccess } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,6 +20,15 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     margin: theme.spacing(1),
     padding: theme.spacing(2),
+  },
+  button: {
+    marginLeft: theme.spacing(1),
+  },
+  chipGreen: {
+    backgroundColor: theme.palette.success.main,
+  },
+  chipRed: {
+    backgroundColor: theme.palette.error.main,
   },
 }));
 
@@ -37,10 +47,17 @@ const LatestVisitorCenterList = () => {
           {latestCenters?.length > 0 ? (
             <List dense>
               {latestCenters?.map((center) => {
+                console.log(center);
                 const id = center?.owner;
                 const url = `/center/${id}`;
                 const name = center?.name;
                 const date = moment(center?.createdAt?.toDate()).calendar();
+                const gatesOpen = center?.gatesOpen;
+                const chipClassName = {
+                  ...(gatesOpen
+                    ? { className: classes.chipGreen }
+                    : { className: classes.chipRed }),
+                };
 
                 return (
                   <ListItem key={id}>
@@ -50,6 +67,11 @@ const LatestVisitorCenterList = () => {
                     <ListItemText
                       primary={`${name}`}
                       secondary={`Created: ${date}`}
+                    />
+
+                    <Chip
+                      {...chipClassName}
+                      label={gatesOpen ? "Gates open" : "Gates closed"}
                     />
                     <Button
                       variant="outlined"
