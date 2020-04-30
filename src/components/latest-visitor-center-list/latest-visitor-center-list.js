@@ -13,6 +13,7 @@ import {
 import { Send as SendIcon, BeachAccess } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
+import { PageLoadingSpinner } from "../page-loading-spinner";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -27,12 +28,12 @@ const LatestVisitorCenterList = () => {
 
   return (
     <Paper elevation={0} variant="outlined" className={classes.paper}>
-      <Typography variant="h2">Latest visitor centers</Typography>
-
       {isLoading ? (
-        <Typography>Loading...</Typography>
+        <PageLoadingSpinner />
       ) : (
         <>
+          <Typography variant="h2">Latest visitor centers</Typography>
+
           {latestCenters?.length > 0 ? (
             <List dense>
               {latestCenters?.map((center) => {

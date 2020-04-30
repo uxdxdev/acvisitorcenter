@@ -16,6 +16,7 @@ import {
 } from "@material-ui/core";
 import { Person as PersonIcon, FlightTakeoff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
+import { PageLoadingSpinner } from "../page-loading-spinner";
 
 const useStyles = makeStyles((theme) => ({
   buttonMarginRight: {
@@ -179,7 +180,7 @@ const WaitingList = () => {
           </>
         )}
         {!waitingList ? (
-          <Typography>Loading...</Typography>
+          <PageLoadingSpinner />
         ) : (
           <>
             {waitingList?.length > 0 ? (
