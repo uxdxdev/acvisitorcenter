@@ -24,6 +24,7 @@ const visitorCenterReducer = (state, action) => {
       return {
         ...state,
         isCreatingVisitorCenter: false,
+        createVisitorCenterError: null,
       };
     case "CREATE_VISITOR_CENTER_FAIL":
       return {
@@ -91,6 +92,25 @@ const visitorCenterReducer = (state, action) => {
         ...state,
         isUpdatingVisitorCenterData: false,
         isUpdatingVisitorCenterDataError: action.error,
+      };
+
+    case "SET_GATES_OPEN_STATUS":
+      return {
+        ...state,
+        isUpdatingVisitorGateStatus: true,
+        isUpdatingVisitorGateStatusError: null,
+      };
+    case "SET_GATES_OPEN_STATUS_SUCCESS":
+      return {
+        ...state,
+        isUpdatingVisitorGateStatus: false,
+        isUpdatingVisitorGateStatusError: null,
+      };
+    case "SET_GATES_OPEN_STATUS_FAIL":
+      return {
+        ...state,
+        isUpdatingVisitorGateStatus: false,
+        isUpdatingVisitorGateStatusError: action.error,
       };
 
     case "VISITOR_CENTER_STATUS":

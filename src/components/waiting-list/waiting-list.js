@@ -41,6 +41,10 @@ const WaitingList = () => {
     waitingList,
     toggleGates,
     gatesOpen,
+    isJoiningQueue,
+    isDeletingUser,
+    isClearingWaitlist,
+    isUpdatingVisitorGateStatus,
   } = useWaitingList(centerId);
   const classes = useStyles();
 
@@ -119,7 +123,10 @@ const WaitingList = () => {
               variant="outlined"
               margin="dense"
               disabled={
-                userAlreadyInQueue || !isVisitorCenterOpen || isQueueFull
+                userAlreadyInQueue ||
+                !isVisitorCenterOpen ||
+                isQueueFull ||
+                isJoiningQueue
               }
             />
             <br />
@@ -131,7 +138,10 @@ const WaitingList = () => {
                 size="small"
                 type="submit"
                 disabled={
-                  userAlreadyInQueue || !isVisitorCenterOpen || isQueueFull
+                  userAlreadyInQueue ||
+                  !isVisitorCenterOpen ||
+                  isQueueFull ||
+                  isJoiningQueue
                 }
               >
                 Join queue
@@ -140,7 +150,7 @@ const WaitingList = () => {
                 variant="outlined"
                 size="small"
                 onClick={() => handleDeleteUser(uid)}
-                disabled={!userAlreadyInQueue}
+                disabled={!userAlreadyInQueue || isDeletingUser}
               >
                 Leave
               </Button>
@@ -162,7 +172,7 @@ const WaitingList = () => {
               className={classes.buttonMarginRight}
               size="small"
               variant="outlined"
-              disabled={waitingList?.length <= 0}
+              disabled={waitingList?.length <= 0 || isClearingWaitlist}
               onClick={() => {
                 handleClearWaitingList();
               }}
@@ -174,6 +184,7 @@ const WaitingList = () => {
               color={isVisitorCenterOpen ? "secondary" : "primary"}
               size="small"
               onClick={() => toggleGates()}
+              disabled={isUpdatingVisitorGateStatus}
             >
               {gatesOpen ? "Close gates" : "Open gates"}
             </Button>
@@ -208,6 +219,7 @@ const WaitingList = () => {
                             variant="outlined"
                             size="small"
                             onClick={() => handleDeleteUser(userId)}
+                            disabled={isDeletingUser}
                           >
                             Done
                           </Button>

@@ -40,6 +40,25 @@ const waitingListReducer = (state, action) => {
         isDeletingUserError: action.error,
       };
 
+    case "CLEAR_WAITING_LIST":
+      return {
+        ...state,
+        isClearingWaitlist: true,
+        isClearingWaitlistError: null,
+      };
+    case "CLEAR_WAITING_LIST_SUCCESS":
+      return {
+        ...state,
+        isClearingWaitlist: false,
+        isClearingWaitlistError: null,
+      };
+    case "CLEAR_WAITING_LIST_FAIL":
+      return {
+        ...state,
+        isClearingWaitlist: false,
+        isClearingWaitlistError: action.error,
+      };
+
     case "SET_NEXT_VISITOR":
       return {
         ...state,
