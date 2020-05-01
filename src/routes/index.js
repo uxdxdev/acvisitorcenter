@@ -51,7 +51,10 @@ const Routes = () => {
               to={`/`}
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              AC Visitor Center
+              AC Visitor Center{" "}
+              <span role="img" aria-label="island">
+                🏝️
+              </span>
             </Link>
           </Typography>
           <Typography>

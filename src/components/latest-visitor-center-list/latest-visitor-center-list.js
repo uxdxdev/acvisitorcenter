@@ -8,9 +8,7 @@ import {
   ListItem,
   ListItemText,
   Button,
-  Chip,
 } from "@material-ui/core";
-import { BeachAccess, FlightTakeoff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 // import moment from "moment";
 import { PageLoadingSpinner } from "../page-loading-spinner";
@@ -42,8 +40,10 @@ const LatestVisitorCenterList = () => {
       ) : (
         <>
           <Typography variant="h2">
-            Visitor centers <BeachAccess fontSize="small" />
-            <FlightTakeoff fontSize="small" />
+            Visitor centers{" "}
+            <span role="img" aria-label="plane island">
+              ✈️
+            </span>
           </Typography>
 
           {latestCenters?.length > 0 ? (
@@ -53,22 +53,11 @@ const LatestVisitorCenterList = () => {
                 const url = `/center/${id}`;
                 const name = center?.name;
                 // const date = moment(center?.createdAt?.toDate()).calendar();
-                const gatesOpen = center?.gatesOpen;
-                const chipClassName = {
-                  ...(gatesOpen
-                    ? { className: classes.chipGreen }
-                    : { className: classes.chipRed }),
-                };
 
                 return (
                   <ListItem key={id} dense disableGutters>
                     <ListItemText primary={`${name}`} />
 
-                    <Chip
-                      {...chipClassName}
-                      label={gatesOpen ? "Gates open" : "Gates closed"}
-                      size="small"
-                    />
                     <Button
                       variant="outlined"
                       size="small"

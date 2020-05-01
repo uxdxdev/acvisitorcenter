@@ -167,7 +167,12 @@ const WaitingList = () => {
       )}
 
       <Paper elevation={0} variant="outlined" className={classes.paper}>
-        <Typography variant="h2">Waiting list (Max 20)</Typography>
+        <Typography variant="h2">
+          Waiting list (Max 20){" "}
+          <span role="img" aria-label="list">
+            📋
+          </span>
+        </Typography>
         <NextVisitorTimer />
 
         {isOwner && (

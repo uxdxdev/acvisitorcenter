@@ -146,7 +146,12 @@ const VisitorCenterInformation = () => {
       </Paper>
 
       <Paper elevation={0} variant="outlined" className={classes.paper}>
-        <Typography variant="h2">Code</Typography>
+        <Typography variant="h2">
+          Code{" "}
+          <span role="img" aria-label="key">
+            🔑
+          </span>
+        </Typography>
 
         {isEditable.dodoCode ? (
           <TextField
