@@ -8,6 +8,7 @@ import {
   ListItem,
   ListItemText,
   Button,
+  Chip,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 // import moment from "moment";
@@ -53,11 +54,25 @@ const LatestVisitorCenterList = () => {
                 const url = `/center/${id}`;
                 const name = center?.name;
                 // const date = moment(center?.createdAt?.toDate()).calendar();
+                const inQueue = center?.waiting?.length;
+
+                // const chipClassName = {
+                //   ...(inQueue <= 0
+                //     ? { className: classes.chipGreen }
+                //     : { className: classes.chipRed }),
+                // };
 
                 return (
                   <ListItem key={id} dense disableGutters>
                     <ListItemText primary={`${name}`} />
 
+                    <Chip
+                      // {...chipClassName}
+                      label={
+                        inQueue <= 0 ? "Queue empty" : `${inQueue} waiting`
+                      }
+                      size="small"
+                    />
                     <Button
                       variant="outlined"
                       size="small"
