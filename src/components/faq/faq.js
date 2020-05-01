@@ -85,7 +85,12 @@ const Faq = (props) => {
   return (
     <Paper elevation={0} variant="outlined" className={classes.paper}>
       <Box mb={2}>
-        <Typography variant="h2">How to</Typography>
+        <Typography variant="h2">
+          How to{" "}
+          <span role="img" aria-label="books">
+            📚
+          </span>
+        </Typography>
         <Grid container>
           {steps.map((data, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
@@ -97,7 +102,12 @@ const Faq = (props) => {
           ))}
         </Grid>
       </Box>
-      <Typography variant="h2">F.A.Q</Typography>
+      <Typography variant="h2">
+        F.A.Q{" "}
+        <span role="img" aria-label="question mark">
+          ❓
+        </span>
+      </Typography>
       <Grid container>
         {questionsAnswers.map((data, index) => (
           <Grid item xs={12} key={index}>
