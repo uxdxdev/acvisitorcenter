@@ -16,29 +16,27 @@ const useLatestVisitorCenterList = () => {
   const fetchLatestCenters = useCallback(() => {
     const db = firebase.firestore();
 
-    dispatch({ type: "LISTEN_LATEST_CENTERS" });
+    dispatch({ type: "FETCH_LATEST_CENTERS" });
 
     return db
       .collection("centers")
       .orderBy("lastActive", "desc")
       .orderBy("waiting", "asc")
       .limit(10)
-      .onSnapshot((latestCenters) => {
+      .get()
+      .then((latestCenters) => {
         const data = latestCenters.docs.map((doc) => ({
           ...doc.data(),
         }));
         dispatch({
-          type: "LISTEN_LATEST_CENTERS_SUCCESS",
+          type: "FETCH_LATEST_CENTERS_SUCCESS",
           latestCenters: data,
         });
       });
   }, [dispatch]);
 
   useEffect(() => {
-    const unsubscribe = fetchLatestCenters();
-    return () => {
-      unsubscribe();
-    };
+    fetchLatestCenters();
   }, [dispatch, fetchLatestCenters]);
 
   return { latestCenters, isLoading };

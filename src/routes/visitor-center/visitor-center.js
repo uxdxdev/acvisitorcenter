@@ -24,13 +24,13 @@ const VisitorCenter = () => {
             setVisitorCenterExists(true);
           } else {
             dispatch({
-              type: "FETCH_VISITOR_CENTER_FAIL",
+              type: "FETCH_VISITOR_CENTER_DATA_FAIL",
               error: "visitor center does not exist",
             });
           }
         })
         .catch((error) => {
-          dispatch({ type: "FETCH_VISITOR_CENTER_FAIL", error });
+          dispatch({ type: "FETCH_VISITOR_CENTER_DATA_FAIL", error });
         });
     }
     checkIfVisitorCenterExists();

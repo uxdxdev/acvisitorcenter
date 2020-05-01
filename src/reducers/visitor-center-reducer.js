@@ -33,20 +33,20 @@ const visitorCenterReducer = (state, action) => {
         createVisitorCenterError: action.error,
       };
 
-    case "FETCH_VISITOR_CENTER":
+    case "FETCH_VISITOR_CENTER_DATA":
       return {
         ...state,
         isFetchingVisitorCenterData: true,
         isFetchingVisitorCenterDataError: null,
       };
-    case "FETCH_VISITOR_CENTER_SUCCESS":
+    case "FETCH_VISITOR_CENTER_DATA_SUCCESS":
       return {
         ...state,
         isFetchingVisitorCenterData: false,
         visitorCenterData: action.visitorCenterData,
         isFetchingVisitorCenterDataError: null,
       };
-    case "FETCH_VISITOR_CENTER_FAIL":
+    case "FETCH_VISITOR_CENTER_DATA_FAIL":
       return {
         ...state,
         isFetchingVisitorCenterData: false,
@@ -54,20 +54,20 @@ const visitorCenterReducer = (state, action) => {
         isFetchingVisitorCenterDataError: action.error,
       };
 
-    case "LISTEN_LATEST_CENTERS":
+    case "FETCH_LATEST_CENTERS":
       return {
         ...state,
         isFetchingLatestCenters: true,
         isFetchingLatestCentersError: null,
       };
-    case "LISTEN_LATEST_CENTERS_SUCCESS":
+    case "FETCH_LATEST_CENTERS_SUCCESS":
       return {
         ...state,
         isFetchingLatestCenters: false,
         latestCenters: action.latestCenters,
         isFetchingLatestCentersError: null,
       };
-    case "LISTEN_LATEST_CENTERS_FAIL":
+    case "FETCH_LATEST_CENTERS_FAIL":
       return {
         ...state,
         isFetchingLatestCenters: false,
