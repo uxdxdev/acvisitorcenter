@@ -54,6 +54,27 @@ const visitorCenterReducer = (state, action) => {
         isFetchingVisitorCenterDataError: action.error,
       };
 
+    case "LISTEN_VISITOR_CENTER_DATA":
+      return {
+        ...state,
+        isFetchingVisitorCenterData: true,
+        isFetchingVisitorCenterDataError: null,
+      };
+    case "LISTEN_VISITOR_CENTER_DATA_SUCCESS":
+      return {
+        ...state,
+        isFetchingVisitorCenterData: false,
+        visitorCenterData: action.visitorCenterData,
+        isFetchingVisitorCenterDataError: null,
+      };
+    case "LISTEN_VISITOR_CENTER_DATA_FAIL":
+      return {
+        ...state,
+        isFetchingVisitorCenterData: false,
+        visitorCenterData: null,
+        isFetchingVisitorCenterDataError: action.error,
+      };
+
     case "FETCH_LATEST_CENTERS":
       return {
         ...state,

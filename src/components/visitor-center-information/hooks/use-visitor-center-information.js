@@ -190,7 +190,7 @@ const useVisitorCenter = (centerId) => {
       if (id && centerId) {
         const db = firebase.firestore();
 
-        dispatch({ type: "FETCH_VISITOR_CENTER_DATA" });
+        dispatch({ type: "LISTEN_VISITOR_CENTER_DATA" });
 
         return db
           .collection("centers")
@@ -198,12 +198,12 @@ const useVisitorCenter = (centerId) => {
           .onSnapshot(
             (result) => {
               dispatch({
-                type: "FETCH_VISITOR_CENTER_DATA_SUCCESS",
+                type: "LISTEN_VISITOR_CENTER_DATA_SUCCESS",
                 visitorCenterData: result.data(),
               });
             },
             (error) => {
-              dispatch({ type: "FETCH_VISITOR_CENTER_DATA_FAIL", error });
+              dispatch({ type: "LISTEN_VISITOR_CENTER_DATA_FAIL", error });
             }
           );
       }
