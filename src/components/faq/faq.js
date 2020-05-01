@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Paper, Box, Grid } from "@material-ui/core";
+import { Typography, Paper, Box, Grid, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -15,22 +15,49 @@ const useStyles = makeStyles((theme) => ({
 const steps = [
   {
     title: "Step 1",
-    body:
-      "Set a Name and Summary for your visitor center, Code is optional and can be updated later, click 'Create visitor center' button, and open your visitor center page.",
+    body: (
+      <>
+        Set a Name and Summary for your visitor center, setting a Code is
+        optional and can be updated later, click "Create visitor center", then
+        open your visitor center page.
+      </>
+    ),
   },
   {
     title: "Step 2",
-    body:
-      "On your visitor center page update your Code, click 'Open gates' to let visitors join the waiting list, then share the link to your visitor center with your friends!.",
+    body: (
+      <>
+        On your visitor center page update your Code by clicking "Edit" in the
+        Code section. Then click "Open gates" to let visitors join the waiting
+        list. You can now "Share" the link to your visitor center with your
+        friends!.
+      </>
+    ),
   },
   {
     title: "Step 3",
-    body:
-      "Manage the waiting list by removing visitors from the queue when they have arrived or left your island. You must keep the visitor center page open in your browser for the visitor center to operate correctly.",
+    body: (
+      <>
+        Manage the waiting list by removing visitors from the queue by clicking
+        "Done". Visitors who are first in the queue will get a notification
+        prompting them to get the latest code. Once they have the code they can
+        be removed from the queue.
+      </>
+    ),
   },
 ];
 
 const questionsAnswers = [
+  {
+    title: "If I removed someone from the queue can they still use my code?",
+    body:
+      "Yes, visitors that are first in the queue will receive a notification to get the latest code. They can use this code until you change it. Removing them from the queue will not prevent them from using the code.",
+  },
+  {
+    title: "How do I remove/ban people from my visitor center?",
+    body:
+      "You cannot remove or ban people from the visitor center. You must change your code after removing them from the queue.",
+  },
   {
     title: "Can people in the waiting list see my code?",
     body:
@@ -39,7 +66,7 @@ const questionsAnswers = [
   {
     title: "How is the waiting list updated?",
     body:
-      "The owner of the visitor center will remove each visitor from the waiting list. The person who is first in the queue can then get the code.",
+      "The owner of the visitor center will remove each visitor from the waiting list. The person who is first in the queue will get a notification to get the latest code.",
   },
   {
     title: "Can I create multiple visitor centers?",
@@ -49,9 +76,10 @@ const questionsAnswers = [
   {
     title: "What does 'Visitor center gates are closed' mean?",
     body:
-      "It means the owner of the visitor center has either closed the visitor center page or has closed the gates to the visitor center to prevent people joining the queue. Visitors in the queue may still be able to visit the owners island so stay in the queue!",
+      "It means the owner of the visitor center has either closed the visitor center page or has closed the gates to the visitor center to prevent people joining the queue. The visitor center may still be open if the gates are closed, so stay in the queue!",
   },
 ];
+
 const Faq = (props) => {
   const classes = useStyles();
 
