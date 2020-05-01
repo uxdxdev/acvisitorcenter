@@ -173,10 +173,11 @@ const WaitingList = () => {
             📋
           </span>
         </Typography>
-        <NextVisitorTimer />
 
         {isOwner && (
           <>
+            <NextVisitorTimer />
+
             <Button
               className={classes.buttonMarginRight}
               size="small"
