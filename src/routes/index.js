@@ -61,6 +61,10 @@ const Routes = () => {
               rel="noopener noreferrer"
             >
               Join the Discord server
+            </Link>{" "}
+            •{" "}
+            <Link component={RouterLink} to={`/`}>
+              Create visitor center
             </Link>
           </Typography>
         </Box>
