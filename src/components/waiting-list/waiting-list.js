@@ -168,10 +168,10 @@ const WaitingList = () => {
 
       <Paper elevation={0} variant="outlined" className={classes.paper}>
         <Typography variant="h2">Waiting list (Max 20)</Typography>
+        <NextVisitorTimer />
+
         {isOwner && (
           <>
-            <NextVisitorTimer />
-
             <Button
               className={classes.buttonMarginRight}
               size="small"
