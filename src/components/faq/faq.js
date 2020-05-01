@@ -38,10 +38,9 @@ const steps = [
     title: "Step 3",
     body: (
       <>
-        Manage the waiting list by removing visitors from the queue by clicking
-        "Done". Visitors who are first in the queue will get a notification
-        prompting them to get the latest code. Once they have the code they can
-        be removed from the queue.
+        Visitors who are first in the queue will get a notification prompting
+        them to get the latest code. Once they have the code they can be removed
+        from the queue by clicking "Done".
       </>
     ),
   },
