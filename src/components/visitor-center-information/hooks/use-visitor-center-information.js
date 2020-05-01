@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState, useCallback } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
+import { fetchDodoCode } from "../../../actions/dodo-code-actions";
 
 const useVisitorCenter = (centerId) => {
   const context = useContext(store);
@@ -29,23 +30,7 @@ const useVisitorCenter = (centerId) => {
 
   const handleFetchDodoCode = () => {
     if ((isOwner || isUserFirstInQueue) && ownerUid) {
-      dispatch({ type: "FETCH_DODO_CODE" });
-
-      return firebase
-        .firestore()
-        .collection("users")
-        .doc(ownerUid)
-        .get()
-        .then((result) => {
-          const { dodoCode } = result.data();
-          dispatch({ type: "FETCH_DODO_CODE_SUCCESS", dodoCode });
-        })
-        .catch((error) => {
-          dispatch({
-            type: "FETCH_DODO_CODE_FAIL",
-            error: "Error fetching dodo code",
-          });
-        });
+      fetchDodoCode(dispatch, ownerUid);
     } else {
       dispatch({
         type: "FETCH_DODO_CODE_FAIL",
