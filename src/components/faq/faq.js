@@ -49,7 +49,7 @@ const steps = [
 
 const questionsAnswers = [
   {
-    title: "If I removed someone from the queue can they still use my code?",
+    title: "I removed someone from the queue can they still use my code?",
     body:
       "Yes, visitors that are first in the queue will receive a notification to get the latest code. They can use this code until you change it. Removing them from the queue will not prevent them from using the code.",
   },
