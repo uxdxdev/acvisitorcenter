@@ -18,6 +18,7 @@ import { Person as PersonIcon, FlightTakeoff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { PageLoadingSpinner } from "../page-loading-spinner";
 import { firebase } from "../../utils/firebase";
+import { WaitingListStatus } from "../waiting-list-status";
 
 const useStyles = makeStyles((theme) => ({
   buttonMarginRight: {
@@ -165,6 +166,8 @@ const WaitingList = () => {
           </form>
         </Paper>
       )}
+
+      <WaitingListStatus />
 
       <Paper elevation={0} variant="outlined" className={classes.paper}>
         <Typography variant="h2">

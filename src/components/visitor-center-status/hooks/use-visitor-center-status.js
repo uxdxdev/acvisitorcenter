@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { firebase } from "../../../utils/firebase";
 import { store } from "../../../store";
 import { useParams } from "react-router-dom";
-import { setGatesOpen } from "../../../actions";
+import { setGatesOpen, updateLastActiveNow } from "../../../actions";
 
 const useVisitorCenterStatus = () => {
   const context = useContext(store);
@@ -10,13 +10,12 @@ const useVisitorCenterStatus = () => {
     dispatch,
     state: {
       auth: { uid },
-      visitorCenter: { onlineStatus, visitorCenterData },
+      visitorCenter: { onlineStatus },
     },
   } = context;
   const { id: centerId } = useParams();
 
-  const gatesOpen = visitorCenterData?.gatesOpen;
-  const isVisitorCenterOpen = onlineStatus === "online" && gatesOpen;
+  const isOwnerOnline = onlineStatus === "online";
   const isOwner = uid === centerId;
 
   // init listeners for online status
@@ -89,20 +88,24 @@ const useVisitorCenterStatus = () => {
         .database()
         .ref("users/" + centerId + "/state");
       visitorCenterOnlineStatusRef.on("value", (snapshot) => {
+        const status = snapshot.val();
         dispatch({
           type: "VISITOR_CENTER_STATUS",
-          onlineStatus: snapshot.val(),
+          onlineStatus: status,
         });
+
+        if (isOwner && status === "online") {
+          updateLastActiveNow(dispatch, centerId);
+        }
       });
     }
     return () => {
       visitorCenterOnlineStatusRef && visitorCenterOnlineStatusRef.off();
     };
-  }, [centerId, dispatch]);
+  }, [centerId, isOwner, dispatch]);
 
   return {
-    isVisitorCenterOpen,
-    isOwner,
+    isOwnerOnline,
   };
 };
 

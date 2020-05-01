@@ -63,6 +63,7 @@ const useCreateVisitorCenter = () => {
           participants: [],
           summary,
           gatesOpen: false,
+          lastActive: timestamp(),
         })
         .then(() => {
           dispatch({ type: "CREATE_VISITOR_CENTER_SUCCESS" });
