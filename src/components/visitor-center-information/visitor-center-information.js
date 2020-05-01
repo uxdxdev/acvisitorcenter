@@ -8,6 +8,7 @@ import ButtonBox from "../../shared/ButtonBox";
 import { makeStyles } from "@material-ui/core/styles";
 import { AlertDialog } from "../alert-dialog";
 import { PageLoadingSpinner } from "../page-loading-spinner";
+import { ShareLink } from "../share-link";
 
 const useStyles = makeStyles((theme) => ({
   buttonMarginRight: {
@@ -67,6 +68,7 @@ const VisitorCenterInformation = () => {
         handleClose={handleClose}
         isFetchingDodoCode={isFetchingDodoCode}
       />
+      <ShareLink />
 
       <VisitorCenterStatus />
 
@@ -135,6 +137,7 @@ const VisitorCenterInformation = () => {
           <Button
             variant="outlined"
             size="small"
+            className={classes.buttonMarginRight}
             onClick={() => handleEditSaveData("summary")}
           >
             {isEditable.summary ? "Save" : "Edit summary"}
