@@ -10,19 +10,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const VisitorCenterStatus = () => {
-  const { isVisitorCenterOpen } = useVisitorCenterStatus();
+  const { isOwnerOnline } = useVisitorCenterStatus();
   const classes = useStyles();
   return (
     <>
       <Box
-        bgcolor={isVisitorCenterOpen ? "success.main" : "error.main"}
+        bgcolor={isOwnerOnline ? "success.main" : "error.main"}
         borderRadius={16}
         m={1}
       >
         <Typography align="center">
-          {isVisitorCenterOpen
-            ? "Visitor center gates are open"
-            : "Visitor center gates closed"}
+          {isOwnerOnline
+            ? "Visitor center is open"
+            : "Visitor center is closed"}
         </Typography>
       </Box>
       <Box borderRadius={16} m={1}>

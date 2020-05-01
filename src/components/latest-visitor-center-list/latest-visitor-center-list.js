@@ -11,7 +11,7 @@ import {
   Chip,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-// import moment from "moment";
+import moment from "moment";
 import { PageLoadingSpinner } from "../page-loading-spinner";
 
 const useStyles = makeStyles((theme) => ({
@@ -55,6 +55,9 @@ const LatestVisitorCenterList = () => {
                 const name = center?.name;
                 // const date = moment(center?.createdAt?.toDate()).calendar();
                 const inQueue = center?.waiting?.length;
+                const centerLastActive = moment(
+                  center?.lastActive?.toDate()
+                ).fromNow();
 
                 // const chipClassName = {
                 //   ...(inQueue <= 0
@@ -64,7 +67,10 @@ const LatestVisitorCenterList = () => {
 
                 return (
                   <ListItem key={id} dense disableGutters>
-                    <ListItemText primary={`${name}`} />
+                    <ListItemText
+                      primary={`${name}`}
+                      secondary={`Active ${centerLastActive}`}
+                    />
 
                     <Chip
                       // {...chipClassName}

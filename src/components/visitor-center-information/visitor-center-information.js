@@ -37,6 +37,7 @@ const VisitorCenterInformation = () => {
     isLoading,
     isVisitorCenterOpen,
     isFetchingDodoCode,
+    isOwnerOnline,
   } = useVisitorCenterInformation(centerId);
   const classes = useStyles();
 
@@ -51,8 +52,8 @@ const VisitorCenterInformation = () => {
   };
 
   useEffect(() => {
-    isUserFirstInQueue && handleOpen();
-  }, [isUserFirstInQueue]);
+    isUserFirstInQueue && isOwnerOnline && handleOpen();
+  }, [isUserFirstInQueue, isOwnerOnline]);
 
   const isCodeAvailable =
     isOwner || (isUserFirstInQueue && isVisitorCenterOpen);

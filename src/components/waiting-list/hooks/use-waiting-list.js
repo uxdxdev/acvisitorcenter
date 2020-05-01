@@ -1,7 +1,11 @@
 import { useContext, useEffect, useCallback } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
-import { deleteUser, clearWaitingList } from "../../../actions";
+import {
+  deleteUser,
+  clearWaitingList,
+  updateLastActiveNow,
+} from "../../../actions";
 import { setGatesOpen } from "../../../actions";
 
 const useVisitorCenter = (centerId) => {
@@ -29,6 +33,8 @@ const useVisitorCenter = (centerId) => {
     waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
 
   const isQueueFull = waitingList?.length >= 20;
+  const nextVisitorUid = (waitingList && waitingList[0]?.uid) || "";
+  const isVisitorWaiting = waitingList?.length > 0;
 
   const toggleGates = () => {
     setGatesOpen(dispatch, centerId, !gatesOpen);
@@ -37,6 +43,8 @@ const useVisitorCenter = (centerId) => {
   const setNextVisitor = useCallback(
     (nextVisitorUid) => {
       const db = firebase.firestore();
+
+      updateLastActiveNow(dispatch, centerId);
 
       dispatch({ type: "SET_NEXT_VISITOR" });
 
@@ -61,13 +69,10 @@ const useVisitorCenter = (centerId) => {
   );
 
   useEffect(() => {
-    // if there is a change in the waiting list
-    // then update the next visitor
-    if (isOwner && waitingList?.length > 0) {
-      const nextVisitorUid = waitingList[0]?.uid || "";
+    if (isOwner && isVisitorWaiting) {
       setNextVisitor(nextVisitorUid);
     }
-  }, [waitingList, setNextVisitor, isOwner]);
+  }, [isVisitorWaiting, nextVisitorUid, setNextVisitor, isOwner]);
 
   const joinVisitorQueue = (centerId, name) => {
     if (!userAlreadyInQueue && !isQueueFull) {

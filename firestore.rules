@@ -3,7 +3,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
     
   	function validateResourceFields(data){
-    	return data.keys().hasOnly(['name','owner','summary','waiting','participants','createdAt', 'gatesOpen']) &&      	
+    	return data.keys().hasOnly(['name','owner','summary','waiting','participants','createdAt','gatesOpen','lastActive']) &&      	
               data.name is string && 
               data.name.size() <= 30 &&                      
               data.owner is string && 
@@ -15,6 +15,7 @@ service cloud.firestore {
               data.participants is list &&              
               data.participants.size() <= 20 &&
               data.createdAt is timestamp &&
+              data.lastActive is timestamp &&
               data.gatesOpen is bool;
     }
     
@@ -62,7 +63,8 @@ service cloud.firestore {
       								validateResourceFields(request.resource.data) &&                      
                       request.resource.data.waiting.size() == 0 &&
                       request.resource.data.participants.size() == 0 &&
-                      request.resource.data.createdAt == request.time);
+                      request.resource.data.createdAt == request.time && 
+                      request.resource.data.lastActive == request.time);
       
       // allow reading multiple docs with limit
       allow list: if request.auth != null && request.query.limit <= 10;                     

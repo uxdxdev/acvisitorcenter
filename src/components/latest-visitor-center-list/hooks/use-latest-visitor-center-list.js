@@ -20,7 +20,8 @@ const useLatestVisitorCenterList = () => {
 
     return db
       .collection("centers")
-      .orderBy("createdAt", "desc")
+      .orderBy("lastActive", "desc")
+      .orderBy("waiting", "asc")
       .limit(10)
       .onSnapshot((latestCenters) => {
         const data = latestCenters.docs.map((doc) => ({
