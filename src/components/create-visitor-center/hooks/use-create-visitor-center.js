@@ -77,7 +77,7 @@ const useCreateVisitorCenter = () => {
   };
 
   const fetchVisitorCenterData = useCallback(() => {
-    dispatch({ type: "FETCH_VISITOR_CENTER" });
+    dispatch({ type: "FETCH_VISITOR_CENTER_DATA" });
 
     return firebase
       .firestore()
@@ -87,18 +87,18 @@ const useCreateVisitorCenter = () => {
       .then((result) => {
         if (result.exists) {
           dispatch({
-            type: "FETCH_VISITOR_CENTER_SUCCESS",
+            type: "FETCH_VISITOR_CENTER_DATA_SUCCESS",
             visitorCenterData: result.data(),
           });
         } else {
           dispatch({
-            type: "FETCH_VISITOR_CENTER_FAIL",
+            type: "FETCH_VISITOR_CENTER_DATA_FAIL",
             error: "The user has not yet created a visitor center",
           });
         }
       })
       .catch((error) => {
-        dispatch({ type: "FETCH_VISITOR_CENTER_FAIL", error });
+        dispatch({ type: "FETCH_VISITOR_CENTER_DATA_FAIL", error });
       });
   }, [uid, dispatch]);
 
