@@ -59,8 +59,10 @@ const useVisitorCenter = (centerId) => {
   }, [dispatch, centerId, nextVisitorUid]);
 
   useEffect(() => {
-    setNextVisitor();
-  }, [setNextVisitor]);
+    if (isOwner) {
+      setNextVisitor();
+    }
+  }, [setNextVisitor, isOwner]);
 
   const handleDeleteUser = (deleteUid) => {
     if (centerId && deleteUid) {
