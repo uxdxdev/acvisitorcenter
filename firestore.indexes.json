@@ -1,4 +1,19 @@
 {
-  "indexes": [],
+  "indexes": [
+    {
+      "collectionGroup": "centers",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "lastActive",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "waiting",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
   "fieldOverrides": []
 }

@@ -22,7 +22,7 @@ const useLatestVisitorCenterList = () => {
       .collection("centers")
       .orderBy("lastActive", "desc")
       .orderBy("waiting", "asc")
-      .limit(10)
+      .limit(5)
       .get()
       .then((latestCenters) => {
         const data = latestCenters.docs.map((doc) => ({

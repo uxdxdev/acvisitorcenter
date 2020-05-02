@@ -67,7 +67,7 @@ service cloud.firestore {
                       request.resource.data.lastActive == request.time);
       
       // allow reading multiple docs with limit
-      allow list: if request.auth != null && request.query.limit <= 10;                     
+      allow list: if request.auth != null && request.query.limit <= 5;                     
       
       // allow single doc reads
       allow get: if request.auth != null;
