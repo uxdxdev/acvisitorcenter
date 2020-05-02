@@ -30,7 +30,7 @@ const useVisitorCenter = (centerId) => {
   const isLoading = isFetchingVisitorCenterData || !visitorCenterData;
 
   const handleFetchDodoCode = () => {
-    if ((isOwner || isUserFirstInQueue) && ownerUid) {
+    if ((isOwner || isUserFirstInQueue) && ownerUid && !currentDodoCode) {
       fetchDodoCode(dispatch, ownerUid);
     } else {
       dispatch({
