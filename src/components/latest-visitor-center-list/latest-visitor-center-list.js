@@ -13,6 +13,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import { PageLoadingSpinner } from "../page-loading-spinner";
+import { firebase } from "../../utils/firebase";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -84,6 +85,9 @@ const LatestVisitorCenterList = () => {
                       className={classes.button}
                       component={RouterLink}
                       to={url}
+                      onClick={() => {
+                        firebase.analytics().logEvent("visit_center");
+                      }}
                     >
                       Visit
                     </Button>

@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { AlertDialog } from "../alert-dialog";
 import { PageLoadingSpinner } from "../page-loading-spinner";
 import { ShareLink } from "../share-link";
+import { firebase } from "../../utils/firebase";
 
 const useStyles = makeStyles((theme) => ({
   buttonMarginRight: {
@@ -102,7 +103,12 @@ const VisitorCenterInformation = () => {
           <Button
             variant="outlined"
             size="small"
-            onClick={() => handleEditSaveData("name")}
+            onClick={() => {
+              isEditable.name
+                ? firebase.analytics().logEvent("save_name")
+                : firebase.analytics().logEvent("edit_name");
+              handleEditSaveData("name");
+            }}
           >
             {isEditable.name ? "Save" : "Edit name"}
           </Button>
@@ -140,7 +146,12 @@ const VisitorCenterInformation = () => {
             variant="outlined"
             size="small"
             className={classes.buttonMarginRight}
-            onClick={() => handleEditSaveData("summary")}
+            onClick={() => {
+              isEditable.summary
+                ? firebase.analytics().logEvent("save_summary")
+                : firebase.analytics().logEvent("edit_summary");
+              handleEditSaveData("summary");
+            }}
           >
             {isEditable.summary ? "Save" : "Edit summary"}
           </Button>
@@ -180,7 +191,12 @@ const VisitorCenterInformation = () => {
               className={classes.buttonMarginRight}
               variant="outlined"
               size="small"
-              onClick={() => handleEditSaveData("dodoCode")}
+              onClick={() => {
+                isEditable.dodoCode
+                  ? firebase.analytics().logEvent("save_code")
+                  : firebase.analytics().logEvent("edit_code");
+                handleEditSaveData("dodoCode");
+              }}
             >
               {isEditable.dodoCode ? "Save" : "Edit"}
             </Button>
@@ -189,7 +205,10 @@ const VisitorCenterInformation = () => {
             variant="contained"
             color="primary"
             size="small"
-            onClick={() => handleFetchDodoCode()}
+            onClick={() => {
+              firebase.analytics().logEvent("get_code");
+              handleFetchDodoCode();
+            }}
             disabled={
               (!isCodeAvailable && !isUserFirstInQueue) || isFetchingDodoCode
             }
