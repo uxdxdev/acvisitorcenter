@@ -53,17 +53,16 @@ const LatestVisitorCenterList = () => {
                 const id = center?.owner;
                 const url = `/center/${id}`;
                 const name = center?.name;
-                // const date = moment(center?.createdAt?.toDate()).calendar();
                 const inQueue = center?.waiting?.length;
                 const centerLastActive = moment(
                   center?.lastActive?.toDate()
                 ).fromNow();
 
-                // const chipClassName = {
-                //   ...(inQueue <= 0
-                //     ? { className: classes.chipGreen }
-                //     : { className: classes.chipRed }),
-                // };
+                const chipClassName = {
+                  ...(inQueue < 20
+                    ? { className: classes.chipGreen }
+                    : { className: classes.chipRed }),
+                };
 
                 return (
                   <ListItem key={id} dense disableGutters>
@@ -73,7 +72,7 @@ const LatestVisitorCenterList = () => {
                     />
 
                     <Chip
-                      // {...chipClassName}
+                      {...chipClassName}
                       label={
                         inQueue <= 0 ? "Queue empty" : `${inQueue} waiting`
                       }
