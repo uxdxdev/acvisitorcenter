@@ -43,11 +43,7 @@ const NextVisitorTimer = () => {
 
   const formatted = moment.utc(seconds * 1000).format("HH:mm:ss");
 
-  return (
-    <Typography variant="subtitle1">
-      Next visitor is waiting {formatted}
-    </Typography>
-  );
+  return <Typography variant="subtitle1">Last update {formatted}</Typography>;
 };
 
 export default NextVisitorTimer;
