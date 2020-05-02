@@ -5,6 +5,7 @@ import { store } from "../../store";
 import { PageLoadingSpinner } from "../page-loading-spinner";
 import { Paper, Button, Typography, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { firebase } from "../../utils/firebase";
 
 const AuthIsLoaded = ({ children }) => {
   const context = useContext(store);
@@ -42,6 +43,7 @@ const Root = () => {
                 variant="contained"
                 color="primary"
                 onClick={() => {
+                  firebase.analytics().logEvent("hide_cookie_consent");
                   updateCookieConsent(true);
                 }}
               >

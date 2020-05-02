@@ -12,6 +12,7 @@ import logo from "../logo.png";
 import { Box, Link, Container, Typography } from "@material-ui/core";
 import Analytics from "react-router-ga";
 import { makeStyles } from "@material-ui/core/styles";
+import { firebase } from "../utils/firebase";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -66,7 +67,13 @@ const Routes = () => {
               Join the Discord server
             </Link>{" "}
             •{" "}
-            <Link component={RouterLink} to={`/`}>
+            <Link
+              component={RouterLink}
+              to={`/`}
+              onClick={() => {
+                firebase.analytics().logEvent("create_visitor_center_link");
+              }}
+            >
               Create visitor center
             </Link>
           </Typography>

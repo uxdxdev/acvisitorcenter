@@ -5,6 +5,7 @@ import { Typography, Paper, TextField, Button, Box } from "@material-ui/core";
 import { Send as SendIcon } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { PageLoadingSpinner } from "../page-loading-spinner";
+import { firebase } from "../../utils/firebase";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -64,6 +65,9 @@ const CreateVisitorCenter = () => {
                 endIcon={<SendIcon />}
                 component={RouterLink}
                 to={url}
+                onClick={() => {
+                  firebase.analytics().logEvent("go_to_your_visitor_center");
+                }}
               >
                 Go to your visitor center
               </Button>

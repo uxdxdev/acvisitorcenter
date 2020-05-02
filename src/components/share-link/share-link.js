@@ -18,7 +18,7 @@ const ShareLink = () => {
     urlRef.current.select();
     document.execCommand("copy");
     setButtonText("Copied!");
-    firebase.analytics().logEvent("button_click_share_link");
+    firebase.analytics().logEvent("share_link");
   };
 
   const classes = useStyles();

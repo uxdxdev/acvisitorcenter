@@ -90,7 +90,7 @@ const JoinQueue = () => {
             variant="outlined"
             size="small"
             onClick={() => {
-              firebase.analytics().logEvent("button_click_join_queue");
+              firebase.analytics().logEvent("join_queue");
               handleDeleteUser(uid);
             }}
             disabled={!userAlreadyInQueue || isDeletingUser}

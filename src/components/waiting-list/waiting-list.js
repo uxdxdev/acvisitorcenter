@@ -19,6 +19,7 @@ import { WaitingListStatus } from "../waiting-list-status";
 import { NextVisitorTimer } from "../next-visitor-timer";
 import { makeStyles } from "@material-ui/core/styles";
 import { JoinQueue } from "../join-queue";
+import { firebase } from "../../utils/firebase";
 
 const useStyles = makeStyles((theme) => ({
   buttonMarginRight: {
@@ -70,6 +71,7 @@ const WaitingList = () => {
               variant="outlined"
               disabled={waitingList?.length <= 0 || isClearingWaitlist}
               onClick={() => {
+                firebase.analytics().logEvent("clear_waiting_list");
                 handleClearWaitingList();
               }}
             >
@@ -79,7 +81,10 @@ const WaitingList = () => {
               variant="contained"
               color={isVisitorCenterOpen ? "secondary" : "primary"}
               size="small"
-              onClick={() => toggleGates()}
+              onClick={() => {
+                firebase.analytics().logEvent("toggle_gates");
+                toggleGates();
+              }}
               disabled={isUpdatingVisitorGateStatus}
             >
               {gatesOpen ? "Close gates" : "Open gates"}
@@ -114,7 +119,10 @@ const WaitingList = () => {
                           <Button
                             variant="outlined"
                             size="small"
-                            onClick={() => handleDeleteUser(userId)}
+                            onClick={() => {
+                              firebase.analytics().logEvent("remove_visitor");
+                              handleDeleteUser(userId);
+                            }}
                             disabled={isDeletingUser}
                           >
                             Done
