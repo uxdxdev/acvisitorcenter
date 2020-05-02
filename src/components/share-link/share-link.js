@@ -13,11 +13,11 @@ const useStyles = makeStyles((theme) => ({
 
 const ShareLink = () => {
   const urlRef = useRef(null);
-  const [buttonText, setButtonText] = useState("Share link");
+  const [isCopiedToClipboard, setIsCopiedToClipboard] = useState(false);
   const handleCopy = () => {
     urlRef.current.select();
     document.execCommand("copy");
-    setButtonText("Copied!");
+    setIsCopiedToClipboard(true);
     firebase.analytics().logEvent("share_link");
   };
 
@@ -27,14 +27,9 @@ const ShareLink = () => {
     <Box align="center">
       <TextField
         className={classes.root}
-        // type="text"
         value={window.location.href}
         id="url"
-        // size="small"
-        // hidden/
-        inputProps={{ ref: urlRef }}
-        // ref={urlRef}
-        onChange={() => {}}
+        inputProps={{ ref: urlRef, readOnly: true }}
       />
 
       <Button
@@ -43,7 +38,7 @@ const ShareLink = () => {
         size="small"
         onClick={() => handleCopy()}
       >
-        {buttonText}
+        {isCopiedToClipboard ? "Copied!" : "Share link"}
       </Button>
     </Box>
   );

@@ -10,8 +10,8 @@ const WaitingListStatus = () => {
       borderRadius={16}
       m={1}
     >
-      <Typography align="center">
-        {isQueueUnlocked ? "Queue unlocked" : "Queue locked"}
+      <Typography align="center" component="p" variant="h3">
+        {isQueueUnlocked ? "Queue unlocked 🔓" : "Queue locked 🔒"}
       </Typography>
     </Box>
   );
