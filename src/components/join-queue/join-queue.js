@@ -99,7 +99,9 @@ const JoinQueue = () => {
           </Button>
         </Box>
         {userAlreadyInQueue && (
-          <Typography>Position #{positionInQueue}</Typography>
+          <Typography>
+            You are in position #{positionInQueue} of #{waitingList?.length}
+          </Typography>
         )}
       </form>
     </Paper>

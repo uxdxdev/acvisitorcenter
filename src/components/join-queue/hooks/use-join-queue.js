@@ -44,9 +44,6 @@ const useJoinQueue = (centerId) => {
       })
         .then(() => {
           dispatch({ type: "JOIN_QUEUE_SUCCESS" });
-
-          // reset the dodo code when a user joins the queue again
-          dispatch({ type: "FETCH_DODO_CODE_SUCCESS", dodoCode: "*****" });
         })
         .catch((error) => {
           dispatch({ type: "JOIN_QUEUE_FAIL", error });
