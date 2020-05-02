@@ -1,11 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useWaitingList } from "./hooks";
 import moment from "moment";
 import {
   Typography,
   Paper,
-  TextField,
   Button,
   List,
   ListItem,
@@ -15,10 +14,11 @@ import {
   Chip,
 } from "@material-ui/core";
 import { Person as PersonIcon, FlightTakeoff } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/core/styles";
 import { PageLoadingSpinner } from "../page-loading-spinner";
-import { firebase } from "../../utils/firebase";
 import { WaitingListStatus } from "../waiting-list-status";
+import { NextVisitorTimer } from "../next-visitor-timer";
+import { makeStyles } from "@material-ui/core/styles";
+import { JoinQueue } from "../join-queue";
 
 const useStyles = makeStyles((theme) => ({
   buttonMarginRight: {
@@ -33,139 +33,22 @@ const useStyles = makeStyles((theme) => ({
 const WaitingList = () => {
   const { id: centerId } = useParams();
   const {
-    uid,
     handleDeleteUser,
     handleClearWaitingList,
     isOwner,
-    joinVisitorQueue,
     isVisitorCenterOpen,
-    userAlreadyInQueue,
     waitingList,
     toggleGates,
     gatesOpen,
-    isJoiningQueue,
     isDeletingUser,
     isClearingWaitlist,
     isUpdatingVisitorGateStatus,
   } = useWaitingList(centerId);
   const classes = useStyles();
 
-  const [prevVisitor, setPrevVisitor] = useState(null);
-  const [currentVisitor, setCurrentVisitor] = useState(null);
-  const [seconds, setSeconds] = useState(0);
-
-  useEffect(() => {
-    if (waitingList) {
-      setPrevVisitor(String(currentVisitor));
-      setCurrentVisitor(String(waitingList[0]?.uid));
-
-      if (prevVisitor !== currentVisitor) {
-        setSeconds(0);
-      }
-    }
-  }, [waitingList, prevVisitor, currentVisitor]);
-
-  const NextVisitorTimer = () => {
-    const tick = () => {
-      setSeconds((current) => current + 1);
-    };
-
-    useEffect(() => {
-      let interval = null;
-      if (waitingList?.length > 0) {
-        interval = setInterval(tick, 1000);
-      }
-      return () => {
-        interval && clearInterval(interval);
-      };
-    }, []);
-
-    const formatted = moment.utc(seconds * 1000).format("HH:mm:ss");
-
-    return (
-      <Typography variant="subtitle1">
-        Next visitor is waiting {formatted}
-      </Typography>
-    );
-  };
-
-  const nameInputRef = useRef();
-
-  const isQueueFull = waitingList?.length >= 20;
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    let name = event.target.name.value;
-    nameInputRef.current.value = "";
-
-    if (name && centerId && !userAlreadyInQueue) {
-      !isQueueFull && joinVisitorQueue(centerId, name);
-    }
-  };
-
-  const positionInQueue =
-    waitingList && waitingList.findIndex((user) => user?.uid === uid) + 1;
-
   return (
     <>
-      {!isOwner && (
-        <Paper elevation={0} variant="outlined" className={classes.paper}>
-          <Typography variant="h2">Join visitor queue</Typography>
-
-          <form onSubmit={handleSubmit}>
-            <TextField
-              type="text"
-              label="Name"
-              inputRef={nameInputRef}
-              id="name"
-              required
-              maxLength="30"
-              inputProps={{ maxLength: "30" }}
-              variant="outlined"
-              margin="dense"
-              disabled={
-                userAlreadyInQueue ||
-                !isVisitorCenterOpen ||
-                isQueueFull ||
-                isJoiningQueue
-              }
-            />
-            <br />
-            <Box mt={1} mb={1}>
-              <Button
-                className={classes.buttonMarginRight}
-                variant="contained"
-                color="primary"
-                size="small"
-                type="submit"
-                disabled={
-                  userAlreadyInQueue ||
-                  !isVisitorCenterOpen ||
-                  isQueueFull ||
-                  isJoiningQueue
-                }
-              >
-                Join queue
-              </Button>
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={() => {
-                  firebase.analytics().logEvent("button_click_join_queue");
-                  handleDeleteUser(uid);
-                }}
-                disabled={!userAlreadyInQueue || isDeletingUser}
-              >
-                Leave
-              </Button>
-            </Box>
-            {userAlreadyInQueue && (
-              <Typography>Position #{positionInQueue}</Typography>
-            )}
-          </form>
-        </Paper>
-      )}
+      {!isOwner && <JoinQueue />}
 
       <WaitingListStatus />
 

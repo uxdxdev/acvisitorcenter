@@ -27,8 +27,7 @@ const useVisitorCenter = (centerId) => {
   const isOwnerOnline = onlineStatus === "online";
   const isVisitorCenterOpen = isOwnerOnline && gatesOpen;
 
-  const isLoading =
-    isFetchingVisitorCenterData || visitorCenterData === undefined;
+  const isLoading = isFetchingVisitorCenterData || !visitorCenterData;
 
   const handleFetchDodoCode = () => {
     if ((isOwner || isUserFirstInQueue) && ownerUid) {
