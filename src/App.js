@@ -17,6 +17,9 @@ const App = () => {
             fontWeight: 800,
             fontSize: "40px",
           },
+          subtitle2: {
+            fontWeight: 700,
+          },
           h2: {
             fontWeight: 800,
             fontSize: "28px",
