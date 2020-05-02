@@ -21,6 +21,10 @@ const App = () => {
             fontWeight: 800,
             fontSize: "28px",
           },
+          h3: {
+            fontWeight: 800,
+            fontSize: "24px",
+          },
           h6: {
             fontWeight: 700,
             fontSize: "20px",

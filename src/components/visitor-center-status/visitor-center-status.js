@@ -19,16 +19,14 @@ const VisitorCenterStatus = () => {
         borderRadius={16}
         m={1}
       >
-        <Typography align="center">
-          {isOwnerOnline
-            ? "Visitor center is open"
-            : "Visitor center is closed"}
+        <Typography align="center" component="p" variant="h3">
+          {isOwnerOnline ? "Visitor center open" : "Visitor center closed"}
         </Typography>
       </Box>
       <Box borderRadius={16} m={1}>
         <Typography align="center" className={classes.subtitle}>
-          Keep this page open in your browser so that the visitor center can
-          operate correctly.
+          Keep this page open in your browser so the visitor center can operate
+          correctly.
         </Typography>
       </Box>
     </>
