@@ -49,9 +49,9 @@ const WaitingList = () => {
 
   return (
     <>
-      {!isOwner && <JoinQueue />}
-
       <WaitingListStatus />
+
+      {!isOwner && <JoinQueue />}
 
       <Paper elevation={0} variant="outlined" className={classes.paper}>
         <Typography variant="h2">
