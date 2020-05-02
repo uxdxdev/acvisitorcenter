@@ -39,6 +39,7 @@ const dodoCodeReducer = (state, action) => {
       return {
         ...state,
         isUpdatingDodoCode: false,
+        code: action.dodoCode,
         isUpdatingDodoCodeError: null,
       };
     case "UPDATE_DODO_CODE_FAIL":

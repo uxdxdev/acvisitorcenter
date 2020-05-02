@@ -33,6 +33,7 @@ const VisitorCenterInformation = () => {
     handleCenterInformationChange,
     handleEditSaveData,
     updatedVisitorCenterData,
+    code,
     isUserFirstInQueue,
     isLoading,
     isVisitorCenterOpen,
@@ -171,7 +172,7 @@ const VisitorCenterInformation = () => {
             margin="dense"
           />
         ) : (
-          <Typography>{updatedVisitorCenterData.dodoCode}</Typography>
+          <Typography>{code || "*****"}</Typography>
         )}
         <ButtonBox>
           {isOwner && (

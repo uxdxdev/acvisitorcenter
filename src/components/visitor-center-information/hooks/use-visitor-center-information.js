@@ -14,7 +14,7 @@ const useVisitorCenter = (centerId) => {
         onlineStatus,
         isFetchingVisitorCenterData,
       },
-      dodoCode: { code: currentDodoCode, isFetchingDodoCode },
+      dodoCode: { code, isFetchingDodoCode },
     },
   } = context;
 
@@ -30,7 +30,11 @@ const useVisitorCenter = (centerId) => {
   const isLoading = isFetchingVisitorCenterData || !visitorCenterData;
 
   const handleFetchDodoCode = () => {
-    if ((isOwner || isUserFirstInQueue) && ownerUid && !currentDodoCode) {
+    if (
+      ownerUid &&
+      (isOwner ||
+        (isUserFirstInQueue && (!code || code === "*****") && ownerUid))
+    ) {
       fetchDodoCode(dispatch, ownerUid);
     } else {
       dispatch({
@@ -75,7 +79,7 @@ const useVisitorCenter = (centerId) => {
           dodoCode:
             isOwner && isEditable.dodoCode
               ? updatedVisitorCenterData.dodoCode
-              : currentDodoCode || "*****",
+              : code || "*****",
         });
     }
   }, [
@@ -87,7 +91,7 @@ const useVisitorCenter = (centerId) => {
     updatedVisitorCenterData.dodoCode,
     isOwner,
     visitorCenterData,
-    currentDodoCode,
+    code,
   ]);
 
   const handleCenterInformationChange = (id, value) => {
@@ -118,14 +122,10 @@ const useVisitorCenter = (centerId) => {
       // save dodo code
       if (
         updatedVisitorCenterData?.dodoCode?.length === 5 &&
-        updatedVisitorCenterData?.dodoCode !== currentDodoCode &&
+        updatedVisitorCenterData?.dodoCode !== code &&
         updatedVisitorCenterData?.dodoCode !== "*****"
       ) {
         updateDodoCode(updatedVisitorCenterData?.dodoCode);
-      } else {
-        setVisitorCenterData((currentState) => {
-          return { ...currentState, dodoCode: currentDodoCode || "*****" };
-        });
       }
     }
   };
@@ -167,7 +167,7 @@ const useVisitorCenter = (centerId) => {
           { merge: true }
         )
         .then(() => {
-          dispatch({ type: "UPDATE_DODO_CODE_SUCCESS" });
+          dispatch({ type: "UPDATE_DODO_CODE_SUCCESS", dodoCode });
         })
         .catch((error) => {
           dispatch({ type: "UPDATE_DODO_CODE_FAIL", error });
@@ -231,6 +231,7 @@ const useVisitorCenter = (centerId) => {
     handleCenterInformationChange,
     handleEditSaveData,
     updatedVisitorCenterData,
+    code,
     isUserFirstInQueue,
     isVisitorCenterOpen,
     isLoading,
