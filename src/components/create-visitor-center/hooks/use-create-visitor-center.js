@@ -110,6 +110,9 @@ const useCreateVisitorCenter = () => {
 
   useEffect(() => {
     fetchVisitorCenterData();
+    return () => {
+      dispatch({ type: "RESET_VISITOR_CENTER" });
+    };
   }, [dispatch, fetchVisitorCenterData]);
 
   return {
