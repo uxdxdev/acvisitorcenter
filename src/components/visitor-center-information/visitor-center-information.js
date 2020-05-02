@@ -10,6 +10,8 @@ import { AlertDialog } from "../alert-dialog";
 import { PageLoadingSpinner } from "../page-loading-spinner";
 import { ShareLink } from "../share-link";
 import { firebase } from "../../utils/firebase";
+import { WaitingListStatus } from "../waiting-list-status";
+import { JoinQueue } from "../join-queue";
 
 const useStyles = makeStyles((theme) => ({
   buttonMarginRight: {
@@ -40,6 +42,7 @@ const VisitorCenterInformation = () => {
     isVisitorCenterOpen,
     isFetchingDodoCode,
     isOwnerOnline,
+    isUserInQueue,
   } = useVisitorCenterInformation(centerId);
   const classes = useStyles();
 
@@ -218,7 +221,11 @@ const VisitorCenterInformation = () => {
         </ButtonBox>
       </Paper>
 
-      <WaitingList />
+      <WaitingListStatus />
+
+      {!isOwner && <JoinQueue />}
+
+      {(isOwner || isUserInQueue) && <WaitingList />}
     </>
   );
 };

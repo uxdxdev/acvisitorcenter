@@ -26,7 +26,8 @@ const useVisitorCenter = (centerId) => {
   const isUserFirstInQueue = waitingList && waitingList[0]?.uid === uid;
   const isOwnerOnline = onlineStatus === "online";
   const isVisitorCenterOpen = isOwnerOnline && gatesOpen;
-
+  const isUserInQueue =
+    waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
   const isLoading = isFetchingVisitorCenterData || !visitorCenterData;
 
   const handleFetchDodoCode = () => {
@@ -237,6 +238,7 @@ const useVisitorCenter = (centerId) => {
     isLoading,
     isFetchingDodoCode,
     isOwnerOnline,
+    isUserInQueue,
   };
 };
 

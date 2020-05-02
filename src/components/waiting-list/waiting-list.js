@@ -15,10 +15,8 @@ import {
 } from "@material-ui/core";
 import { Person as PersonIcon, FlightTakeoff } from "@material-ui/icons";
 import { PageLoadingSpinner } from "../page-loading-spinner";
-import { WaitingListStatus } from "../waiting-list-status";
 import { NextVisitorTimer } from "../next-visitor-timer";
 import { makeStyles } from "@material-ui/core/styles";
-import { JoinQueue } from "../join-queue";
 import { firebase } from "../../utils/firebase";
 
 const useStyles = makeStyles((theme) => ({
@@ -50,10 +48,6 @@ const WaitingList = () => {
 
   return (
     <>
-      <WaitingListStatus />
-
-      {!isOwner && <JoinQueue />}
-
       <Paper elevation={0} variant="outlined" className={classes.paper}>
         <Typography variant="subtitle2">
           Last active {centerLastActive}
