@@ -13,7 +13,6 @@ const useJoinQueue = (centerId) => {
       visitorCenterData: currentCenterData,
       onlineStatus,
       gatesOpen,
-      isFetchingVisitorCenterData,
     },
     waitingList: { isJoiningQueue, isDeletingUser },
   } = state;
