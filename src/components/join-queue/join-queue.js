@@ -21,11 +21,10 @@ const JoinQueue = () => {
     uid,
     handleDeleteUser,
     joinVisitorQueue,
-    isVisitorCenterOpen,
     isUserInQueue,
     waitingList,
-    isJoiningQueue,
     isDeletingUser,
+    isJoinQueueEnabled,
   } = useJoinQueue(centerId);
 
   const classes = useStyles();
@@ -40,10 +39,14 @@ const JoinQueue = () => {
     event.preventDefault();
 
     let name = event.target.name.value;
-    nameInputRef.current.value = "";
 
     if (name && centerId && !isUserInQueue) {
-      !isQueueFull && joinVisitorQueue(centerId, name);
+      !isQueueFull &&
+        joinVisitorQueue(centerId, name).then(() => {
+          // joined
+          console.log("joined");
+          nameInputRef.current.value = "";
+        });
     }
   };
 
@@ -66,12 +69,7 @@ const JoinQueue = () => {
           inputProps={{ maxLength: "30" }}
           variant="outlined"
           margin="dense"
-          disabled={
-            isUserInQueue ||
-            !isVisitorCenterOpen ||
-            isQueueFull ||
-            isJoiningQueue
-          }
+          disabled={!isJoinQueueEnabled}
         />
         <br />
         <Box mt={1} mb={1}>
@@ -81,12 +79,7 @@ const JoinQueue = () => {
             color="primary"
             size="small"
             type="submit"
-            disabled={
-              isUserInQueue ||
-              !isVisitorCenterOpen ||
-              isQueueFull ||
-              isJoiningQueue
-            }
+            disabled={!isJoinQueueEnabled}
           >
             Join queue
           </Button>

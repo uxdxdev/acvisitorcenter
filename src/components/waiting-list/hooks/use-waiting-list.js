@@ -88,7 +88,12 @@ const useVisitorCenter = (centerId) => {
         .doc(centerId)
         .onSnapshot(
           (result) => {
-            if (!result.metadata.hasPendingWrites) {
+            // on page load the last active value is being updated
+            // multiple times which sets hasPendingWrites true. Once
+            // there are no more pending writes and last active is present
+            // we update our data for each new snapshot update.
+            const lastActive = result.data()?.lastActive;
+            if (!result.metadata.hasPendingWrites || lastActive) {
               dispatch({
                 type: "LISTEN_VISITOR_CENTER_DATA_SUCCESS",
                 visitorCenterData: result.data(),
