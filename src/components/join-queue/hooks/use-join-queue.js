@@ -13,17 +13,18 @@ const useJoinQueue = (centerId) => {
       visitorCenterData: currentCenterData,
       onlineStatus,
       gatesOpen,
+      isFetchingVisitorCenterData,
     },
     waitingList: { isJoiningQueue, isDeletingUser },
   } = state;
 
   const waitingList = currentCenterData?.waiting;
-
   const isVisitorCenterOpen = onlineStatus === "online" && gatesOpen;
   const isUserInQueue =
     waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
-
   const isQueueFull = waitingList?.length >= QUEUE_LIMIT;
+  const isJoinQueueEnabled =
+    !isUserInQueue && isVisitorCenterOpen && !isQueueFull && !isJoiningQueue;
 
   const joinVisitorQueue = (centerId, name) => {
     if (!isUserInQueue && !isQueueFull) {
@@ -39,25 +40,30 @@ const useJoinQueue = (centerId) => {
         dodoCode: "*****",
       });
       // run transaction to join center
-      db.runTransaction((transaction) => {
-        return transaction.get(centersRef).then((snapshot) => {
-          const waitingArray = snapshot.get("waiting");
-          const participantsArray = snapshot.get("participants");
+      const joinedAt = firebase.firestore.Timestamp.fromDate(new Date());
+      // server timestamp not currently supported in arrays 3.5.2020
+      // const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
-          const joinedAt = firebase.firestore.Timestamp.fromDate(new Date());
-          // server timestamp not currently supported in arrays 3.5.2020
-          // const timestamp = firebase.firestore.FieldValue.serverTimestamp;
+      const userData = { name, uid, joinedAt };
 
-          const userData = { name, uid, joinedAt };
-          waitingArray.push(userData);
-          participantsArray.push(uid);
+      return db
+        .runTransaction((transaction) => {
+          return transaction.get(centersRef).then((snapshot) => {
+            const waitingArray = snapshot.get("waiting");
+            const participantsArray = snapshot.get("participants");
 
-          transaction.update(centersRef, "waiting", waitingArray);
-          transaction.update(centersRef, "participants", participantsArray);
-        });
-      })
+            waitingArray.push(userData);
+            participantsArray.push(uid);
+
+            transaction.update(centersRef, "waiting", waitingArray);
+            transaction.update(centersRef, "participants", participantsArray);
+          });
+        })
         .then(() => {
-          dispatch({ type: "JOIN_QUEUE_SUCCESS" });
+          dispatch({
+            type: "JOIN_QUEUE_SUCCESS",
+          });
+
           fetchVisitorCenterData(dispatch, centerId);
         })
         .catch((error) => {
@@ -76,11 +82,10 @@ const useJoinQueue = (centerId) => {
     uid,
     handleDeleteUser,
     joinVisitorQueue,
-    isVisitorCenterOpen,
     isUserInQueue,
     waitingList,
-    isJoiningQueue,
     isDeletingUser,
+    isJoinQueueEnabled,
   };
 };
 

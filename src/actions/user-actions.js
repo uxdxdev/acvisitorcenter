@@ -44,7 +44,6 @@ export const clearWaitingList = (dispatch, centerId) => {
       },
       { merge: true }
     )
-
     .then(() => {
       dispatch({ type: "CLEAR_WAITING_LIST_SUCCESS" });
     })
