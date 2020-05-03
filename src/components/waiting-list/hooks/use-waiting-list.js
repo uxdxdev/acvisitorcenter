@@ -37,28 +37,27 @@ const useVisitorCenter = (centerId) => {
   };
 
   const setNextVisitor = useCallback(() => {
-    if (nextVisitorUid) {
-      const db = firebase.firestore();
+    const db = firebase.firestore();
 
-      updateLastActiveNow(dispatch, centerId);
+    updateLastActiveNow(dispatch, centerId);
 
-      dispatch({ type: "SET_NEXT_VISITOR" });
+    dispatch({ type: "SET_NEXT_VISITOR" });
 
-      db.collection("users")
-        .doc(centerId)
-        .set(
-          {
-            next: nextVisitorUid,
-          },
-          { merge: true }
-        )
-        .then(() => {
-          dispatch({ type: "SET_NEXT_VISITOR_SUCCESS" });
-        })
-        .catch((error) => {
-          dispatch({ type: "SET_NEXT_VISITOR_FAIL", error });
-        });
-    }
+    db.collection("users")
+      .doc(centerId)
+      .set(
+        {
+          // set next visitor id to blank when waiting list empty
+          next: nextVisitorUid || "",
+        },
+        { merge: true }
+      )
+      .then(() => {
+        dispatch({ type: "SET_NEXT_VISITOR_SUCCESS" });
+      })
+      .catch((error) => {
+        dispatch({ type: "SET_NEXT_VISITOR_FAIL", error });
+      });
   }, [dispatch, centerId, nextVisitorUid]);
 
   useEffect(() => {

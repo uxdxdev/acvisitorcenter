@@ -29,8 +29,7 @@ const useVisitorCenter = (centerId) => {
   const handleFetchDodoCode = () => {
     if (
       ownerUid &&
-      (isOwner ||
-        (isUserFirstInQueue && (!code || code === "*****") && ownerUid))
+      (isOwner || (isUserFirstInQueue && (!code || code === "*****")))
     ) {
       fetchDodoCode(dispatch, ownerUid);
     } else {
@@ -131,18 +130,19 @@ const useVisitorCenter = (centerId) => {
 
     dispatch({ type: "UPDATE_VISITOR_CENTER_DATA" });
 
+    const data = {
+      // optionally add key to object
+      ...(name && { name }),
+      ...(summary && { summary }),
+    };
     db.collection("centers")
       .doc(centerId)
-      .set(
-        {
-          // optionally add key to object
-          ...(name && { name }),
-          ...(summary && { summary }),
-        },
-        { merge: true }
-      )
+      .set(data, { merge: true })
       .then(() => {
-        dispatch({ type: "UPDATE_VISITOR_CENTER_DATA_SUCCESS" });
+        dispatch({
+          type: "UPDATE_VISITOR_CENTER_DATA_SUCCESS",
+          visitorCenterData: data,
+        });
       })
       .catch((error) => {
         dispatch({ type: "UPDATE_VISITOR_CENTER_DATA_FAIL", error });

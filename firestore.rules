@@ -11,9 +11,9 @@ service cloud.firestore {
               data.summary is string && 
               data.summary.size() <= 1000 &&
               data.waiting is list &&              
-              data.waiting.size() <= 20 &&
+              data.waiting.size() <= 10 &&
               data.participants is list &&              
-              data.participants.size() <= 20 &&
+              data.participants.size() <= 10 &&
               data.createdAt is timestamp &&
               data.lastActive is timestamp;
     }
