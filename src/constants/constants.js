@@ -1,1 +1,1 @@
-export const QUEUE_LIMIT = 1;
+export const QUEUE_LIMIT = 10;
