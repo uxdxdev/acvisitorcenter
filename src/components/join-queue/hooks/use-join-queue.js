@@ -25,8 +25,6 @@ const useJoinQueue = (centerId) => {
   const isJoinQueueEnabled =
     !isUserInQueue && isVisitorCenterOpen && !isQueueFull && !isJoiningQueue;
 
-  console.log(isJoinQueueEnabled);
-
   const joinVisitorQueue = (centerId, name) => {
     if (!isUserInQueue && !isQueueFull) {
       const db = firebase.firestore();
