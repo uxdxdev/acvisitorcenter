@@ -39,7 +39,7 @@ const useVisitorCenter = (centerId) => {
   const setNextVisitor = useCallback(() => {
     const db = firebase.firestore();
 
-    updateLastActiveNow(dispatch, centerId);
+    updateLastActiveNow(dispatch, centerId, "next visitor updated");
 
     dispatch({ type: "SET_NEXT_VISITOR" });
 

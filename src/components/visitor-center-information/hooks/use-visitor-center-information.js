@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
 import { fetchDodoCode, fetchVisitorCenterData } from "../../../actions";
@@ -9,36 +9,33 @@ const useVisitorCenter = (centerId) => {
     dispatch,
     state: {
       auth: { uid },
-      visitorCenter: { visitorCenterData, onlineStatus, gatesOpen },
+      visitorCenter: { visitorCenterData, onlineStatus },
       dodoCode: { code, isFetchingDodoCode },
     },
   } = context;
 
   const waitingList = visitorCenterData?.waiting;
-  const ownerUid = visitorCenterData?.owner;
 
   const isOwner = uid === centerId;
   const isUserFirstInQueue = waitingList && waitingList[0]?.uid === uid;
+
   const isOwnerOnline = onlineStatus === "online";
-  const isVisitorCenterOpen = isOwnerOnline && gatesOpen;
   const isUserInQueue =
     waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
 
   const isLoading = !visitorCenterData;
 
-  const handleFetchDodoCode = () => {
-    if (
-      ownerUid &&
-      (isOwner || (isUserFirstInQueue && (!code || code === "*****")))
-    ) {
-      fetchDodoCode(dispatch, ownerUid);
+  const handleFetchDodoCode = useCallback(() => {
+    if (centerId && isUserFirstInQueue) {
+      fetchDodoCode(dispatch, centerId);
     } else {
       dispatch({
         type: "FETCH_DODO_CODE_FAIL",
-        error: "Error fetching dodo code",
+        error:
+          "Error: fetching dodo code fail, user is not first in the queue.",
       });
     }
-  };
+  }, [centerId, dispatch, isUserFirstInQueue]);
 
   const [updatedVisitorCenterData, setVisitorCenterData] = useState({
     name: "Loading...",
@@ -180,12 +177,13 @@ const useVisitorCenter = (centerId) => {
     };
   }, [dispatch]);
 
-  /**
-   * Fetch center data when user authenticated.
-   */
   useEffect(() => {
-    fetchVisitorCenterData(dispatch, centerId);
+    centerId && fetchVisitorCenterData(dispatch, centerId);
   }, [dispatch, centerId]);
+
+  useEffect(() => {
+    isOwner && centerId && fetchDodoCode(dispatch, centerId);
+  }, [dispatch, isOwner, centerId]);
 
   return {
     isOwner,
@@ -196,7 +194,6 @@ const useVisitorCenter = (centerId) => {
     updatedVisitorCenterData,
     code,
     isUserFirstInQueue,
-    isVisitorCenterOpen,
     isLoading,
     isFetchingDodoCode,
     isOwnerOnline,

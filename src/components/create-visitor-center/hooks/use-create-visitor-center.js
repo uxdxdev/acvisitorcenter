@@ -31,14 +31,16 @@ const useCreateVisitorCenter = () => {
 
     dispatch({ type: "UPDATE_DODO_CODE" });
 
+    const dodoCode = "00000";
+
     db.collection("users")
       .doc(uid)
       .set({
-        dodoCode: "00000",
+        dodoCode,
         next: "",
       })
       .then(() => {
-        dispatch({ type: "UPDATE_DODO_CODE_SUCCESS" });
+        dispatch({ type: "UPDATE_DODO_CODE_SUCCESS", dodoCode });
       })
       .catch((error) => {
         dispatch({ type: "UPDATE_DODO_CODE_FAIL", error });
