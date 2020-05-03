@@ -45,6 +45,9 @@ const useJoinQueue = (centerId) => {
           const participantsArray = snapshot.get("participants");
 
           const joinedAt = firebase.firestore.Timestamp.fromDate(new Date());
+          // server timestamp not currently supported in arrays 3.5.2020
+          // const timestamp = firebase.firestore.FieldValue.serverTimestamp;
+
           const userData = { name, uid, joinedAt };
           waitingArray.push(userData);
           participantsArray.push(uid);
