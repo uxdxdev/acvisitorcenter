@@ -15,7 +15,9 @@ const waitingListReducer = (state, action) => {
       return {
         ...state,
         isJoiningQueue: true,
-        isJoiningQueueError: null,
+        // do not remove a previous error, use must refresh the page
+        // to try join again
+        // isJoiningQueueError: null,
       };
     case "JOIN_QUEUE_SUCCESS":
       return {

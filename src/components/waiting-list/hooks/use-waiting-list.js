@@ -7,7 +7,6 @@ import {
   updateLastActiveNow,
 } from "../../../actions";
 import { setGatesOpen } from "../../../actions";
-import moment from "moment";
 
 const useVisitorCenter = (centerId) => {
   const context = useContext(store);
@@ -25,9 +24,6 @@ const useVisitorCenter = (centerId) => {
 
   const isOwner = centerId === uid;
   const waitingList = currentCenterData?.waiting;
-  const centerLastActive = moment(
-    currentCenterData?.lastActive?.toDate()
-  ).fromNow();
   const isVisitorCenterOpen = onlineStatus === "online" && gatesOpen;
   const nextVisitorUid = waitingList && waitingList[0]?.uid;
 
@@ -128,7 +124,6 @@ const useVisitorCenter = (centerId) => {
     isDeletingUser,
     isClearingWaitlist,
     isUpdatingVisitorGateStatus,
-    centerLastActive,
   };
 };
 

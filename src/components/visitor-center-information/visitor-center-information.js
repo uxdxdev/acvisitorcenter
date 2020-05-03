@@ -41,6 +41,7 @@ const VisitorCenterInformation = () => {
     isFetchingDodoCode,
     isOwnerOnline,
     isUserInQueue,
+    centerLastActive,
   } = useVisitorCenterInformation(centerId);
   const classes = useStyles();
 
@@ -74,6 +75,9 @@ const VisitorCenterInformation = () => {
       <VisitorCenterStatus />
 
       <Paper elevation={0} variant="outlined" className={classes.paper}>
+        <Typography variant="subtitle2">
+          Last active {centerLastActive}
+        </Typography>
         {isEditable.name ? (
           <>
             <TextField
