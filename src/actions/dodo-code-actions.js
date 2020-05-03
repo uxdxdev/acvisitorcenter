@@ -1,12 +1,12 @@
 import { firebase } from "../utils/firebase";
 
-export const fetchDodoCode = (dispatch, ownerUid) => {
+export const fetchDodoCode = (dispatch, centerId) => {
   dispatch({ type: "FETCH_DODO_CODE" });
 
   return firebase
     .firestore()
     .collection("users")
-    .doc(ownerUid)
+    .doc(centerId)
     .get()
     .then((result) => {
       const dodoCode = result.data()?.dodoCode;

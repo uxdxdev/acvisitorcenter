@@ -15,10 +15,10 @@ export const setGatesOpen = (dispatch, centerId, gatesOpen) => {
     });
 };
 
-export const updateLastActiveNow = (dispatch, centerId) => {
+export const updateLastActiveNow = (dispatch, centerId, event) => {
   const db = firebase.firestore();
 
-  dispatch({ type: "UPDATE_LAST_ACTIVE_NOW" });
+  dispatch({ type: "UPDATE_LAST_ACTIVE_NOW", event });
 
   const lastActive = firebase.firestore.FieldValue.serverTimestamp;
   const lastActiveResult = lastActive();

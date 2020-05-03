@@ -98,7 +98,7 @@ const useVisitorCenterStatus = () => {
         });
 
         if (isOwner && onlineStatus === "online") {
-          updateLastActiveNow(dispatch, centerId);
+          updateLastActiveNow(dispatch, centerId, "owner is online");
         }
       });
     }

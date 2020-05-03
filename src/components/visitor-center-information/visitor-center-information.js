@@ -4,7 +4,6 @@ import { useVisitorCenterInformation } from "./hooks";
 import { VisitorCenterStatus } from "../visitor-center-status";
 import { WaitingList } from "../../components/waiting-list";
 import { Typography, Paper, TextField, Button } from "@material-ui/core";
-import ButtonBox from "../../shared/ButtonBox";
 import { makeStyles } from "@material-ui/core/styles";
 import { AlertDialog } from "../alert-dialog";
 import { PageLoadingSpinner } from "../page-loading-spinner";
@@ -39,7 +38,6 @@ const VisitorCenterInformation = () => {
     code,
     isUserFirstInQueue,
     isLoading,
-    isVisitorCenterOpen,
     isFetchingDodoCode,
     isOwnerOnline,
     isUserInQueue,
@@ -59,9 +57,6 @@ const VisitorCenterInformation = () => {
   useEffect(() => {
     isUserFirstInQueue && isOwnerOnline && handleOpen();
   }, [isUserFirstInQueue, isOwnerOnline]);
-
-  const isCodeAvailable =
-    isOwner || (isUserFirstInQueue && isVisitorCenterOpen);
 
   return isLoading ? (
     <PageLoadingSpinner />
@@ -189,36 +184,19 @@ const VisitorCenterInformation = () => {
           ) : (
             <Typography>{code || "*****"}</Typography>
           )}
-          <ButtonBox>
-            <Button
-              className={classes.buttonMarginRight}
-              variant="outlined"
-              size="small"
-              onClick={() => {
-                isEditable.dodoCode
-                  ? firebase.analytics().logEvent("save_code")
-                  : firebase.analytics().logEvent("edit_code");
-                handleEditSaveData("dodoCode");
-              }}
-            >
-              {isEditable.dodoCode ? "Save" : "Edit"}
-            </Button>
-
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              onClick={() => {
-                firebase.analytics().logEvent("get_code");
-                handleFetchDodoCode();
-              }}
-              disabled={
-                (!isCodeAvailable && !isUserFirstInQueue) || isFetchingDodoCode
-              }
-            >
-              Get code
-            </Button>
-          </ButtonBox>
+          <Button
+            className={classes.buttonMarginRight}
+            variant="outlined"
+            size="small"
+            onClick={() => {
+              isEditable.dodoCode
+                ? firebase.analytics().logEvent("save_code")
+                : firebase.analytics().logEvent("edit_code");
+              handleEditSaveData("dodoCode");
+            }}
+          >
+            {isEditable.dodoCode ? "Save" : "Edit"}
+          </Button>
         </Paper>
       )}
 
