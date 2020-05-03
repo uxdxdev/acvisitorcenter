@@ -9,8 +9,11 @@ export const fetchDodoCode = (dispatch, ownerUid) => {
     .doc(ownerUid)
     .get()
     .then((result) => {
-      const { dodoCode } = result.data();
-      dispatch({ type: "FETCH_DODO_CODE_SUCCESS", dodoCode });
+      const dodoCode = result.data()?.dodoCode;
+      dispatch({
+        type: "FETCH_DODO_CODE_SUCCESS",
+        dodoCode: dodoCode || "*****",
+      });
     })
     .catch((error) => {
       dispatch({

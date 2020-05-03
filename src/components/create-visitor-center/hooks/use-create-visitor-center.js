@@ -26,7 +26,7 @@ const useCreateVisitorCenter = () => {
     isUpdatingDodoCode ||
     isFetchingVisitorCenterData;
 
-  const updateUserData = (dodoCode) => {
+  const initUserData = () => {
     const db = firebase.firestore();
 
     dispatch({ type: "UPDATE_DODO_CODE" });
@@ -34,7 +34,7 @@ const useCreateVisitorCenter = () => {
     db.collection("users")
       .doc(uid)
       .set({
-        dodoCode: dodoCode || "00000",
+        dodoCode: "00000",
         next: "",
       })
       .then(() => {
@@ -64,7 +64,7 @@ const useCreateVisitorCenter = () => {
       db.collection("centers")
         .doc(uid)
         .set(visitorCenterData)
-        .then((result) => {
+        .then(() => {
           dispatch({
             type: "CREATE_VISITOR_CENTER_SUCCESS",
             visitorCenterData,
@@ -78,9 +78,9 @@ const useCreateVisitorCenter = () => {
     }
   };
 
-  const handleCreateVisitorCenter = async (name, summary, dodoCode) => {
+  const handleCreateVisitorCenter = async (name, summary) => {
     await createVisitorCenter(name, summary);
-    await updateUserData(dodoCode);
+    await initUserData();
   };
 
   useEffect(() => {
