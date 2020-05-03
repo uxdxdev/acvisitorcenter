@@ -90,6 +90,7 @@ const useJoinQueue = (centerId) => {
     waitingList,
     isDeletingUser,
     isJoinQueueEnabled,
+    isJoiningQueue,
   };
 };
 
