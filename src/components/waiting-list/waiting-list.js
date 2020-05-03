@@ -46,6 +46,8 @@ const WaitingList = () => {
   } = useWaitingList(centerId);
   const classes = useStyles();
 
+  const numberOfVisitorsWaiting = waitingList?.length;
+
   return (
     <>
       <Paper elevation={0} variant="outlined" className={classes.paper}>
@@ -53,7 +55,7 @@ const WaitingList = () => {
           Last active {centerLastActive}
         </Typography>
         <Typography variant="h2">
-          Waiting{" "}
+          {numberOfVisitorsWaiting} waiting{" "}
           <span role="img" aria-label="list">
             📋
           </span>

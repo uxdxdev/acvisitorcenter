@@ -29,7 +29,6 @@ const useVisitorCenter = (centerId) => {
     currentCenterData?.lastActive?.toDate()
   ).fromNow();
   const isVisitorCenterOpen = onlineStatus === "online" && gatesOpen;
-
   const nextVisitorUid = waitingList && waitingList[0]?.uid;
 
   const toggleGates = () => {
