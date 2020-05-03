@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
-import { deleteUser } from "../../../actions";
+import { deleteUser, fetchVisitorCenterData } from "../../../actions";
 import { QUEUE_LIMIT } from "../../../constants";
 
 const useJoinQueue = (centerId) => {
@@ -59,19 +59,16 @@ const useJoinQueue = (centerId) => {
           });
         })
         .then(() => {
-          const updatedWaitingList = {
-            ...currentCenterData,
-            ...{ waiting: [userData], participants: [uid] },
-          };
-
-          // update the visitor center data waiting list
-          // with the new user data to mount the waiting list
-          // listeners.
-          dispatch({
-            type: "FETCH_VISITOR_CENTER_DATA_SUCCESS",
-            visitorCenterData: updatedWaitingList,
-          });
-          dispatch({ type: "JOIN_QUEUE_SUCCESS" });
+          // once we have joined the queue get the latest data before updating
+          // the frontend. We want to make sure the the join queue button
+          // stays disabled until we resolve the join.
+          fetchVisitorCenterData(dispatch, centerId)
+            .then(() => {
+              dispatch({ type: "JOIN_QUEUE_SUCCESS" });
+            })
+            .catch((error) => {
+              dispatch({ type: "JOIN_QUEUE_FAIL", error });
+            });
         })
         .catch((error) => {
           dispatch({ type: "JOIN_QUEUE_FAIL", error });
