@@ -2,6 +2,10 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
+    function getQueueLimit(){
+      return 10;
+    }
+
   	function validateResourceFields(data){
     	return data.keys().hasOnly(['name','owner','summary','waiting','participants','createdAt','lastActive']) &&      	
               data.name is string && 
@@ -11,9 +15,9 @@ service cloud.firestore {
               data.summary is string && 
               data.summary.size() <= 1000 &&
               data.waiting is list &&              
-              data.waiting.size() <= 10 &&
+              data.waiting.size() <= getQueueLimit() &&
               data.participants is list &&              
-              data.participants.size() <= 10 &&
+              data.participants.size() <= getQueueLimit() &&
               data.createdAt is timestamp &&
               data.lastActive is timestamp;
     }

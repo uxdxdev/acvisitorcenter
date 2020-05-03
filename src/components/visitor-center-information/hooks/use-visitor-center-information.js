@@ -2,6 +2,7 @@ import { useContext, useEffect, useState, useCallback } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
 import { fetchDodoCode, fetchVisitorCenterData } from "../../../actions";
+import moment from "moment";
 
 const useVisitorCenter = (centerId) => {
   const context = useContext(store);
@@ -15,15 +16,15 @@ const useVisitorCenter = (centerId) => {
   } = context;
 
   const waitingList = visitorCenterData?.waiting;
-
   const isOwner = uid === centerId;
   const isUserFirstInQueue = waitingList && waitingList[0]?.uid === uid;
-
   const isOwnerOnline = onlineStatus === "online";
   const isUserInQueue =
     waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
-
   const isLoading = !visitorCenterData;
+  const centerLastActive = moment(
+    visitorCenterData?.lastActive?.toDate()
+  ).fromNow();
 
   const handleFetchDodoCode = useCallback(() => {
     if (centerId && isUserFirstInQueue) {
@@ -197,6 +198,7 @@ const useVisitorCenter = (centerId) => {
     isFetchingDodoCode,
     isOwnerOnline,
     isUserInQueue,
+    centerLastActive,
   };
 };
 

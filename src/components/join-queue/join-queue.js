@@ -33,6 +33,7 @@ const JoinQueue = () => {
     isDeletingUser,
     isJoinQueueEnabled,
     isJoiningQueue,
+    isJoiningQueueError,
   } = useJoinQueue(centerId);
 
   const classes = useStyles();
@@ -76,6 +77,7 @@ const JoinQueue = () => {
           variant="outlined"
           margin="dense"
           disabled={!isJoinQueueEnabled}
+          autoComplete="off"
         />
         <br />
         <Box mt={1} mb={1}>
@@ -103,6 +105,12 @@ const JoinQueue = () => {
             Leave
           </Button>
         </Box>
+        {isJoiningQueueError && (
+          <Typography color="error">
+            You can't join the queue right now. It might be full, reload the
+            page and try again later.
+          </Typography>
+        )}
         {isUserInQueue && (
           <Typography>
             You are in position #{positionInQueue} of #{waitingList?.length}

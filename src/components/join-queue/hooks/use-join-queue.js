@@ -14,7 +14,7 @@ const useJoinQueue = (centerId) => {
       onlineStatus,
       gatesOpen,
     },
-    waitingList: { isJoiningQueue, isDeletingUser },
+    waitingList: { isJoiningQueue, isDeletingUser, isJoiningQueueError },
   } = state;
 
   const waitingList = currentCenterData?.waiting;
@@ -23,7 +23,11 @@ const useJoinQueue = (centerId) => {
     waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
   const isQueueFull = waitingList?.length >= QUEUE_LIMIT;
   const isJoinQueueEnabled =
-    !isUserInQueue && isVisitorCenterOpen && !isQueueFull && !isJoiningQueue;
+    !isUserInQueue &&
+    isVisitorCenterOpen &&
+    !isQueueFull &&
+    !isJoiningQueue &&
+    !isJoiningQueueError;
 
   const joinVisitorQueue = (centerId, name) => {
     if (!isUserInQueue && !isQueueFull) {
@@ -91,6 +95,7 @@ const useJoinQueue = (centerId) => {
     isDeletingUser,
     isJoinQueueEnabled,
     isJoiningQueue,
+    isJoiningQueueError,
   };
 };
 
