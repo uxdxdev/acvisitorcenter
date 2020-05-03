@@ -43,8 +43,6 @@ const JoinQueue = () => {
     if (name && centerId && !isUserInQueue) {
       !isQueueFull &&
         joinVisitorQueue(centerId, name).then(() => {
-          // joined
-          console.log("joined");
           nameInputRef.current.value = "";
         });
     }
