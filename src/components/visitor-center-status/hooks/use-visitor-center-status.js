@@ -23,13 +23,13 @@ const useVisitorCenterStatus = () => {
     let userStatusDatabaseRef = null;
     const isOfflineForDatabase = {
       state: "offline",
-      last_changed: firebase.database.ServerValue.TIMESTAMP,
+      gatesOpen: false,
     };
 
     if (centerId && isOwner) {
       const isOnlineForDatabase = {
         state: "online",
-        last_changed: firebase.database.ServerValue.TIMESTAMP,
+        gatesOpen: false,
       };
 
       // Create a reference to this user's specific status node.
@@ -86,15 +86,18 @@ const useVisitorCenterStatus = () => {
     if (centerId) {
       visitorCenterOnlineStatusRef = firebase
         .database()
-        .ref("users/" + centerId + "/state");
+        .ref("users/" + centerId);
       visitorCenterOnlineStatusRef.on("value", (snapshot) => {
-        const status = snapshot.val();
+        const data = snapshot.val();
+        const onlineStatus = data?.state;
+        const gatesOpen = data?.gatesOpen;
         dispatch({
           type: "VISITOR_CENTER_STATUS",
-          onlineStatus: status,
+          onlineStatus,
+          gatesOpen,
         });
 
-        if (isOwner && status === "online") {
+        if (isOwner && onlineStatus === "online") {
           updateLastActiveNow(dispatch, centerId);
         }
       });

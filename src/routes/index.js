@@ -60,21 +60,21 @@ const Routes = () => {
           </Typography>
           <Typography>
             <Link
-              href="https://discord.gg/kwzezy"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Join the Discord server
-            </Link>{" "}
-            •{" "}
-            <Link
               component={RouterLink}
               to={`/`}
               onClick={() => {
                 firebase.analytics().logEvent("create_visitor_center_link");
               }}
             >
-              Create visitor center
+              Home
+            </Link>{" "}
+            •{" "}
+            <Link
+              href="https://discord.gg/kwzezy"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Discord
             </Link>
           </Typography>
         </Box>

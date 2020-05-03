@@ -12,28 +12,24 @@ const VisitorCenter = () => {
   const [visitorCenterExists, setVisitorCenterExists] = useState(false);
 
   useEffect(() => {
-    async function checkIfVisitorCenterExists() {
-      const db = firebase.firestore();
+    const db = firebase.firestore();
 
-      await db
-        .collection("centers")
-        .doc(centerId)
-        .get()
-        .then((result) => {
-          if (result.exists) {
-            setVisitorCenterExists(true);
-          } else {
-            dispatch({
-              type: "FETCH_VISITOR_CENTER_DATA_FAIL",
-              error: "visitor center does not exist",
-            });
-          }
-        })
-        .catch((error) => {
-          dispatch({ type: "FETCH_VISITOR_CENTER_DATA_FAIL", error });
-        });
-    }
-    checkIfVisitorCenterExists();
+    db.collection("centers")
+      .doc(centerId)
+      .get()
+      .then((result) => {
+        if (result.exists) {
+          setVisitorCenterExists(true);
+        } else {
+          dispatch({
+            type: "FETCH_VISITOR_CENTER_DATA_FAIL",
+            error: "visitor center does not exist",
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({ type: "FETCH_VISITOR_CENTER_DATA_FAIL", error });
+      });
   }, [centerId, dispatch]);
 
   return (

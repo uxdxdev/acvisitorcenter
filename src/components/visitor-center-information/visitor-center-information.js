@@ -161,35 +161,35 @@ const VisitorCenterInformation = () => {
         )}
       </Paper>
 
-      <Paper elevation={0} variant="outlined" className={classes.paper}>
-        <Typography variant="h2">
-          Code{" "}
-          <span role="img" aria-label="key">
-            🔑
-          </span>
-        </Typography>
+      {isOwner && (
+        <Paper elevation={0} variant="outlined" className={classes.paper}>
+          <Typography variant="h2">
+            Code{" "}
+            <span role="img" aria-label="key">
+              🔑
+            </span>
+          </Typography>
 
-        {isEditable.dodoCode ? (
-          <TextField
-            type="text"
-            value={updatedVisitorCenterData.dodoCode}
-            onChange={(event) => {
-              const id = event?.target?.id;
-              const value = event?.target?.value;
-              handleCenterInformationChange(id, value.toUpperCase());
-            }}
-            id="dodoCode"
-            label="Code"
-            disabled={!isEditable.dodoCode}
-            inputProps={{ maxLength: "5", minLength: "5" }}
-            variant="outlined"
-            margin="dense"
-          />
-        ) : (
-          <Typography>{code || "*****"}</Typography>
-        )}
-        <ButtonBox>
-          {isOwner && (
+          {isEditable.dodoCode ? (
+            <TextField
+              type="text"
+              value={updatedVisitorCenterData.dodoCode}
+              onChange={(event) => {
+                const id = event?.target?.id;
+                const value = event?.target?.value;
+                handleCenterInformationChange(id, value.toUpperCase());
+              }}
+              id="dodoCode"
+              label="Code"
+              disabled={!isEditable.dodoCode}
+              inputProps={{ maxLength: "5", minLength: "5" }}
+              variant="outlined"
+              margin="dense"
+            />
+          ) : (
+            <Typography>{code || "*****"}</Typography>
+          )}
+          <ButtonBox>
             <Button
               className={classes.buttonMarginRight}
               variant="outlined"
@@ -203,23 +203,24 @@ const VisitorCenterInformation = () => {
             >
               {isEditable.dodoCode ? "Save" : "Edit"}
             </Button>
-          )}
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            onClick={() => {
-              firebase.analytics().logEvent("get_code");
-              handleFetchDodoCode();
-            }}
-            disabled={
-              (!isCodeAvailable && !isUserFirstInQueue) || isFetchingDodoCode
-            }
-          >
-            Get code
-          </Button>
-        </ButtonBox>
-      </Paper>
+
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              onClick={() => {
+                firebase.analytics().logEvent("get_code");
+                handleFetchDodoCode();
+              }}
+              disabled={
+                (!isCodeAvailable && !isUserFirstInQueue) || isFetchingDodoCode
+              }
+            >
+              Get code
+            </Button>
+          </ButtonBox>
+        </Paper>
+      )}
 
       <WaitingListStatus />
 

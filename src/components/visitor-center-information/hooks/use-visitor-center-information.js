@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState, useCallback } from "react";
+import { useContext, useEffect, useState } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
-import { fetchDodoCode } from "../../../actions/dodo-code-actions";
+import { fetchDodoCode, fetchVisitorCenterData } from "../../../actions";
 
 const useVisitorCenter = (centerId) => {
   const context = useContext(store);
@@ -9,18 +9,13 @@ const useVisitorCenter = (centerId) => {
     dispatch,
     state: {
       auth: { uid },
-      visitorCenter: {
-        visitorCenterData,
-        onlineStatus,
-        isFetchingVisitorCenterData,
-      },
+      visitorCenter: { visitorCenterData, onlineStatus, gatesOpen },
       dodoCode: { code, isFetchingDodoCode },
     },
   } = context;
 
   const waitingList = visitorCenterData?.waiting;
   const ownerUid = visitorCenterData?.owner;
-  const gatesOpen = visitorCenterData?.gatesOpen;
 
   const isOwner = uid === centerId;
   const isUserFirstInQueue = waitingList && waitingList[0]?.uid === uid;
@@ -28,7 +23,8 @@ const useVisitorCenter = (centerId) => {
   const isVisitorCenterOpen = isOwnerOnline && gatesOpen;
   const isUserInQueue =
     waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
-  const isLoading = isFetchingVisitorCenterData || !visitorCenterData;
+
+  const isLoading = !visitorCenterData;
 
   const handleFetchDodoCode = () => {
     if (
@@ -70,7 +66,6 @@ const useVisitorCenter = (centerId) => {
           owner: visitorCenterData.owner,
           waiting: visitorCenterData.waiting,
           participants: visitorCenterData.participants,
-          gatesOpen: visitorCenterData.gatesOpen,
           createdAt: visitorCenterData.createdAt,
         }
       );
@@ -185,45 +180,12 @@ const useVisitorCenter = (centerId) => {
     };
   }, [dispatch]);
 
-  const handleListenVisitorCenterData = useCallback(
-    async (id) => {
-      if (id && centerId) {
-        const db = firebase.firestore();
-
-        dispatch({ type: "LISTEN_VISITOR_CENTER_DATA" });
-
-        return db
-          .collection("centers")
-          .doc(centerId)
-          .onSnapshot(
-            (result) => {
-              dispatch({
-                type: "LISTEN_VISITOR_CENTER_DATA_SUCCESS",
-                visitorCenterData: result.data(),
-              });
-            },
-            (error) => {
-              dispatch({ type: "LISTEN_VISITOR_CENTER_DATA_FAIL", error });
-            }
-          );
-      }
-    },
-    [centerId, dispatch]
-  );
-
   /**
    * Fetch center data when user authenticated.
    */
   useEffect(() => {
-    let unsubscribe = null;
-    async function fetchData() {
-      unsubscribe = await handleListenVisitorCenterData(uid);
-    }
-    fetchData();
-    return () => {
-      unsubscribe && unsubscribe();
-    };
-  }, [uid, handleListenVisitorCenterData]);
+    fetchVisitorCenterData(dispatch, centerId);
+  }, [dispatch, centerId]);
 
   return {
     isOwner,

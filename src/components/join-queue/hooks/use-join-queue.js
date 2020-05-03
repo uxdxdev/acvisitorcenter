@@ -1,28 +1,31 @@
 import { useContext } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
-import { deleteUser } from "../../../actions";
+import { deleteUser, fetchVisitorCenterData } from "../../../actions";
 
 const useJoinQueue = (centerId) => {
   const context = useContext(store);
   const { dispatch, state } = context;
   const {
     auth: { uid },
-    visitorCenter: { visitorCenterData: currentCenterData, onlineStatus },
+    visitorCenter: {
+      visitorCenterData: currentCenterData,
+      onlineStatus,
+      gatesOpen,
+    },
     waitingList: { isJoiningQueue, isDeletingUser },
   } = state;
 
   const waitingList = currentCenterData?.waiting;
-  const gatesOpen = currentCenterData?.gatesOpen;
 
   const isVisitorCenterOpen = onlineStatus === "online" && gatesOpen;
-  const userAlreadyInQueue =
+  const isUserInQueue =
     waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
 
   const isQueueFull = waitingList?.length >= 20;
 
   const joinVisitorQueue = (centerId, name) => {
-    if (!userAlreadyInQueue && !isQueueFull) {
+    if (!isUserInQueue && !isQueueFull) {
       const db = firebase.firestore();
       const centersRef = db.collection("centers").doc(centerId);
 
@@ -35,7 +38,8 @@ const useJoinQueue = (centerId) => {
           const participantsArray = snapshot.get("participants");
 
           const joinedAt = firebase.firestore.Timestamp.fromDate(new Date());
-          waitingArray.push({ name, uid, joinedAt });
+          const userData = { name, uid, joinedAt };
+          waitingArray.push(userData);
           participantsArray.push(uid);
 
           transaction.update(centersRef, "waiting", waitingArray);
@@ -44,6 +48,7 @@ const useJoinQueue = (centerId) => {
       })
         .then(() => {
           dispatch({ type: "JOIN_QUEUE_SUCCESS" });
+          fetchVisitorCenterData(dispatch, centerId);
         })
         .catch((error) => {
           dispatch({ type: "JOIN_QUEUE_FAIL", error });
@@ -62,7 +67,7 @@ const useJoinQueue = (centerId) => {
     handleDeleteUser,
     joinVisitorQueue,
     isVisitorCenterOpen,
-    userAlreadyInQueue,
+    isUserInQueue,
     waitingList,
     isJoiningQueue,
     isDeletingUser,

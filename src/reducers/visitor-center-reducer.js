@@ -19,17 +19,24 @@ const initialState = {
 const visitorCenterReducer = (state, action) => {
   switch (action.type) {
     case "CREATE_VISITOR_CENTER":
-      return { ...state, isCreatingVisitorCenter: true };
+      return {
+        ...state,
+        isCreatingVisitorCenter: true,
+        visitorCenterData: null,
+        createVisitorCenterError: null,
+      };
     case "CREATE_VISITOR_CENTER_SUCCESS":
       return {
         ...state,
         isCreatingVisitorCenter: false,
+        visitorCenterData: action.visitorCenterData,
         createVisitorCenterError: null,
       };
     case "CREATE_VISITOR_CENTER_FAIL":
       return {
         ...state,
         isCreatingVisitorCenter: false,
+        visitorCenterData: null,
         createVisitorCenterError: action.error,
       };
 
@@ -160,8 +167,9 @@ const visitorCenterReducer = (state, action) => {
       return {
         ...state,
         onlineStatus: action.onlineStatus,
+        gatesOpen: action.gatesOpen,
         ...(action.onlineStatus === "offline" && {
-          visitorCenterData: { ...state.visitorCenterData, gatesOpen: false },
+          gatesOpen: false,
         }),
       };
 

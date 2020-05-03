@@ -17,6 +17,7 @@ const useVisitorCenter = (centerId) => {
     visitorCenter: {
       visitorCenterData: currentCenterData,
       onlineStatus,
+      gatesOpen,
       isUpdatingVisitorGateStatus,
     },
     waitingList: { isDeletingUser, isClearingWaitlist },
@@ -24,7 +25,6 @@ const useVisitorCenter = (centerId) => {
 
   const isOwner = centerId === uid;
   const waitingList = currentCenterData?.waiting;
-  const gatesOpen = currentCenterData?.gatesOpen;
   const centerLastActive = moment(
     currentCenterData?.lastActive?.toDate()
   ).fromNow();
@@ -78,6 +78,39 @@ const useVisitorCenter = (centerId) => {
       clearWaitingList(dispatch, centerId);
     }
   };
+
+  const listenVisitorCenterData = useCallback(() => {
+    if (centerId) {
+      const db = firebase.firestore();
+
+      dispatch({ type: "LISTEN_VISITOR_CENTER_DATA" });
+
+      return db
+        .collection("centers")
+        .doc(centerId)
+        .onSnapshot(
+          (result) => {
+            dispatch({
+              type: "LISTEN_VISITOR_CENTER_DATA_SUCCESS",
+              visitorCenterData: result.data(),
+            });
+          },
+          (error) => {
+            dispatch({ type: "LISTEN_VISITOR_CENTER_DATA_FAIL", error });
+          }
+        );
+    }
+  }, [centerId, dispatch]);
+
+  /**
+   * Fetch center data when user authenticated.
+   */
+  useEffect(() => {
+    const unsubscribe = listenVisitorCenterData();
+    return () => {
+      unsubscribe && unsubscribe();
+    };
+  }, [listenVisitorCenterData]);
 
   return {
     handleDeleteUser,

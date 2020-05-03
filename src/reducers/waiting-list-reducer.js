@@ -12,7 +12,11 @@ const initialState = {
 const waitingListReducer = (state, action) => {
   switch (action.type) {
     case "JOIN_QUEUE":
-      return { ...state, isJoiningQueue: true, isJoiningQueueError: null };
+      return {
+        ...state,
+        isJoiningQueue: true,
+        isJoiningQueueError: null,
+      };
     case "JOIN_QUEUE_SUCCESS":
       return {
         ...state,
