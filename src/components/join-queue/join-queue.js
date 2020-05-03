@@ -22,7 +22,7 @@ const JoinQueue = () => {
     handleDeleteUser,
     joinVisitorQueue,
     isVisitorCenterOpen,
-    userAlreadyInQueue,
+    isUserInQueue,
     waitingList,
     isJoiningQueue,
     isDeletingUser,
@@ -36,13 +36,13 @@ const JoinQueue = () => {
   const positionInQueue =
     waitingList && waitingList.findIndex((user) => user?.uid === uid) + 1;
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     let name = event.target.name.value;
     nameInputRef.current.value = "";
 
-    if (name && centerId && !userAlreadyInQueue) {
+    if (name && centerId && !isUserInQueue) {
       !isQueueFull && joinVisitorQueue(centerId, name);
     }
   };
@@ -63,7 +63,7 @@ const JoinQueue = () => {
           variant="outlined"
           margin="dense"
           disabled={
-            userAlreadyInQueue ||
+            isUserInQueue ||
             !isVisitorCenterOpen ||
             isQueueFull ||
             isJoiningQueue
@@ -78,7 +78,7 @@ const JoinQueue = () => {
             size="small"
             type="submit"
             disabled={
-              userAlreadyInQueue ||
+              isUserInQueue ||
               !isVisitorCenterOpen ||
               isQueueFull ||
               isJoiningQueue
@@ -93,12 +93,12 @@ const JoinQueue = () => {
               firebase.analytics().logEvent("join_queue");
               handleDeleteUser(uid);
             }}
-            disabled={!userAlreadyInQueue || isDeletingUser}
+            disabled={!isUserInQueue || isDeletingUser}
           >
             Leave
           </Button>
         </Box>
-        {userAlreadyInQueue && (
+        {isUserInQueue && (
           <Typography>
             You are in position #{positionInQueue} of #{waitingList?.length}
           </Typography>

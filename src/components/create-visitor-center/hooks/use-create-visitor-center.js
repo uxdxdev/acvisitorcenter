@@ -1,6 +1,7 @@
-import { useContext, useEffect, useCallback } from "react";
+import { useContext, useEffect } from "react";
 import { firebase } from "../../../utils/firebase";
 import { store } from "../../../store";
+import { fetchVisitorCenterData } from "../../../actions";
 
 const useCreateVisitorCenter = () => {
   const context = useContext(store);
@@ -25,13 +26,12 @@ const useCreateVisitorCenter = () => {
     isUpdatingDodoCode ||
     isFetchingVisitorCenterData;
 
-  const updateUserData = async (dodoCode) => {
+  const updateUserData = (dodoCode) => {
     const db = firebase.firestore();
 
     dispatch({ type: "UPDATE_DODO_CODE" });
 
-    await db
-      .collection("users")
+    db.collection("users")
       .doc(uid)
       .set({
         dodoCode: dodoCode || "00000",
@@ -45,28 +45,30 @@ const useCreateVisitorCenter = () => {
       });
   };
 
-  const createVisitorCenter = async (name, summary) => {
+  const createVisitorCenter = (name, summary) => {
     if (name && summary) {
       const db = firebase.firestore();
       const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
       dispatch({ type: "CREATE_VISITOR_CENTER" });
 
-      await db
-        .collection("centers")
+      const visitorCenterData = {
+        name,
+        owner: uid,
+        createdAt: timestamp(),
+        waiting: [],
+        participants: [],
+        summary,
+        lastActive: timestamp(),
+      };
+      db.collection("centers")
         .doc(uid)
-        .set({
-          name,
-          owner: uid,
-          createdAt: timestamp(),
-          waiting: [],
-          participants: [],
-          summary,
-          gatesOpen: false,
-          lastActive: timestamp(),
-        })
-        .then(() => {
-          dispatch({ type: "CREATE_VISITOR_CENTER_SUCCESS" });
+        .set(visitorCenterData)
+        .then((result) => {
+          dispatch({
+            type: "CREATE_VISITOR_CENTER_SUCCESS",
+            visitorCenterData,
+          });
         })
         .catch((error) => {
           dispatch({ type: "CREATE_VISITOR_CENTER_FAIL", error });
@@ -76,44 +78,17 @@ const useCreateVisitorCenter = () => {
     }
   };
 
-  const fetchVisitorCenterData = useCallback(() => {
-    dispatch({ type: "FETCH_VISITOR_CENTER_DATA" });
-
-    return firebase
-      .firestore()
-      .collection("centers")
-      .doc(uid)
-      .get()
-      .then((result) => {
-        if (result.exists) {
-          dispatch({
-            type: "FETCH_VISITOR_CENTER_DATA_SUCCESS",
-            visitorCenterData: result.data(),
-          });
-        } else {
-          dispatch({
-            type: "FETCH_VISITOR_CENTER_DATA_FAIL",
-            error: "The user has not yet created a visitor center",
-          });
-        }
-      })
-      .catch((error) => {
-        dispatch({ type: "FETCH_VISITOR_CENTER_DATA_FAIL", error });
-      });
-  }, [uid, dispatch]);
-
   const handleCreateVisitorCenter = async (name, summary, dodoCode) => {
     await createVisitorCenter(name, summary);
     await updateUserData(dodoCode);
-    await fetchVisitorCenterData();
   };
 
   useEffect(() => {
-    fetchVisitorCenterData();
+    fetchVisitorCenterData(dispatch, uid);
     return () => {
       dispatch({ type: "RESET_VISITOR_CENTER" });
     };
-  }, [dispatch, fetchVisitorCenterData]);
+  }, [dispatch, uid]);
 
   return {
     handleCreateVisitorCenter,

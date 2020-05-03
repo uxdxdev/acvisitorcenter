@@ -6,11 +6,10 @@ const useWaitingListStatus = () => {
   const context = useContext(store);
   const {
     state: {
-      visitorCenter: { onlineStatus, visitorCenterData },
+      visitorCenter: { onlineStatus, gatesOpen },
     },
   } = context;
 
-  const gatesOpen = visitorCenterData?.gatesOpen;
   const isOwnerOnline = onlineStatus === "online";
   const isQueueUnlocked = isOwnerOnline && gatesOpen;
 
