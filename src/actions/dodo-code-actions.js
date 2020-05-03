@@ -12,7 +12,7 @@ export const fetchDodoCode = (dispatch, centerId) => {
       const dodoCode = result.data()?.dodoCode;
       dispatch({
         type: "FETCH_DODO_CODE_SUCCESS",
-        dodoCode: dodoCode || "*****",
+        dodoCode: dodoCode,
       });
     })
     .catch((error) => {

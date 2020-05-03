@@ -182,7 +182,7 @@ const VisitorCenterInformation = () => {
               margin="dense"
             />
           ) : (
-            <Typography>{code || "*****"}</Typography>
+            <Typography>{code}</Typography>
           )}
           <Button
             className={classes.buttonMarginRight}

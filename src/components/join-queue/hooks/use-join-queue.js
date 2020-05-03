@@ -31,6 +31,9 @@ const useJoinQueue = (centerId) => {
       const centersRef = db.collection("centers").doc(centerId);
 
       dispatch({ type: "JOIN_QUEUE" });
+      // when a user joins the queue set the dodo code to blank
+      // this also removes the dodocode from the client
+      // when a user joins the queue twice.
       dispatch({
         type: "FETCH_DODO_CODE_SUCCESS",
         dodoCode: "*****",

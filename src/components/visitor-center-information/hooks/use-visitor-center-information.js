@@ -38,9 +38,9 @@ const useVisitorCenter = (centerId) => {
   }, [centerId, dispatch, isUserFirstInQueue]);
 
   const [updatedVisitorCenterData, setVisitorCenterData] = useState({
-    name: "Loading...",
-    summary: "Loading...",
-    dodoCode: "*****",
+    // name: "Loading...",
+    // summary: "Loading...",
+    // dodoCode: "*****",
   });
 
   const [isEditable, setIsEditable] = useState({});
@@ -71,7 +71,7 @@ const useVisitorCenter = (centerId) => {
           dodoCode:
             isOwner && isEditable.dodoCode
               ? updatedVisitorCenterData.dodoCode
-              : code || "*****",
+              : code,
         });
     }
   }, [
@@ -114,8 +114,7 @@ const useVisitorCenter = (centerId) => {
       // save dodo code
       if (
         updatedVisitorCenterData?.dodoCode?.length === 5 &&
-        updatedVisitorCenterData?.dodoCode !== code &&
-        updatedVisitorCenterData?.dodoCode !== "*****"
+        updatedVisitorCenterData?.dodoCode !== code
       ) {
         updateDodoCode(updatedVisitorCenterData?.dodoCode);
       }

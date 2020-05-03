@@ -37,7 +37,7 @@ export default function AlertDialog(props) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText align="center" variant="h2">
-            {code}
+            {code || "*****"}
           </DialogContentText>
           <DialogContentText align="center" variant="subtitle2">
             If the code does not work try refreshing this page
