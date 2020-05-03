@@ -83,7 +83,8 @@ service cloud.firestore {
                       request.resource.data.name == resource.data.name &&
                       request.resource.data.owner == resource.data.owner &&
                       request.resource.data.summary == resource.data.summary &&
-                      request.resource.data.createdAt == resource.data.createdAt) ||
+                      request.resource.data.createdAt == resource.data.createdAt &&
+                      request.resource.data.lastActive == resource.data.lastActive) ||
 
                       // owner updating center data: name, summary
                       (request.auth.uid == resource.data.owner &&                      
@@ -92,6 +93,19 @@ service cloud.firestore {
                       // other data is unmodified           
                       request.resource.data.owner == resource.data.owner &&    
                       request.resource.data.createdAt == resource.data.createdAt &&
+                      request.resource.data.lastActive == resource.data.lastActive &&
+      								request.resource.data.waiting.size() == resource.data.waiting.size() &&
+                      request.resource.data.participants.size() == resource.data.participants.size()) || 
+
+                      // owner updating last active
+                      (request.auth.uid == resource.data.owner &&                      
+                      validateResourceFields(request.resource.data) &&
+                      validateResourceFields(resource.data) &&
+                      // other data is unmodified           
+                      request.resource.data.owner == resource.data.owner &&    
+                      request.resource.data.createdAt == resource.data.createdAt &&
+                      request.resource.data.name == resource.data.name &&
+                      request.resource.data.summary == resource.data.summary &&
       								request.resource.data.waiting.size() == resource.data.waiting.size() &&
                       request.resource.data.participants.size() == resource.data.participants.size()) ||                      
 
@@ -99,21 +113,28 @@ service cloud.firestore {
                       (request.auth.uid == resource.data.owner &&                                            
                       validateResourceFields(request.resource.data) &&
                       validateResourceFields(resource.data) &&
+                      // incoming arrays are empty
                       request.resource.data.waiting.size() == 0 &&
                       request.resource.data.participants.size() == 0 &&                    
+                      // existing arrays are not empty
                       resource.data.waiting.size() != 0 &&
                       resource.data.participants.size() != 0 &&                    
                       // other data is unmodified
                       request.resource.data.name == resource.data.name &&
                       request.resource.data.owner == resource.data.owner &&
                       request.resource.data.summary == resource.data.summary &&
-                      request.resource.data.createdAt == resource.data.createdAt) || 
+                      request.resource.data.createdAt == resource.data.createdAt &&
+                      request.resource.data.lastActive == resource.data.lastActive) || 
 
                       // user adding themselves to waiting list
                       (validateResourceFields(request.resource.data) &&   
       								request.resource.data.waiting.size() == resource.data.waiting.size() + 1 &&                      
-                      request.resource.data.participants.size() == resource.data.participants.size() + 1 &&    
-                      request.auth.uid in request.resource.data.participants &&              
+                      request.resource.data.participants.size() == resource.data.participants.size() + 1 &&   
+                      // uid is in incoming participants array 
+                      request.auth.uid in request.resource.data.participants &&
+                      // uid is not in existing participants array
+                      (request.auth.uid in resource.data.participants) == false &&
+                      // check entry in waiting list is the user      
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].keys().hasOnly(['name', 'uid', 'joinedAt']) &&
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].uid == request.auth.uid &&
       								request.resource.data.waiting[request.resource.data.waiting.size() - 1].name is string &&
@@ -123,11 +144,14 @@ service cloud.firestore {
                       request.resource.data.name == resource.data.name &&
                       request.resource.data.owner == resource.data.owner &&
                       request.resource.data.summary == resource.data.summary &&
-                      request.resource.data.createdAt == resource.data.createdAt) ||
+                      request.resource.data.createdAt == resource.data.createdAt && 
+                      request.resource.data.lastActive == resource.data.lastActive) ||
 
                       // user removing themselves from the queue
-                      (validateResourceFields(request.resource.data) &&                      
+                      (validateResourceFields(request.resource.data) &&
+                      // uid is in existing participants array
                       request.auth.uid in resource.data.participants &&
+                      // uid is not in incoming participants array
                       (request.auth.uid in request.resource.data.participants) == false &&
       								request.resource.data.waiting.size() == resource.data.waiting.size() - 1 &&  
                       request.resource.data.participants.size() == resource.data.participants.size() - 1 &&
@@ -135,7 +159,8 @@ service cloud.firestore {
                       request.resource.data.name == resource.data.name &&
                       request.resource.data.owner == resource.data.owner &&
                       request.resource.data.summary == resource.data.summary &&
-                      request.resource.data.createdAt == resource.data.createdAt);   
+                      request.resource.data.createdAt == resource.data.createdAt &&
+                      request.resource.data.lastActive == resource.data.lastActive);   
     }
   }
 }
