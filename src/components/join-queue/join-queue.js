@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import useJoinQueue from "./hooks/use-join-queue";
 import { useParams } from "react-router-dom";
 import { firebase } from "../../utils/firebase";
-
+import { QUEUE_LIMIT } from "../../constants";
 const useStyles = makeStyles((theme) => ({
   buttonMarginRight: {
     marginRight: theme.spacing(1),
@@ -31,7 +31,7 @@ const JoinQueue = () => {
   const classes = useStyles();
   const nameInputRef = useRef();
 
-  const isQueueFull = waitingList?.length >= 20;
+  const isQueueFull = waitingList?.length >= QUEUE_LIMIT;
 
   const positionInQueue =
     waitingList && waitingList.findIndex((user) => user?.uid === uid) + 1;
@@ -49,7 +49,11 @@ const JoinQueue = () => {
 
   return (
     <Paper elevation={0} variant="outlined" className={classes.paper}>
-      <Typography variant="h2">Join visitor queue</Typography>
+      <Typography variant="subtitle2">
+        {isQueueFull
+          ? "Queue is full"
+          : `${waitingList?.length} in queue (Max ${QUEUE_LIMIT})`}
+      </Typography>
 
       <form onSubmit={handleSubmit}>
         <TextField

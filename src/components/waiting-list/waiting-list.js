@@ -53,7 +53,7 @@ const WaitingList = () => {
           Last active {centerLastActive}
         </Typography>
         <Typography variant="h2">
-          Waiting (Max 20){" "}
+          Waiting{" "}
           <span role="img" aria-label="list">
             📋
           </span>

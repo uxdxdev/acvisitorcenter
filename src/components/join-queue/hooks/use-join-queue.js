@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
 import { deleteUser, fetchVisitorCenterData } from "../../../actions";
+import { QUEUE_LIMIT } from "../../../constants";
 
 const useJoinQueue = (centerId) => {
   const context = useContext(store);
@@ -22,7 +23,7 @@ const useJoinQueue = (centerId) => {
   const isUserInQueue =
     waitingList && waitingList.filter((user) => user.uid === uid)?.length > 0;
 
-  const isQueueFull = waitingList?.length >= 20;
+  const isQueueFull = waitingList?.length >= QUEUE_LIMIT;
 
   const joinVisitorQueue = (centerId, name) => {
     if (!isUserInQueue && !isQueueFull) {

@@ -14,6 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import { PageLoadingSpinner } from "../page-loading-spinner";
 import { firebase } from "../../utils/firebase";
+import { QUEUE_LIMIT } from "../../constants";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -60,10 +61,17 @@ const LatestVisitorCenterList = () => {
                 ).fromNow();
 
                 const chipClassName = {
-                  ...(inQueue < 20
+                  ...(inQueue < QUEUE_LIMIT
                     ? { className: classes.chipGreen }
                     : { className: classes.chipRed }),
                 };
+
+                const chipLabelText =
+                  inQueue <= 0
+                    ? "Queue empty"
+                    : inQueue >= QUEUE_LIMIT
+                    ? "Queue full"
+                    : `${inQueue} waiting`;
 
                 return (
                   <ListItem key={id} dense disableGutters>
@@ -74,9 +82,7 @@ const LatestVisitorCenterList = () => {
 
                     <Chip
                       {...chipClassName}
-                      label={
-                        inQueue <= 0 ? "Queue empty" : `${inQueue} waiting`
-                      }
+                      label={chipLabelText}
                       size="small"
                     />
                     <Button

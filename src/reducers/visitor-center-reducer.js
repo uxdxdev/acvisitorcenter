@@ -113,6 +113,10 @@ const visitorCenterReducer = (state, action) => {
       return {
         ...state,
         isUpdatingVisitorCenterData: false,
+        visitorCenterData: {
+          ...state.visitorCenterData,
+          ...action.visitorCenterData,
+        },
         isUpdatingVisitorCenterDataError: null,
       };
     case "UPDATE_VISITOR_CENTER_DATA_FAIL":
