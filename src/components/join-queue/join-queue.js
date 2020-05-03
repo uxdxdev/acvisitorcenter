@@ -1,5 +1,12 @@
 import React, { useRef } from "react";
-import { Typography, Paper, TextField, Button, Box } from "@material-ui/core";
+import {
+  Typography,
+  Paper,
+  TextField,
+  Button,
+  Box,
+  CircularProgress,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import useJoinQueue from "./hooks/use-join-queue";
 import { useParams } from "react-router-dom";
@@ -25,6 +32,7 @@ const JoinQueue = () => {
     waitingList,
     isDeletingUser,
     isJoinQueueEnabled,
+    isJoiningQueue,
   } = useJoinQueue(centerId);
 
   const classes = useStyles();
@@ -78,6 +86,7 @@ const JoinQueue = () => {
             size="small"
             type="submit"
             disabled={!isJoinQueueEnabled}
+            endIcon={isJoiningQueue && <CircularProgress size={12} />}
           >
             Join queue
           </Button>
@@ -89,6 +98,7 @@ const JoinQueue = () => {
               handleDeleteUser(uid);
             }}
             disabled={!isUserInQueue || isDeletingUser}
+            endIcon={isDeletingUser && <CircularProgress size={12} />}
           >
             Leave
           </Button>

@@ -166,24 +166,28 @@ const VisitorCenterInformation = () => {
           </Typography>
 
           {isEditable.dodoCode ? (
-            <TextField
-              type="text"
-              value={updatedVisitorCenterData.dodoCode}
-              onChange={(event) => {
-                const id = event?.target?.id;
-                const value = event?.target?.value;
-                handleCenterInformationChange(id, value.toUpperCase());
-              }}
-              id="dodoCode"
-              label="Code"
-              disabled={!isEditable.dodoCode}
-              inputProps={{ maxLength: "5", minLength: "5" }}
-              variant="outlined"
-              margin="dense"
-            />
+            <>
+              <TextField
+                type="text"
+                value={updatedVisitorCenterData.dodoCode}
+                onChange={(event) => {
+                  const id = event?.target?.id;
+                  const value = event?.target?.value;
+                  handleCenterInformationChange(id, value.toUpperCase());
+                }}
+                id="dodoCode"
+                label="Code"
+                disabled={!isEditable.dodoCode}
+                inputProps={{ maxLength: "5", minLength: "5" }}
+                variant="outlined"
+                margin="dense"
+              />
+              <br />
+            </>
           ) : (
             <Typography>{code}</Typography>
           )}
+
           <Button
             className={classes.buttonMarginRight}
             variant="outlined"
