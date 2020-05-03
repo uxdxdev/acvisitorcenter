@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { store } from "../../../store";
 import { firebase } from "../../../utils/firebase";
-import { deleteUser, fetchVisitorCenterData } from "../../../actions";
+import { deleteUser } from "../../../actions";
 import { QUEUE_LIMIT } from "../../../constants";
 
 const useJoinQueue = (centerId) => {
@@ -59,11 +59,19 @@ const useJoinQueue = (centerId) => {
           });
         })
         .then(() => {
-          dispatch({
-            type: "JOIN_QUEUE_SUCCESS",
-          });
+          const updatedWaitingList = {
+            ...currentCenterData,
+            ...{ waiting: [userData], participants: [uid] },
+          };
 
-          fetchVisitorCenterData(dispatch, centerId);
+          // update the visitor center data waiting list
+          // with the new user data to mount the waiting list
+          // listeners.
+          dispatch({
+            type: "FETCH_VISITOR_CENTER_DATA_SUCCESS",
+            visitorCenterData: updatedWaitingList,
+          });
+          dispatch({ type: "JOIN_QUEUE_SUCCESS" });
         })
         .catch((error) => {
           dispatch({ type: "JOIN_QUEUE_FAIL", error });
