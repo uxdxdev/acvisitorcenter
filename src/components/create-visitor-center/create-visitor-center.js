@@ -40,11 +40,7 @@ const CreateVisitorCenter = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    handleCreateVisitorCenter(
-      formInput?.name,
-      formInput?.summary,
-      formInput?.code
-    );
+    handleCreateVisitorCenter(formInput?.name, formInput?.summary);
   };
 
   const url = visitorCenterData && `/center/${visitorCenterData?.owner}`;
@@ -111,25 +107,6 @@ const CreateVisitorCenter = () => {
                   margin="dense"
                   multiline
                   rows={8}
-                />
-
-                <TextField
-                  id="code"
-                  label="Code"
-                  type="text"
-                  onChange={(event) => {
-                    const id = event?.target?.id;
-                    const value = event?.target?.value;
-                    onChange(id, value.toUpperCase());
-                  }}
-                  value={formInput?.code}
-                  inputProps={{
-                    maxLength: "5",
-                    minLength: "5",
-                    "text-transform": "uppercase",
-                  }}
-                  variant="outlined"
-                  margin="dense"
                 />
 
                 <Box mt={1}>

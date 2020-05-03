@@ -30,7 +30,10 @@ const useJoinQueue = (centerId) => {
       const centersRef = db.collection("centers").doc(centerId);
 
       dispatch({ type: "JOIN_QUEUE" });
-
+      dispatch({
+        type: "FETCH_DODO_CODE_SUCCESS",
+        dodoCode: "*****",
+      });
       // run transaction to join center
       db.runTransaction((transaction) => {
         return transaction.get(centersRef).then((snapshot) => {

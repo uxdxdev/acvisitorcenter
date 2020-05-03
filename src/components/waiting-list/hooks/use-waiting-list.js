@@ -90,10 +90,12 @@ const useVisitorCenter = (centerId) => {
         .doc(centerId)
         .onSnapshot(
           (result) => {
-            dispatch({
-              type: "LISTEN_VISITOR_CENTER_DATA_SUCCESS",
-              visitorCenterData: result.data(),
-            });
+            if (!result.metadata.hasPendingWrites) {
+              dispatch({
+                type: "LISTEN_VISITOR_CENTER_DATA_SUCCESS",
+                visitorCenterData: result.data(),
+              });
+            }
           },
           (error) => {
             dispatch({ type: "LISTEN_VISITOR_CENTER_DATA_FAIL", error });

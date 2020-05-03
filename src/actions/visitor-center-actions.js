@@ -21,16 +21,15 @@ export const updateLastActiveNow = (dispatch, centerId) => {
   dispatch({ type: "UPDATE_LAST_ACTIVE_NOW" });
 
   const lastActive = firebase.firestore.FieldValue.serverTimestamp;
-
+  const lastActiveResult = lastActive();
   db.collection("centers")
     .doc(centerId)
     .set(
       {
-        lastActive: lastActive(),
+        lastActive: lastActiveResult,
       },
       { merge: true }
     )
-
     .then(() => {
       dispatch({ type: "UPDATE_LAST_ACTIVE_NOW_SUCCESS" });
     })
