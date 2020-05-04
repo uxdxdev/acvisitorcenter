@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useWaitingList } from "./hooks";
-import moment from "moment";
+
 import {
   Typography,
   Paper,
@@ -94,16 +94,12 @@ const WaitingList = () => {
             {waitingList?.length > 0 ? (
               <List dense>
                 {waitingList.map(({ name, joinedAt, uid: userId }, index) => {
-                  const date = moment(joinedAt.toDate()).calendar();
                   return (
                     <ListItem key={index}>
                       <ListItemAvatar>
                         {index === 0 ? <FlightTakeoff /> : <PersonIcon />}
                       </ListItemAvatar>
-                      <ListItemText
-                        primary={`#${index + 1} ${name}`}
-                        secondary={`Joined: ${date}`}
-                      />
+                      <ListItemText primary={`#${index + 1} ${name}`} />
 
                       {index === 0 ? (
                         <Chip color="primary" label="Next" />

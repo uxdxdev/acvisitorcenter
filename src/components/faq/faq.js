@@ -17,9 +17,8 @@ const steps = [
     title: "Step 1",
     body: (
       <>
-        Set a Name and Summary for your visitor center, setting a Code is
-        optional and can be updated later. Click "Create visitor center", then
-        open your visitor center page.
+        Set a Name and Summary for your visitor center, click "Create visitor
+        center", then open your visitor center page.
       </>
     ),
   },
@@ -72,7 +71,7 @@ const questionsAnswers = [
       "No, each user can only create a single visitor center. It is easy to update your visitor center by clicking the 'Edit' button next to each label on the visitor center page.",
   },
   {
-    title: "What does 'Visitor center is closed' mean?",
+    title: "What does 'Visitor center closed' mean?",
     body:
       "It means the owner of the visitor center no longer has the visitor center page open in their browser. The visitor center will not operate correctly if the visitor center page is not open in their browser.",
   },
