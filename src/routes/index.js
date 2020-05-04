@@ -70,7 +70,7 @@ const Routes = () => {
             </Link>{" "}
             •{" "}
             <Link
-              href="https://discord.gg/kwzezy"
+              href="https://discord.gg/TXFwh4J"
               target="_blank"
               rel="noopener noreferrer"
             >
