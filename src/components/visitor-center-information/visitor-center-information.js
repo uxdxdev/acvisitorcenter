@@ -185,6 +185,7 @@ const VisitorCenterInformation = () => {
                 inputProps={{ maxLength: "5", minLength: "5" }}
                 variant="outlined"
                 margin="dense"
+                autoComplete="off"
               />
               <br />
             </>
