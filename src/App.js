@@ -60,7 +60,7 @@ const App = () => {
           },
         },
       }),
-    [prefersDarkMode]
+    []
   );
 
   return (
