@@ -6,7 +6,6 @@ import { useMediaQuery, CssBaseline } from "@material-ui/core";
 // import { red, blue } from "@material-ui/core/colors";
 
 const App = () => {
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
   const theme = useMemo(
     () =>
@@ -44,10 +43,6 @@ const App = () => {
             fontWeight: 800,
             fontSize: "14px",
           },
-        },
-        palette: {
-          type: prefersDarkMode ? "dark" : "light",
-          // error: red,
         },
         overrides: {
           MuiCssBaseline: {
