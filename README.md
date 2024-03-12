@@ -8,7 +8,7 @@ Create your own visitor center or fly to someone elses!
 
 ![](./docs/images/acvisitorcenter001.PNG)
 
-Join the queue to wait in line for the secret code. Use this secret to code to connect to this players Animal Crossing game.
+Join the queue to wait in line for the secret code. Use this secret code to connect to this players Animal Crossing game.
 
 ![](./docs/images/acvisitorcenter002.PNG)
 
